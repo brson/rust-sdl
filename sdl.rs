@@ -87,14 +87,27 @@ native mod SDL {
 }
 
 #[test]
-fn test_init() {
+fn test_everything() {
     init([init_everything]);
+    run_tests([
+        test_was_init,
+        test_set_error
+    ]);
     quit();
 }
 
-#[test]
+#[cfg(test)]
+fn run_tests(tests: [fn()]) {
+    vec::iter(tests) {|test| test()}
+}
+
+#[cfg(test)]
 fn test_was_init() {
-    init([init_timer, init_video]);
-    // FIXME
-    quit();
+    assert vec::contains(was_init([init_timer]), init_timer);
+}
+
+#[cfg(test)]
+fn test_set_error() {
+    set_error("test");
+    assert get_error() == "test";
 }
