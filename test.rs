@@ -6,6 +6,7 @@ fn test_everything() {
         general::test_set_error,
         general::test_error,
         general::test_clear_error,
+        event::test_poll_event,
         video::test_set_video_mode
     ]);
     quit();
@@ -36,6 +37,13 @@ mod general {
         set_error("test");
         clear_error();
         assert str::is_empty(get_error());
+    }
+}
+
+mod event {
+    fn test_poll_event() {
+        ::event::poll_event {|_event|
+        }
     }
 }
 
