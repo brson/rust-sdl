@@ -8,3 +8,7 @@
 #[crate_type = "lib"];
 
 use std;
+
+mod video;
+#[cfg(test)]
+mod test;

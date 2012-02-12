@@ -5,6 +5,8 @@ export init_timer, init_audio, init_video, init_cdrom, init_joystick,
        init_noparachute, init_eventthread, init_everything;
 export init, init_subsystem, quit_subsystem, quit;
 export was_init;
+export errorcode;
+export enomem, efread, efwrite, efseek, unsupported;
 export get_error, set_error, error, clear_error;
 
 enum init_flag {
@@ -104,45 +106,3 @@ native mod SDL {
     fn SDL_ClearError();
 }
 
-#[test]
-fn test_everything() {
-    init([init_everything]);
-    run_tests([
-        test_was_init,
-        test_set_error,
-        test_error,
-        test_clear_error
-    ]);
-    quit();
-}
-
-#[cfg(test)]
-fn run_tests(tests: [fn()]) {
-    vec::iter(tests) {|test| test()}
-}
-
-#[cfg(test)]
-fn test_was_init() {
-    assert vec::contains(was_init([init_timer]), init_timer);
-}
-
-#[cfg(test)]
-fn test_set_error() {
-    set_error("test");
-    assert get_error() == "test";
-}
-
-#[cfg(test)]
-fn test_error() {
-    clear_error();
-    assert str::is_empty(get_error());
-    error(enomem);
-    assert str::is_not_empty(get_error());
-}
-
-#[cfg(test)]
-fn test_clear_error() {
-    set_error("test");
-    clear_error();
-    assert str::is_empty(get_error());
-}
