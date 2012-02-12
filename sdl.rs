@@ -5,7 +5,7 @@ export init_timer, init_audio, init_video, init_cdrom, init_joystick,
        init_noparachute, init_eventthread, init_everything;
 export init, init_subsystem, quit_subsystem, quit;
 export was_init;
-export get_error, set_error;
+export get_error, set_error, error, clear_error;
 
 enum init_flag {
     init_timer       = 0x00000001,
@@ -16,6 +16,14 @@ enum init_flag {
     init_noparachute = 0x00100000,
     init_eventthread = 0x01000000,
     init_everything  = 0x0000FFFF,
+}
+
+enum errorcode {
+    enomem,
+    efread,
+    efwrite,
+    efseek,
+    unsupported
 }
 
 fn init(flags: [init_flag]) -> int {
@@ -67,6 +75,14 @@ fn set_error(s: str) {
     }
 }
 
+fn error(code: errorcode) {
+    SDL::SDL_Error(code as c::enum)
+}
+
+fn clear_error() {
+    SDL::SDL_ClearError()
+}
+
 mod util {
     fn init_flags_to_bitfield(flags: [init_flag]) -> u32 {
         vec::foldl(0u32, flags) {|flags, flag|
@@ -84,6 +100,8 @@ native mod SDL {
     fn SDL_GetError() -> *c::c_char;
     // FIXME: This is actually a varargs call
     fn SDL_SetError(fmt: *c::c_char);
+    fn SDL_Error(code: c::enum);
+    fn SDL_ClearError();
 }
 
 #[test]
@@ -91,7 +109,9 @@ fn test_everything() {
     init([init_everything]);
     run_tests([
         test_was_init,
-        test_set_error
+        test_set_error,
+        test_error,
+        test_clear_error
     ]);
     quit();
 }
@@ -110,4 +130,19 @@ fn test_was_init() {
 fn test_set_error() {
     set_error("test");
     assert get_error() == "test";
+}
+
+#[cfg(test)]
+fn test_error() {
+    clear_error();
+    assert str::is_empty(get_error());
+    error(enomem);
+    assert str::is_not_empty(get_error());
+}
+
+#[cfg(test)]
+fn test_clear_error() {
+    set_error("test");
+    clear_error();
+    assert str::is_empty(get_error());
 }
