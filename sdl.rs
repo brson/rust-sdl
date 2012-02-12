@@ -19,15 +19,15 @@ enum init_flag {
 }
 
 fn init(flags: [init_flag]) -> int {
-    SDL::SDL_Init(util::flags_to_bitfield(flags)) as int
+    SDL::SDL_Init(util::init_flags_to_bitfield(flags)) as int
 }
 
 fn init_subsystem(flags: [init_flag]) -> int {
-    SDL::SDL_InitSubSystem(util::flags_to_bitfield(flags)) as int
+    SDL::SDL_InitSubSystem(util::init_flags_to_bitfield(flags)) as int
 }
 
 fn quit_subsystem(flags: [init_flag]) {
-    SDL::SDL_QuitSubSystem(util::flags_to_bitfield(flags))
+    SDL::SDL_QuitSubSystem(util::init_flags_to_bitfield(flags))
 }
 
 fn quit() {
@@ -35,7 +35,7 @@ fn quit() {
 }
 
 fn was_init(flags: [init_flag]) -> [init_flag] {
-    let bitflags = SDL::SDL_WasInit(util::flags_to_bitfield(flags));
+    let bitflags = SDL::SDL_WasInit(util::init_flags_to_bitfield(flags));
     let all_flags = [
         init_timer,
         init_audio,
@@ -68,7 +68,7 @@ fn set_error(s: str) {
 }
 
 mod util {
-    fn flags_to_bitfield(flags: [init_flag]) -> u32 {
+    fn init_flags_to_bitfield(flags: [init_flag]) -> u32 {
         vec::foldl(0u32, flags) {|flags, flag|
             flags | flag as u32
         }
