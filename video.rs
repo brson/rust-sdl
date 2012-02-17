@@ -7,11 +7,20 @@ export anyformat, hwpalette, doublebuf, fullscreen, opengl,
 export set_video_mode, free_surface;
 export load_bmp;
 export display_format;
+export blit_surface;
+export flip;
 
 type rw_ops = c::void;
 
 // FIXME: Should be an enum
 type surface = c::void;
+
+type rect = {
+    x: i16,
+    y: i16,
+    w: u16,
+    h: u16
+};
 
 enum surface_flag {
     swsurface = 0x00000000,
@@ -65,6 +74,16 @@ fn display_format(surface: *surface) -> *surface {
     SDL::SDL_DisplayFormat(surface)
 }
 
+fn blit_surface(src: *surface, srcrect: *rect,
+                dst: *surface, dstrect: *rect) -> bool {
+    let res = SDL::SDL_UpperBlit(src, srcrect, dst, dstrect);
+    ret res == 0 as c::c_int;
+}
+
+fn flip(screen: *surface) -> bool {
+    SDL::SDL_Flip(screen) == 0 as c::c_int
+}
+
 native mod SDL {
     fn SDL_SetVideoMode(width: c::c_int, height: c::c_int, 
                         bitsperpixel: c::c_int, flags: u32) -> *surface;
@@ -72,4 +91,7 @@ native mod SDL {
     fn SDL_LoadBMP_RW(src: *rw_ops, freesrc: c::c_int) -> *surface;
     fn SDL_RWFromFile(file: *c::c_char, mode: *c::c_char) -> *rw_ops;
     fn SDL_DisplayFormat(surface: *surface) -> *surface;
+    fn SDL_UpperBlit(src: *surface, srcrect: *rect,
+                     dst: *surface, dstrect: *rect) -> c::c_int;
+    fn SDL_Flip(screen: *surface) -> c::c_int;
 }

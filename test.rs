@@ -6,8 +6,9 @@ fn test_everything() {
         general::test_set_error,
         general::test_error,
         general::test_clear_error,
-        event::test_poll_event,
-        video::test_set_video_mode
+        event::test_poll_event_none,
+        video::test_set_video_mode,
+        video::test_blit
     ]);
     quit();
 }
@@ -41,8 +42,9 @@ mod general {
 }
 
 mod event {
-    fn test_poll_event() {
-        ::event::poll_event {|_event|
+    fn test_poll_event_none() {
+        ::event::poll_event {|event|
+            assert event == ::event::no_event;
         }
     }
 }
@@ -54,5 +56,31 @@ mod video {
             [::video::hwsurface], [::video::doublebuf]);
         assert surface != ptr::null();
         ::video::free_surface(surface);
+    }
+
+    fn test_blit() {
+        let screen = ::video::set_video_mode(320, 200, 32,
+            [::video::swsurface], [::video::doublebuf]);
+        assert screen != ptr::null();
+
+        let image = {
+            let tmp = ::video::load_bmp("rust-logo-128x128-blk.bmp");
+            assert tmp != ptr::null();
+            let image = ::video::display_format(tmp);
+            assert image != ptr::null();
+            ::video::free_surface(tmp);
+            image
+        };
+
+        iter::repeat(1u) {||
+            ::video::blit_surface(image, ptr::null(),
+                                  screen, ptr::null());
+            ::video::flip(screen);
+            ::event::poll_event {|_event|
+            }
+        }
+
+        ::video::free_surface(image);
+        ::video::free_surface(screen);
     }
 }

@@ -1,6 +1,6 @@
 export poll_event;
 
-export event, quit, quit_event;
+export event, quit, quit_event, no_event;
 
 type event_type = u8;
 
@@ -30,42 +30,60 @@ const event_reserved6: u8 = 22u8;
 const event_reserved7: u8 = 23u8;
 const event_userevent: u8 = 24u8;
 
-type event_ = {
+type raw_event = {
     type_: event_type,
     // FIXME: Not sure exactly how big this needs to be
     event: (u64, u64, u64, u64, u64, u64, u64, u64)
 };
 
 enum event {
-    quit_event(*quit_event_)
+    quit_event(*quit_event_),
+    no_event
 }
 
 type quit_event_ = {
     type_: event_type
 };
 
-fn null_event() -> event_ {
+fn null_event() -> raw_event {
     {
         type_: 0u8,
         event: (0u64, 0u64, 0u64, 0u64, 0u64, 0u64, 0u64, 0u64)
     }
 }
 
-fn poll_event(f: fn(option<event>)) unsafe {
-    let event = null_event();
-    let result = SDL::SDL_PollEvent(ptr::addr_of(event));
+fn log_event(e: raw_event) {
+    let name = if e.type_ == noevent { "none" }
+    else if e.type_ == activeevent { "active" }
+    else if e.type_ == keydown { "keydown" }
+    else if e.type_ == keyup { "keyup" }
+    else if e.type_ == mousemotion { "mousemotion" }
+    else if e.type_ == mousebuttondown { "mousebuttondown" }
+    else if e.type_ == mousebuttonup { "mousebuttonup" }
+    else if e.type_ == quit { "quit" }
+    else if e.type_ == syswmevent { "syswmevent" }
+    else if e.type_ == videoresize { "videoresize" }
+    else if e.type_ == videoexpose { "videoexpose" }
+    else { "other" };
+    #debug("event: %s", name);
+}
+
+fn poll_event(f: fn(event)) unsafe {
+    let raw_event = null_event();
+    let result = SDL::SDL_PollEvent(ptr::addr_of(raw_event));
     if result as int == 0 {
-        let event_ptr = ptr::addr_of(event.event);
-        if (event.type_ == quit) {
-            f(some(quit_event(unsafe::reinterpret_cast(event_ptr))));
+        let event_ptr = ptr::addr_of(raw_event.event);
+        log_event(raw_event);
+        if (raw_event.type_ == quit) {
+            f(quit_event(unsafe::reinterpret_cast(event_ptr)));
         } else {
-            f(none);
+            f(no_event);
         }
     } else {
-        f(none);
+        f(no_event);
     }
 }
 
 native mod SDL {
-    fn SDL_PollEvent(event: *event_) -> c::c_int;
+    fn SDL_PollEvent(event: *raw_event) -> c::c_int;
 }
