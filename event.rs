@@ -1,6 +1,6 @@
 export poll_event;
 
-export event, quit, quit_event, no_event;
+export event, quit_event, no_event;
 
 type event_type = u8;
 
@@ -37,7 +37,7 @@ type raw_event = {
 };
 
 enum event {
-    quit_event(*quit_event_),
+    quit_event,
     no_event
 }
 
@@ -75,7 +75,7 @@ fn poll_event(f: fn(event)) unsafe {
         let event_ptr = ptr::addr_of(raw_event.event);
         log_event(raw_event);
         if (raw_event.type_ == quit) {
-            f(quit_event(unsafe::reinterpret_cast(event_ptr)));
+            f(quit_event);
         } else {
             f(no_event);
         }
