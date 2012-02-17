@@ -13,3 +13,4 @@ mod event;
 mod video;
 #[cfg(test)]
 mod test;
+mod keyboard;

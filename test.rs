@@ -1,12 +1,13 @@
 #[test]
 fn test_everything() {
-    init([init_everything]);
+    init([init_video, init_timer]);
     run_tests([
         general::test_was_init,
         general::test_set_error,
         general::test_error,
         general::test_clear_error,
-        event::test_poll_event_none,
+        test_event::test_poll_event_none,
+        test_event::test_keyboard,
         video::test_set_video_mode,
         video::test_blit
     ]);
@@ -41,11 +42,29 @@ mod general {
     }
 }
 
-mod event {
+mod test_event {
     fn test_poll_event_none() {
         ::event::poll_event {|event|
             assert event == ::event::no_event;
         }
+    }
+
+    fn test_keyboard() {
+        std::io::println("press a key in the window");
+        let surface = ::video::set_video_mode(320, 200, 32,
+            [::video::swsurface], [::video::doublebuf, ::video::resizable]);
+        let keydown = false;
+        let keyup = false;
+        while !keydown || !keyup {
+            ::event::poll_event {|event|
+                alt event {
+                  event::keyup_event(_) { keyup = true; }
+                  event::keydown_event(_) { keydown = true; }
+                  _ { }
+                }
+            }
+        }
+        ::video::free_surface(surface);
     }
 }
 

@@ -33,10 +33,14 @@ const event_userevent: u8 = 24u8;
 type raw_event = {
     type_: event_type,
     // FIXME: Not sure exactly how big this needs to be
-    event: (u64, u64, u64, u64, u64, u64, u64, u64)
+    event: (u64, u64, u64, u64, u64, u64, u64, u64,
+            u64, u64, u64, u64, u64, u64, u64, u64,
+            u64, u64, u64, u64, u64, u64, u64, u64)
 };
 
 enum event {
+    keydown_event(*keyboard_event_),
+    keyup_event(*keyboard_event_),
     quit_event,
     no_event
 }
@@ -45,14 +49,27 @@ type quit_event_ = {
     type_: event_type
 };
 
+const SDL_RELEASED: u8 = 0u8;
+const SDL_PRESSED: u8 = 1u8;
+
+type keyboard_event_ = {
+    type_: event_type,
+    which: u8,
+    state: u8,
+    keysym: keyboard::keysym
+};
+
 fn null_event() -> raw_event {
     {
         type_: 0u8,
-        event: (0u64, 0u64, 0u64, 0u64, 0u64, 0u64, 0u64, 0u64)
+        event: (0u64, 0u64, 0u64, 0u64, 0u64, 0u64, 0u64, 0u64,
+                0u64, 0u64, 0u64, 0u64, 0u64, 0u64, 0u64, 0u64,
+                0u64, 0u64, 0u64, 0u64, 0u64, 0u64, 0u64, 0u64)
     }
 }
 
 fn log_event(e: raw_event) {
+    if e.type_ == noevent { ret }
     let name = if e.type_ == noevent { "none" }
     else if e.type_ == activeevent { "active" }
     else if e.type_ == keydown { "keydown" }
@@ -71,11 +88,15 @@ fn log_event(e: raw_event) {
 fn poll_event(f: fn(event)) unsafe {
     let raw_event = null_event();
     let result = SDL::SDL_PollEvent(ptr::addr_of(raw_event));
-    if result as int == 0 {
+    if result as int == 1 {
         let event_ptr = ptr::addr_of(raw_event.event);
         log_event(raw_event);
         if (raw_event.type_ == quit) {
             f(quit_event);
+        } else if (raw_event.type_ == keydown) {
+            f(keydown_event(unsafe::reinterpret_cast(event_ptr)));
+        } else if (raw_event.type_ == keyup) {
+            f(keyup_event(unsafe::reinterpret_cast(event_ptr)));
         } else {
             f(no_event);
         }
