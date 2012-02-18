@@ -6,10 +6,10 @@ fn test_everything() {
         general::test_set_error,
         general::test_error,
         general::test_clear_error,
-        test_event::test_poll_event_none,
-        test_event::test_keyboard,
         video::test_set_video_mode,
-        video::test_blit
+        video::test_blit,
+        test_event::test_poll_event_none,
+        test_event::test_keyboard
     ]);
     quit();
 }
