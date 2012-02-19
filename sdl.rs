@@ -8,6 +8,7 @@ export was_init;
 export errorcode;
 export enomem, efread, efwrite, efseek, unsupported;
 export get_error, set_error, error, clear_error;
+export video, keyboard, event;
 
 enum init_flag {
     init_timer       = 0x00000001,
