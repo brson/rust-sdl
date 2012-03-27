@@ -1,3 +1,5 @@
+import libc::{c_void, c_int, c_char};
+
 export surface;
 export surface_flag;
 export swsurface, hwsurface, asyncblit;
@@ -10,10 +12,10 @@ export display_format;
 export blit_surface;
 export flip;
 
-type rw_ops = c::void;
+type rw_ops = c_void;
 
 // FIXME: Should be an enum
-type surface = c::void;
+type surface = c_void;
 
 type rect = {
     x: i16,
@@ -52,8 +54,8 @@ fn set_video_mode(
     let flags = vec::foldl(flags, video_mode_flags) {|flags, flag|
         flags | flag as u32
     };
-    SDL::SDL_SetVideoMode(width as c::c_int, height as c::c_int,
-                          bitsperpixel as c::c_int, flags)
+    SDL::SDL_SetVideoMode(width as c_int, height as c_int,
+                          bitsperpixel as c_int, flags)
 }
 
 fn free_surface(surface: *surface) {
@@ -65,7 +67,7 @@ fn load_bmp(file: str) -> *surface unsafe {
         let  buf = unsafe::reinterpret_cast(buf);
         str::as_buf("rb") {|rbbuf|
             let rbbuf = unsafe::reinterpret_cast(rbbuf);
-            SDL::SDL_LoadBMP_RW(SDL::SDL_RWFromFile(buf, rbbuf), 1 as c::c_int)
+            SDL::SDL_LoadBMP_RW(SDL::SDL_RWFromFile(buf, rbbuf), 1 as c_int)
         }
     }
 }
@@ -77,21 +79,21 @@ fn display_format(surface: *surface) -> *surface {
 fn blit_surface(src: *surface, srcrect: *rect,
                 dst: *surface, dstrect: *rect) -> bool {
     let res = SDL::SDL_UpperBlit(src, srcrect, dst, dstrect);
-    ret res == 0 as c::c_int;
+    ret res == 0 as c_int;
 }
 
 fn flip(screen: *surface) -> bool {
-    SDL::SDL_Flip(screen) == 0 as c::c_int
+    SDL::SDL_Flip(screen) == 0 as c_int
 }
 
 native mod SDL {
-    fn SDL_SetVideoMode(width: c::c_int, height: c::c_int, 
-                        bitsperpixel: c::c_int, flags: u32) -> *surface;
+    fn SDL_SetVideoMode(width: c_int, height: c_int, 
+                        bitsperpixel: c_int, flags: u32) -> *surface;
     fn SDL_FreeSurface(surface: *surface);
-    fn SDL_LoadBMP_RW(src: *rw_ops, freesrc: c::c_int) -> *surface;
-    fn SDL_RWFromFile(file: *c::c_char, mode: *c::c_char) -> *rw_ops;
+    fn SDL_LoadBMP_RW(src: *rw_ops, freesrc: c_int) -> *surface;
+    fn SDL_RWFromFile(file: *c_char, mode: *c_char) -> *rw_ops;
     fn SDL_DisplayFormat(surface: *surface) -> *surface;
     fn SDL_UpperBlit(src: *surface, srcrect: *rect,
-                     dst: *surface, dstrect: *rect) -> c::c_int;
-    fn SDL_Flip(screen: *surface) -> c::c_int;
+                     dst: *surface, dstrect: *rect) -> c_int;
+    fn SDL_Flip(screen: *surface) -> c_int;
 }
