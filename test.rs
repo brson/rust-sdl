@@ -50,11 +50,11 @@ mod test_event {
     }
 
     fn test_keyboard() {
-        std::io::println("press a key in the window");
+        io::println("press a key in the window");
         let surface = ::video::set_video_mode(320, 200, 32,
             [::video::swsurface], [::video::doublebuf, ::video::resizable]);
-        let keydown = false;
-        let keyup = false;
+        let mut keydown = false;
+        let mut keyup = false;
         while !keydown || !keyup {
             ::event::poll_event {|event|
                 alt event {

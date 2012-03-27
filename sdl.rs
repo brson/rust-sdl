@@ -1,5 +1,3 @@
-import c = ctypes;
-
 export init_flag;
 export init_timer, init_audio, init_video, init_cdrom, init_joystick,
        init_noparachute, init_eventthread, init_everything;
@@ -9,6 +7,7 @@ export errorcode;
 export enomem, efread, efwrite, efseek, unsupported;
 export get_error, set_error, error, clear_error;
 export video, keyboard, event;
+import libc::{c_int, c_char};
 
 enum init_flag {
     init_timer       = 0x00000001,
@@ -55,7 +54,7 @@ fn was_init(flags: [init_flag]) -> [init_flag] {
         init_joystick
     ];
     vec::foldl([], all_flags) {|vecflags, flag|
-        if bitflags & (flag as c::c_int) != 0 as c::c_int {
+        if bitflags & (flag as c_int) != 0 as c_int {
             vecflags + [flag]
         } else {
             vecflags
@@ -67,7 +66,7 @@ fn get_error() -> str unsafe {
     let cstr = SDL::SDL_GetError();
     // FIXME: Converting sbuf to *c_char
     let cstr = unsafe::reinterpret_cast(cstr);
-    str::from_cstr(cstr)
+    str::unsafe::from_c_str(cstr)
 }
 
 fn set_error(s: str) {
@@ -79,7 +78,7 @@ fn set_error(s: str) {
 }
 
 fn error(code: errorcode) {
-    SDL::SDL_Error(code as c::enum)
+    SDL::SDL_Error(code as c_int)
 }
 
 fn clear_error() {
@@ -95,15 +94,15 @@ mod util {
 }
 
 native mod SDL {
-    fn SDL_Init(flags: u32) -> c::c_int;
-    fn SDL_InitSubSystem(flags: u32) -> c::c_int;
+    fn SDL_Init(flags: u32) -> c_int;
+    fn SDL_InitSubSystem(flags: u32) -> c_int;
     fn SDL_QuitSubSystem(flags: u32);
     fn SDL_Quit();
-    fn SDL_WasInit(flags: u32) -> c::c_int;
-    fn SDL_GetError() -> *c::c_char;
+    fn SDL_WasInit(flags: u32) -> c_int;
+    fn SDL_GetError() -> *c_char;
     // FIXME: This is actually a varargs call
-    fn SDL_SetError(fmt: *c::c_char);
-    fn SDL_Error(code: c::enum);
+    fn SDL_SetError(fmt: *c_char);
+    fn SDL_Error(code: c_int);
     fn SDL_ClearError();
 }
 

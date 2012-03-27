@@ -1,3 +1,5 @@
+import libc::c_int;
+
 export poll_event;
 
 export event, quit_event, no_event;
@@ -106,5 +108,5 @@ fn poll_event(f: fn(event)) unsafe {
 }
 
 native mod SDL {
-    fn SDL_PollEvent(event: *raw_event) -> c::c_int;
+    fn SDL_PollEvent(event: *raw_event) -> c_int;
 }
