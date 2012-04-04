@@ -1,17 +1,38 @@
+fn on_osmain(f: fn~()) {
+    let builder = task::task_builder();
+    task::set_opts(builder, {
+        sched: some({
+            mode: task::osmain,
+            native_stack_size: none
+        })
+        with task::get_opts(builder)
+    });
+    let po = comm::port();
+    let ch = comm::chan(po);
+    task::run(builder) {||
+        f();
+        comm::send(ch, ());
+    }
+    comm::recv(po);
+}
+
 #[test]
 fn test_everything() {
-    init([init_video, init_timer]);
-    run_tests([
-        general::test_was_init,
-        general::test_set_error,
-        general::test_error,
-        general::test_clear_error,
-        video::test_set_video_mode,
-        video::test_blit,
-        test_event::test_poll_event_none,
-        test_event::test_keyboard
-    ]);
-    quit();
+
+    on_osmain() {||
+        init([init_video, init_timer]);
+        run_tests([
+            general::test_was_init,
+            general::test_set_error,
+            general::test_error,
+            general::test_clear_error,
+            video::test_set_video_mode,
+            video::test_blit,
+            test_event::test_poll_event_none,
+            test_event::test_keyboard
+        ]);
+        quit();
+    }
 }
 
 fn run_tests(tests: [fn()]) {
