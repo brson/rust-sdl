@@ -2,3 +2,4 @@
 libsdl*.so
 sdl
 *~
+libsdl.dummy
