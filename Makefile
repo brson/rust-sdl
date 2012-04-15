@@ -12,5 +12,5 @@ test:
 	./sdl
 
 clean:
-	rm -rf sdl libsdl*.so
+	rm -rf sdl libsdl*.so *.dummy
 
