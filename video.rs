@@ -15,8 +15,16 @@ export create_rgb_surface;
 
 type rw_ops = c_void;
 
-// FIXME: Should be an enum
-type surface = c_void;
+type surface = {
+    flags: u32,
+    format: *c_void,
+    w: c_int,
+    h: c_int,
+    pitch: u16,
+    pixels: *c_void,
+    offset: c_int
+    // FIXME: Remaining are unlisted
+};
 
 type rect = {
     x: i16,
