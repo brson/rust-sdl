@@ -11,6 +11,7 @@ export load_bmp;
 export display_format;
 export blit_surface;
 export flip;
+export create_rgb_surface;
 
 type rw_ops = c_void;
 
@@ -86,6 +87,19 @@ fn flip(screen: *surface) -> bool {
     SDL::SDL_Flip(screen) == 0 as c_int
 }
 
+fn create_rgb_surface(
+    surface_flags: [surface_flag],
+    width: int, height: int, bits_per_pixel: int,
+    rmask: u32, gmask: u32, bmask: u32, amask: u32) -> *surface {
+
+    let flags = vec::foldl(0u32, surface_flags) {|flags, flag|
+        flags | flag as u32
+    };
+    SDL::SDL_CreateRGBSurface(
+        flags, width as c_int, height as c_int, bits_per_pixel as c_int,
+        rmask, gmask, bmask, amask)
+}
+
 native mod SDL {
     fn SDL_SetVideoMode(width: c_int, height: c_int, 
                         bitsperpixel: c_int, flags: u32) -> *surface;
@@ -96,4 +110,7 @@ native mod SDL {
     fn SDL_UpperBlit(src: *surface, srcrect: *rect,
                      dst: *surface, dstrect: *rect) -> c_int;
     fn SDL_Flip(screen: *surface) -> c_int;
+    fn SDL_CreateRGBSurface(flags: u32, width: c_int, height: c_int,
+                            bitsPerPixel: c_int,
+                            Rmask: u32, Gmask: u32, Bmask: u32, Amask: u32) -> *surface;
 }
