@@ -12,6 +12,9 @@ export display_format;
 export blit_surface;
 export flip;
 export create_rgb_surface;
+export fill_rect;
+export lock_surface;
+export unlock_surface;
 
 type rw_ops = c_void;
 
@@ -108,6 +111,18 @@ fn create_rgb_surface(
         rmask, gmask, bmask, amask)
 }
 
+fn fill_rect(surface: *surface, rect: *rect, color: u32) {
+    SDL::SDL_FillRect(surface, rect, color);
+}
+
+fn lock_surface(surface: *surface) {
+    SDL::SDL_LockSurface(surface);
+}
+
+fn unlock_surface(surface: *surface) {
+    SDL::SDL_UnlockSurface(surface);
+}
+
 native mod SDL {
     fn SDL_SetVideoMode(width: c_int, height: c_int, 
                         bitsperpixel: c_int, flags: u32) -> *surface;
@@ -121,4 +136,7 @@ native mod SDL {
     fn SDL_CreateRGBSurface(flags: u32, width: c_int, height: c_int,
                             bitsPerPixel: c_int,
                             Rmask: u32, Gmask: u32, Bmask: u32, Amask: u32) -> *surface;
+    fn SDL_FillRect(dst: *surface, dstrect: *rect, color: u32);
+    fn SDL_LockSurface(surface: *surface);
+    fn SDL_UnlockSurface(surface: *surface);
 }
