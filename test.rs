@@ -33,8 +33,9 @@ fn test_everything() {
             // FIXME: Doesn't work when called from a directory that
             // doesn't contain the test image file
             //video::test_blit,
-            test_event::test_poll_event_none,
-            test_event::test_keyboard
+            test_event::test_poll_event_none
+            // FIXME: This test is interactive
+            //test_event::test_keyboard
         ]);
         quit();
     }
