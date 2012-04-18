@@ -30,7 +30,9 @@ fn test_everything() {
             general::test_error,
             general::test_clear_error,
             video::test_set_video_mode,
-            video::test_blit,
+            // FIXME: Doesn't work when called from a directory that
+            // doesn't contain the test image file
+            //video::test_blit,
             test_event::test_poll_event_none,
             test_event::test_keyboard
         ]);
@@ -107,6 +109,8 @@ mod video {
         assert screen != ptr::null();
 
         let image = {
+            // FIXME: We need to load this from the crate instead of
+            // off the filesystem
             let tmp = ::video::load_bmp("rust-logo-128x128-blk.bmp");
             assert tmp != ptr::null();
             let image = ::video::display_format(tmp);
