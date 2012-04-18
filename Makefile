@@ -3,14 +3,19 @@ RUSTFLAGS ?=
 
 RUST_SRC = $(shell find . -type f -name '*.rs')
 
-all:
-	rustc sdl.rc
-	touch libsdl.dummy
+.PHONY: all
+all: libsdl.dummy
 
-test:
-	rustc --test sdl.rc
-	./sdl
+libsdl.dummy: sdl.rc $(RUST_SRC)
+	$(RUSTC) $(RUSTFLAGS) $< -o $@
+	touch $@
 
+sdl-test: sdl.rc $(RUST_SRC)
+	$(RUSTC) $(RUSTFLAGS) $< -o $@ --test
+
+check: sdl-test
+	./sdl-test
+
+.PHONY: clean
 clean:
-	rm -rf sdl libsdl*.so *.dummy
-
+	rm -f sdl-test *.so *.dylib *.dll *.dummy

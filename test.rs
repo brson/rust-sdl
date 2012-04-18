@@ -1,5 +1,5 @@
 fn on_osmain(f: fn~()) {
-    let builder = task::task_builder();
+    let builder = task::builder();
     task::set_opts(builder, {
         sched: some({
             mode: task::osmain,
@@ -16,7 +16,10 @@ fn on_osmain(f: fn~()) {
     comm::recv(po);
 }
 
+// FIXME: Needs additional cocoa setup on OS X. rust-cocoa should probably just
+// be a dependency
 #[test]
+#[ignore(cfg(target_os = "macos"))]
 fn test_everything() {
 
     on_osmain() {||

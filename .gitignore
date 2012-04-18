@@ -1,5 +1,9 @@
-._*
-libsdl*.so
-sdl
 *~
-libsdl.dummy
+*#
+*.o
+*.so
+*.dylib
+*.dSYM
+*.dll
+*.dummy
+sdl-test
