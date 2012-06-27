@@ -6,6 +6,7 @@
 #[comment = "SDL bindings"];
 #[license = "LGPLv2"];
 #[crate_type = "lib"];
+#[warn(no_old_vecs)];
 
 use std;
 

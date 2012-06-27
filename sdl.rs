@@ -44,6 +44,7 @@ fn quit() {
     SDL::SDL_Quit()
 }
 
+#[warn(no_non_implicitly_copyable_typarams)]
 fn was_init(flags: [init_flag]) -> [init_flag] {
     let bitflags = SDL::SDL_WasInit(util::init_flags_to_bitfield(flags));
     let all_flags = [
@@ -57,7 +58,7 @@ fn was_init(flags: [init_flag]) -> [init_flag] {
         if bitflags & (flag as c_int) != 0 as c_int {
             vecflags + [flag]
         } else {
-            vecflags
+            copy vecflags
         }
     }
 }
