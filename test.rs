@@ -3,7 +3,7 @@ fn on_osmain(f: fn~()) {
     task::set_opts(builder, {
         sched: some({
             mode: task::osmain,
-            native_stack_size: none
+            foreign_stack_size: none
         })
         with task::get_opts(builder)
     });
