@@ -9,10 +9,10 @@ fn on_osmain(f: fn~()) {
     });
     let po = comm::port();
     let ch = comm::chan(po);
-    task::run(builder) {||
+    task::run(builder, || {
         f();
         comm::send(ch, ());
-    }
+    });
     comm::recv(po);
 }
 
@@ -22,7 +22,7 @@ fn on_osmain(f: fn~()) {
 #[ignore(cfg(target_os = "macos"))]
 fn test_everything() {
 
-    on_osmain() {||
+    on_osmain(|| {
         init([init_video, init_timer]);
         run_tests([
             general::test_was_init,
@@ -38,11 +38,11 @@ fn test_everything() {
             //test_event::test_keyboard
         ]);
         quit();
-    }
+    })
 }
 
 fn run_tests(tests: [fn()]) {
-    vec::iter(tests) {|test| test()}
+    vec::iter(tests, |test| test());
 }
 
 mod general {
@@ -71,9 +71,7 @@ mod general {
 
 mod test_event {
     fn test_poll_event_none() {
-        ::event::poll_event {|event|
-            assert event == ::event::no_event;
-        }
+        ::event::poll_event(|event| assert event == ::event::no_event);
     }
 
     fn test_keyboard() {
@@ -83,13 +81,13 @@ mod test_event {
         let mut keydown = false;
         let mut keyup = false;
         while !keydown || !keyup {
-            ::event::poll_event {|event|
+            ::event::poll_event(|event| {
                 alt event {
                   event::keyup_event(_) { keyup = true; }
                   event::keydown_event(_) { keydown = true; }
                   _ { }
                 }
-            }
+            })
         }
         ::video::free_surface(surface);
     }
@@ -120,13 +118,12 @@ mod video {
             image
         };
 
-        iter::repeat(1u) {||
+        iter::repeat(1u, || {
             ::video::blit_surface(image, ptr::null(),
                                   screen, ptr::null());
             ::video::flip(screen);
-            ::event::poll_event {|_event|
-            }
-        }
+            ::event::poll_event(|_event| {})
+        });
 
         ::video::free_surface(image);
         ::video::free_surface(screen);

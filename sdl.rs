@@ -54,13 +54,13 @@ fn was_init(flags: [init_flag]) -> [init_flag] {
         init_cdrom,
         init_joystick
     ];
-    vec::foldl([], all_flags) {|vecflags, flag|
+    vec::foldl([], all_flags, |vecflags, flag| {
         if bitflags & (flag as c_int) != 0 as c_int {
             vecflags + [flag]
         } else {
             copy vecflags
         }
-    }
+    })
 }
 
 fn get_error() -> str unsafe {
@@ -71,11 +71,11 @@ fn get_error() -> str unsafe {
 }
 
 fn set_error(s: str) {
-    str::as_buf(s) {|buf|
+    str::as_buf(s, |buf| {
         // FIXME: Converting sbuf to *c_char
         let buf = unsafe { unsafe::reinterpret_cast(buf) };
         SDL::SDL_SetError(buf)
-    }
+    });
 }
 
 fn error(code: errorcode) {
@@ -88,9 +88,9 @@ fn clear_error() {
 
 mod util {
     fn init_flags_to_bitfield(flags: [init_flag]) -> u32 {
-        vec::foldl(0u32, flags) {|flags, flag|
+        vec::foldl(0u32, flags, |flags, flag| {
             flags | flag as u32
-        }
+        })
     }
 }
 

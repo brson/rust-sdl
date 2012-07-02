@@ -60,14 +60,13 @@ fn set_video_mode(
     surface_flags: [surface_flag],
     video_mode_flags: [video_mode_flag]
 ) -> *surface {
-    let flags = vec::foldl(0u32, surface_flags) {|flags, flag|
+    let flags = vec::foldl(0u32, surface_flags, |flags, flag| {
         flags | flag as u32
-    };
-    let flags = vec::foldl(flags, video_mode_flags) {|flags, flag|
+    });
+    let flags = vec::foldl(flags, video_mode_flags, |flags, flag| {
         flags | flag as u32
-    };
-    SDL::SDL_SetVideoMode(width as c_int, height as c_int,
-                          bitsperpixel as c_int, flags)
+    });
+    SDL::SDL_SetVideoMode(width as c_int, height as c_int, bitsperpixel as c_int, flags)
 }
 
 fn free_surface(surface: *surface) {
@@ -75,21 +74,20 @@ fn free_surface(surface: *surface) {
 }
 
 fn load_bmp(file: str) -> *surface unsafe {
-    str::as_buf(file) {|buf|
-        let  buf = unsafe::reinterpret_cast(buf);
-        str::as_buf("rb") {|rbbuf|
+    str::as_buf(file, |buf| {
+        let buf = unsafe::reinterpret_cast(buf);
+        str::as_buf("rb", |rbbuf| {
             let rbbuf = unsafe::reinterpret_cast(rbbuf);
             SDL::SDL_LoadBMP_RW(SDL::SDL_RWFromFile(buf, rbbuf), 1 as c_int)
-        }
-    }
+        })
+    })
 }
 
 fn display_format(surface: *surface) -> *surface {
     SDL::SDL_DisplayFormat(surface)
 }
 
-fn blit_surface(src: *surface, srcrect: *rect,
-                dst: *surface, dstrect: *rect) -> bool {
+fn blit_surface(src: *surface, srcrect: *rect, dst: *surface, dstrect: *rect) -> bool {
     let res = SDL::SDL_UpperBlit(src, srcrect, dst, dstrect);
     ret res == 0 as c_int;
 }
@@ -103,9 +101,9 @@ fn create_rgb_surface(
     width: int, height: int, bits_per_pixel: int,
     rmask: u32, gmask: u32, bmask: u32, amask: u32) -> *surface {
 
-    let flags = vec::foldl(0u32, surface_flags) {|flags, flag|
+    let flags = vec::foldl(0u32, surface_flags, |flags, flag| {
         flags | flag as u32
-    };
+    });
     SDL::SDL_CreateRGBSurface(
         flags, width as c_int, height as c_int, bits_per_pixel as c_int,
         rmask, gmask, bmask, amask)
@@ -124,8 +122,7 @@ fn unlock_surface(surface: *surface) {
 }
 
 native mod SDL {
-    fn SDL_SetVideoMode(width: c_int, height: c_int, 
-                        bitsperpixel: c_int, flags: u32) -> *surface;
+    fn SDL_SetVideoMode(width: c_int, height: c_int, bitsperpixel: c_int, flags: u32) -> *surface;
     fn SDL_FreeSurface(surface: *surface);
     fn SDL_LoadBMP_RW(src: *rw_ops, freesrc: c_int) -> *surface;
     fn SDL_RWFromFile(file: *c_char, mode: *c_char) -> *rw_ops;
