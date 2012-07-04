@@ -107,6 +107,6 @@ fn poll_event(f: fn(event)) unsafe {
     }
 }
 
-native mod SDL {
+extern mod SDL {
     fn SDL_PollEvent(event: *raw_event) -> c_int;
 }

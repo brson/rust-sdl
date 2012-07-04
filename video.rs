@@ -121,7 +121,7 @@ fn unlock_surface(surface: *surface) {
     SDL::SDL_UnlockSurface(surface);
 }
 
-native mod SDL {
+extern mod SDL {
     fn SDL_SetVideoMode(width: c_int, height: c_int, bitsperpixel: c_int, flags: u32) -> *surface;
     fn SDL_FreeSurface(surface: *surface);
     fn SDL_LoadBMP_RW(src: *rw_ops, freesrc: c_int) -> *surface;
