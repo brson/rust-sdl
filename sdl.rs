@@ -94,7 +94,7 @@ mod util {
     }
 }
 
-native mod SDL {
+extern mod SDL {
     fn SDL_Init(flags: u32) -> c_int;
     fn SDL_InitSubSystem(flags: u32) -> c_int;
     fn SDL_QuitSubSystem(flags: u32);
