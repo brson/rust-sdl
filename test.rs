@@ -118,12 +118,12 @@ mod video {
             image
         };
 
-        iter::repeat(1u, || {
+        for iter::repeat(1u) || {
             ::video::blit_surface(image, ptr::null(),
                                   screen, ptr::null());
             ::video::flip(screen);
             ::event::poll_event(|_event| {})
-        });
+        };
 
         ::video::free_surface(image);
         ::video::free_surface(screen);
