@@ -4,6 +4,8 @@ export poll_event;
 
 export event, quit_event, no_event;
 
+export keydown_event, keyup_event, quit_event, no_event;
+
 type event_type = u8;
 
 const noevent: u8 = 0u8;
