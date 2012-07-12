@@ -57,8 +57,8 @@ fn set_video_mode(
     width: int,
     height: int,
     bitsperpixel: int,
-    surface_flags: [surface_flag],
-    video_mode_flags: [video_mode_flag]
+    surface_flags: ~[surface_flag],
+    video_mode_flags: ~[video_mode_flag]
 ) -> *surface {
     let flags = vec::foldl(0u32, surface_flags, |flags, flag| {
         flags | flag as u32
@@ -97,7 +97,7 @@ fn flip(screen: *surface) -> bool {
 }
 
 fn create_rgb_surface(
-    surface_flags: [surface_flag],
+    surface_flags: ~[surface_flag],
     width: int, height: int, bits_per_pixel: int,
     rmask: u32, gmask: u32, bmask: u32, amask: u32) -> *surface {
 

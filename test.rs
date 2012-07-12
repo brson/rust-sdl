@@ -23,8 +23,8 @@ fn on_osmain(f: fn~()) {
 fn test_everything() {
 
     on_osmain(|| {
-        init([init_video, init_timer]);
-        run_tests([
+        init(~[init_video, init_timer]);
+        run_tests(~[
             general::test_was_init,
             general::test_set_error,
             general::test_error,
@@ -41,13 +41,13 @@ fn test_everything() {
     })
 }
 
-fn run_tests(tests: [fn()]) {
+fn run_tests(tests: ~[fn()]) {
     vec::iter(tests, |test| test());
 }
 
 mod general {
     fn test_was_init() {
-        assert vec::contains(was_init([init_timer]), init_timer);
+        assert vec::contains(was_init(~[init_timer]), init_timer);
     }
 
     fn test_set_error() {
@@ -77,7 +77,7 @@ mod test_event {
     fn test_keyboard() {
         io::println("press a key in the window");
         let surface = ::video::set_video_mode(320, 200, 32,
-            [::video::swsurface], [::video::doublebuf, ::video::resizable]);
+            ~[::video::swsurface], ~[::video::doublebuf, ::video::resizable]);
         let mut keydown = false;
         let mut keyup = false;
         while !keydown || !keyup {
@@ -97,14 +97,14 @@ mod video {
 
     fn test_set_video_mode() {
         let surface = ::video::set_video_mode(320, 200, 32,
-            [::video::hwsurface], [::video::doublebuf]);
+            ~[::video::hwsurface], ~[::video::doublebuf]);
         assert surface != ptr::null();
         ::video::free_surface(surface);
     }
 
     fn test_blit() {
         let screen = ::video::set_video_mode(320, 200, 32,
-            [::video::swsurface], [::video::doublebuf]);
+            ~[::video::swsurface], ~[::video::doublebuf]);
         assert screen != ptr::null();
 
         let image = {
