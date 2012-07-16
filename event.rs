@@ -74,18 +74,18 @@ fn null_event() -> raw_event {
 
 fn log_event(e: raw_event) {
     if e.type_ == noevent { ret }
-    let name = if e.type_ == noevent { "none" }
-    else if e.type_ == activeevent { "active" }
-    else if e.type_ == keydown { "keydown" }
-    else if e.type_ == keyup { "keyup" }
-    else if e.type_ == mousemotion { "mousemotion" }
-    else if e.type_ == mousebuttondown { "mousebuttondown" }
-    else if e.type_ == mousebuttonup { "mousebuttonup" }
-    else if e.type_ == quit { "quit" }
-    else if e.type_ == syswmevent { "syswmevent" }
-    else if e.type_ == videoresize { "videoresize" }
-    else if e.type_ == videoexpose { "videoexpose" }
-    else { "other" };
+    let name = if e.type_ == noevent { ~"none" }
+    else if e.type_ == activeevent { ~"active" }
+    else if e.type_ == keydown { ~"keydown" }
+    else if e.type_ == keyup { ~"keyup" }
+    else if e.type_ == mousemotion { ~"mousemotion" }
+    else if e.type_ == mousebuttondown { ~"mousebuttondown" }
+    else if e.type_ == mousebuttonup { ~"mousebuttonup" }
+    else if e.type_ == quit { ~"quit" }
+    else if e.type_ == syswmevent { ~"syswmevent" }
+    else if e.type_ == videoresize { ~"videoresize" }
+    else if e.type_ == videoexpose { ~"videoexpose" }
+    else { ~"other" };
     #debug("event: %s", name);
 }
 

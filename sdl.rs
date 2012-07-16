@@ -67,14 +67,14 @@ fn was_init(flags: ~[init_flag]) -> ~[init_flag] {
     vecflags
 }
 
-fn get_error() -> str unsafe {
+fn get_error() -> ~str unsafe {
     let cstr = SDL::SDL_GetError();
     // FIXME: Converting sbuf to *c_char
     let cstr = unsafe::reinterpret_cast(cstr);
     str::unsafe::from_c_str(cstr)
 }
 
-fn set_error(s: str) {
+fn set_error(s: ~str) {
     str::as_buf(s, |buf| {
         // FIXME: Converting sbuf to *c_char
         let buf = unsafe { unsafe::reinterpret_cast(buf) };

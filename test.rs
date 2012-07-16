@@ -51,8 +51,8 @@ mod general {
     }
 
     fn test_set_error() {
-        set_error("test");
-        assert get_error() == "test";
+        set_error(~"test");
+        assert get_error() == ~"test";
     }
 
     fn test_error() {
@@ -63,7 +63,7 @@ mod general {
     }
 
     fn test_clear_error() {
-        set_error("test");
+        set_error(~"test");
         clear_error();
         assert str::is_empty(get_error());
     }
@@ -75,7 +75,7 @@ mod test_event {
     }
 
     fn test_keyboard() {
-        io::println("press a key in the window");
+        io::println(~"press a key in the window");
         let surface = ::video::set_video_mode(320, 200, 32,
             ~[::video::swsurface], ~[::video::doublebuf, ::video::resizable]);
         let mut keydown = false;
@@ -110,7 +110,7 @@ mod video {
         let image = {
             // FIXME: We need to load this from the crate instead of
             // off the filesystem
-            let tmp = ::video::load_bmp("rust-logo-128x128-blk.bmp");
+            let tmp = ::video::load_bmp(~"rust-logo-128x128-blk.bmp");
             assert tmp != ptr::null();
             let image = ::video::display_format(tmp);
             assert image != ptr::null();
