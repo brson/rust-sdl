@@ -1,18 +1,10 @@
 fn on_osmain(f: fn~()) {
-    let builder = task::builder();
-    task::set_opts(builder, {
-        sched: some({
-            mode: task::osmain,
-            foreign_stack_size: none
-        })
-        with task::get_opts(builder)
-    });
     let po = comm::port();
     let ch = comm::chan(po);
-    task::run(builder, || {
+    do task::spawn_sched(task::osmain) {
         f();
         comm::send(ch, ());
-    });
+    }
     comm::recv(po);
 }
 
