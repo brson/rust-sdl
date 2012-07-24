@@ -75,7 +75,7 @@ fn get_error() -> ~str unsafe {
 }
 
 fn set_error(s: ~str) {
-    str::as_buf(s, |buf| {
+    str::as_buf(s, |buf, _len| {
         // FIXME: Converting sbuf to *c_char
         let buf = unsafe { unsafe::reinterpret_cast(buf) };
         SDL::SDL_SetError(buf)

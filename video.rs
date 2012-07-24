@@ -74,9 +74,9 @@ fn free_surface(surface: *surface) {
 }
 
 fn load_bmp(file: ~str) -> *surface unsafe {
-    str::as_buf(file, |buf| {
+    str::as_buf(file, |buf, _len| {
         let buf = unsafe::reinterpret_cast(buf);
-        str::as_buf(~"rb", |rbbuf| {
+        str::as_buf(~"rb", |rbbuf, _len| {
             let rbbuf = unsafe::reinterpret_cast(rbbuf);
             SDL::SDL_LoadBMP_RW(SDL::SDL_RWFromFile(buf, rbbuf), 1 as c_int)
         })
