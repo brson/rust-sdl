@@ -1,7 +1,7 @@
 fn on_osmain(f: fn~()) {
-    let po = comm::port();
-    let ch = comm::chan(po);
-    do task::spawn_sched(task::osmain) {
+    let po = comm::Port();
+    let ch = comm::Chan(po);
+    do task::spawn_sched(task::PlatformThread) {
         f();
         comm::send(ch, ());
     }
@@ -74,10 +74,10 @@ mod test_event {
         let mut keyup = false;
         while !keydown || !keyup {
             ::event::poll_event(|event| {
-                alt event {
-                  event::keyup_event(_) { keyup = true; }
-                  event::keydown_event(_) { keydown = true; }
-                  _ { }
+                match event {
+                  event::keyup_event(_) => keyup = true,
+                  event::keydown_event(_) => keydown = true,
+                  _ => { }
                 }
             })
         }

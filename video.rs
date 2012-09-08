@@ -75,9 +75,9 @@ fn free_surface(surface: *surface) {
 
 fn load_bmp(file: ~str) -> *surface unsafe {
     str::as_buf(file, |buf, _len| {
-        let buf = unsafe::reinterpret_cast(buf);
+        let buf = unsafe::reinterpret_cast(&buf);
         str::as_buf(~"rb", |rbbuf, _len| {
-            let rbbuf = unsafe::reinterpret_cast(rbbuf);
+            let rbbuf = unsafe::reinterpret_cast(&rbbuf);
             SDL::SDL_LoadBMP_RW(SDL::SDL_RWFromFile(buf, rbbuf), 1 as c_int)
         })
     })
@@ -89,7 +89,7 @@ fn display_format(surface: *surface) -> *surface {
 
 fn blit_surface(src: *surface, srcrect: *rect, dst: *surface, dstrect: *rect) -> bool {
     let res = SDL::SDL_UpperBlit(src, srcrect, dst, dstrect);
-    ret res == 0 as c_int;
+    return res == 0 as c_int;
 }
 
 fn flip(screen: *surface) -> bool {

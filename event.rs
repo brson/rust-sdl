@@ -73,7 +73,7 @@ fn null_event() -> raw_event {
 }
 
 fn log_event(e: raw_event) {
-    if e.type_ == noevent { ret }
+    if e.type_ == noevent { return }
     let name = if e.type_ == noevent { ~"none" }
     else if e.type_ == activeevent { ~"active" }
     else if e.type_ == keydown { ~"keydown" }
@@ -98,9 +98,9 @@ fn poll_event(f: fn(event)) unsafe {
         if (raw_event.type_ == quit) {
             f(quit_event);
         } else if (raw_event.type_ == keydown) {
-            f(keydown_event(unsafe::reinterpret_cast(event_ptr)));
+            f(keydown_event(unsafe::reinterpret_cast(&event_ptr)));
         } else if (raw_event.type_ == keyup) {
-            f(keyup_event(unsafe::reinterpret_cast(event_ptr)));
+            f(keyup_event(unsafe::reinterpret_cast(&event_ptr)));
         } else {
             f(no_event);
         }
