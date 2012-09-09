@@ -21,6 +21,12 @@ enum init_flag {
     init_everything  = 0x0000FFFF,
 }
 
+impl init_flag: cmp::Eq {
+    pure fn eq(&&other: init_flag) -> bool {
+        return self == other; //TODO: Turn this into a number for comparison??
+    }
+}
+
 enum errorcode {
     enomem,
     efread,
@@ -63,7 +69,6 @@ fn was_init(flags: ~[init_flag]) -> ~[init_flag] {
             push(vecflags, flag);
         }
     });
-
     vecflags
 }
 

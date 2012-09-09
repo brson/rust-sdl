@@ -49,6 +49,13 @@ enum event {
     no_event
 }
 
+impl event: cmp::Eq {
+    pure fn eq(&&other: event) -> bool { //TODO: This comparison is broken!
+        return self == other;
+    }
+}
+
+
 type quit_event_ = {
     type_: event_type
 };
