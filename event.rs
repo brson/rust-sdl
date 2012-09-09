@@ -50,8 +50,15 @@ enum event {
 }
 
 impl event: cmp::Eq {
-    pure fn eq(&&other: event) -> bool { //TODO: This comparison is broken!
-        return self == other;
+    pure fn eq(&&other: event) -> bool {
+        match (self, other) {
+            (quit_event, quit_event) | (no_event, no_event) => true,
+            (keydown_event(left), keydown_event(right)) |
+            (keyup_event(left), keyup_event(right)) => {
+                left == right
+            },
+            _ => false
+        }
     }
 }
 

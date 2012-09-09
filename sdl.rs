@@ -23,7 +23,7 @@ enum init_flag {
 
 impl init_flag: cmp::Eq {
     pure fn eq(&&other: init_flag) -> bool {
-        return self == other; //TODO: Turn this into a number for comparison??
+        self as int == other as int
     }
 }
 
@@ -51,7 +51,7 @@ fn quit() {
     SDL::SDL_Quit()
 }
 
-#[warn(no_non_implicitly_copyable_typarams)]
+#[warn(non_implicitly_copyable_typarams)]
 fn was_init(flags: ~[init_flag]) -> ~[init_flag] {
     let bitflags = SDL::SDL_WasInit(util::init_flags_to_bitfield(flags));
     let all_flags = ~[

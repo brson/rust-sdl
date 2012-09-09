@@ -1,7 +1,7 @@
 fn on_osmain(f: fn~()) {
     let po = comm::Port();
     let ch = comm::Chan(po);
-    do task::spawn_sched(task::PlatformThread) {
+    do task::spawn_sched(task::PlatformThread) |copy f| {
         f();
         comm::send(ch, ());
     }
@@ -25,7 +25,7 @@ fn test_everything() {
             // FIXME: Doesn't work when called from a directory that
             // doesn't contain the test image file
             //video::test_blit,
-            //test_event::test_poll_event_none
+            test_event::test_poll_event_none
             // FIXME: This test is interactive
             //test_event::test_keyboard
         ]);
