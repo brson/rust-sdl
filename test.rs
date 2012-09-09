@@ -39,8 +39,7 @@ fn run_tests(tests: ~[fn()]) {
 
 mod general {
     fn test_was_init() {
-        assert init_timer == init_timer;
-        //assert vec::contains(was_init(~[init_timer]), init_timer);
+        assert vec::contains(was_init(~[init_timer]), init_timer);
     }
 
     fn test_set_error() {
