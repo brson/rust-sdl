@@ -1,49 +1,49 @@
-export init_flag;
-export init_timer, init_audio, init_video, init_cdrom, init_joystick,
-       init_noparachute, init_eventthread, init_everything;
+export InitFlag;
+export InitTimer, InitAudio, InitVideo, InitCDRom, InitJoystick,
+       InitNoParachute, InitEventThread, InitEverything;
 export init, init_subsystem, quit_subsystem, quit;
 export was_init;
-export errorcode;
-export enomem, efread, efwrite, efseek, unsupported;
+export ErrorCode;
+export ENoMem, EFRead, EFWrite, EFSeek, Unsupported;
 export get_error, set_error, error, clear_error;
 export video, keyboard, event;
 import libc::{c_int, c_char};
 import vec::push;
 
-enum init_flag {
-    init_timer       = 0x00000001,
-    init_audio       = 0x00000010,
-    init_video       = 0x00000020,
-    init_cdrom       = 0x00000100,
-    init_joystick    = 0x00000200,
-    init_noparachute = 0x00100000,
-    init_eventthread = 0x01000000,
-    init_everything  = 0x0000FFFF,
+enum InitFlag {
+    InitTimer       = 0x00000001,
+    InitAudio       = 0x00000010,
+    InitVideo       = 0x00000020,
+    InitCDRom       = 0x00000100,
+    InitJoystick    = 0x00000200,
+    InitNoParachute = 0x00100000,
+    InitEventThread = 0x01000000,
+    InitEverything  = 0x0000FFFF,
 }
 
-impl init_flag: cmp::Eq {
-    pure fn eq(&&other: init_flag) -> bool {
+impl InitFlag: cmp::Eq {
+    pure fn eq(&&other: InitFlag) -> bool {
         self as int == other as int
     }
 }
 
-enum errorcode {
-    enomem,
-    efread,
-    efwrite,
-    efseek,
-    unsupported
+enum ErrorCode {
+    ENoMem,
+    EFRead,
+    EFWrite,
+    EFSeek,
+    Unsupported
 }
 
-fn init(flags: ~[init_flag]) -> int {
+fn init(flags: ~[InitFlag]) -> int {
     SDL::SDL_Init(util::init_flags_to_bitfield(flags)) as int
 }
 
-fn init_subsystem(flags: ~[init_flag]) -> int {
+fn init_subsystem(flags: ~[InitFlag]) -> int {
     SDL::SDL_InitSubSystem(util::init_flags_to_bitfield(flags)) as int
 }
 
-fn quit_subsystem(flags: ~[init_flag]) {
+fn quit_subsystem(flags: ~[InitFlag]) {
     SDL::SDL_QuitSubSystem(util::init_flags_to_bitfield(flags))
 }
 
@@ -52,14 +52,14 @@ fn quit() {
 }
 
 #[warn(non_implicitly_copyable_typarams)]
-fn was_init(flags: ~[init_flag]) -> ~[init_flag] {
+fn was_init(flags: ~[InitFlag]) -> ~[InitFlag] {
     let bitflags = SDL::SDL_WasInit(util::init_flags_to_bitfield(flags));
     let all_flags = ~[
-        init_timer,
-        init_audio,
-        init_video,
-        init_cdrom,
-        init_joystick
+        InitTimer,
+        InitAudio,
+        InitVideo,
+        InitCDRom,
+        InitJoystick
     ];
     
     let mut vecflags = ~[];
@@ -87,7 +87,7 @@ fn set_error(s: ~str) {
     });
 }
 
-fn error(code: errorcode) {
+fn error(code: ErrorCode) {
     SDL::SDL_Error(code as c_int)
 }
 
@@ -96,7 +96,7 @@ fn clear_error() {
 }
 
 mod util {
-    fn init_flags_to_bitfield(flags: ~[init_flag]) -> u32 {
+    fn init_flags_to_bitfield(flags: ~[InitFlag]) -> u32 {
         vec::foldl(0u32, flags, |flags, flag| {
             flags | flag as u32
         })

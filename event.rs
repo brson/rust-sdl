@@ -2,11 +2,11 @@ import libc::c_int;
 
 export poll_event;
 
-export event, quit_event, no_event;
+export Event, QuitEvent, NoEvent;
 
-export keydown_event, keyup_event, quit_event, no_event;
+export KeyDownEvent, KeyUpEvent, QuitEvent, NoEvent;
 
-type event_type = u8;
+type EventType = u8;
 
 const noevent: u8 = 0u8;
 const activeevent: u8 = 1u8;
@@ -34,27 +34,27 @@ const event_reserved6: u8 = 22u8;
 const event_reserved7: u8 = 23u8;
 const event_userevent: u8 = 24u8;
 
-type raw_event = {
-    type_: event_type,
+type RawEvent = {
+    type_: EventType,
     // FIXME: Not sure exactly how big this needs to be
     event: (u64, u64, u64, u64, u64, u64, u64, u64,
             u64, u64, u64, u64, u64, u64, u64, u64,
             u64, u64, u64, u64, u64, u64, u64, u64)
 };
 
-enum event {
-    keydown_event(*keyboard_event_),
-    keyup_event(*keyboard_event_),
-    quit_event,
-    no_event
+enum Event {
+    KeyDownEvent(*KeyboardEvent_),
+    KeyUpEvent(*KeyboardEvent_),
+    QuitEvent,
+    NoEvent
 }
 
-impl event: cmp::Eq {
-    pure fn eq(&&other: event) -> bool {
+impl Event: cmp::Eq {
+    pure fn eq(&&other: Event) -> bool {
         match (self, other) {
-            (quit_event, quit_event) | (no_event, no_event) => true,
-            (keydown_event(left), keydown_event(right)) |
-            (keyup_event(left), keyup_event(right)) => {
+            (QuitEvent, QuitEvent) | (NoEvent, NoEvent) => true,
+            (KeyDownEvent(left), KeyDownEvent(right)) |
+            (KeyUpEvent(left), KeyUpEvent(right)) => {
                 left == right
             },
             _ => false
@@ -63,21 +63,21 @@ impl event: cmp::Eq {
 }
 
 
-type quit_event_ = {
-    type_: event_type
+type QuitEvent_ = {
+    type_: EventType 
 };
 
 const SDL_RELEASED: u8 = 0u8;
 const SDL_PRESSED: u8 = 1u8;
 
-type keyboard_event_ = {
-    type_: event_type,
+type KeyboardEvent_ = {
+    type_: EventType,
     which: u8,
     state: u8,
-    keysym: keyboard::keysym
+    keysym: keyboard::KeySym
 };
 
-fn null_event() -> raw_event {
+fn null_event() -> RawEvent {
     {
         type_: 0u8,
         event: (0u64, 0u64, 0u64, 0u64, 0u64, 0u64, 0u64, 0u64,
@@ -86,7 +86,7 @@ fn null_event() -> raw_event {
     }
 }
 
-fn log_event(e: raw_event) {
+fn log_event(e: RawEvent) {
     if e.type_ == noevent { return }
     let name = if e.type_ == noevent { ~"none" }
     else if e.type_ == activeevent { ~"active" }
@@ -103,26 +103,26 @@ fn log_event(e: raw_event) {
     #debug("event: %s", name);
 }
 
-fn poll_event(f: fn(event)) unsafe {
+fn poll_event(f: fn(Event)) unsafe {
     let raw_event = null_event();
     let result = SDL::SDL_PollEvent(ptr::addr_of(raw_event));
     if result as int == 1 {
         let event_ptr = ptr::addr_of(raw_event.event);
         log_event(raw_event);
         if (raw_event.type_ == quit) {
-            f(quit_event);
+            f(QuitEvent);
         } else if (raw_event.type_ == keydown) {
-            f(keydown_event(unsafe::reinterpret_cast(&event_ptr)));
+            f(KeyDownEvent(unsafe::reinterpret_cast(&event_ptr)));
         } else if (raw_event.type_ == keyup) {
-            f(keyup_event(unsafe::reinterpret_cast(&event_ptr)));
+            f(KeyUpEvent(unsafe::reinterpret_cast(&event_ptr)));
         } else {
-            f(no_event);
+            f(NoEvent);
         }
     } else {
-        f(no_event);
+        f(NoEvent);
     }
 }
 
 extern mod SDL {
-    fn SDL_PollEvent(event: *raw_event) -> c_int;
+    fn SDL_PollEvent(event: *RawEvent) -> c_int;
 }
