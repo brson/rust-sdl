@@ -3,7 +3,7 @@ import libc::c_int;
 // sym corresponds to the `key` enum, mod_ to the mod_ enum. We should
 // be using the correct type here but our enums don't have the right
 // size yet
-type keysym = {
+type KeySym = {
     scancode: u8,
     sym: c_int,
     mod_: c_int,
@@ -15,8 +15,8 @@ type keysym = {
  *  as international virtual keycodes.  We'll follow in the footsteps of X11...
  *  @brief The names of the keys
  */
-enum key {
-    /** @name ASCII mapped keysyms
+enum Key {
+    /** @name ASCII mapped KeySyms
     *  The keyboard syms have been cleverly chosen to map to ASCII
     */
     /*@{*/
@@ -96,7 +96,7 @@ enum key {
     SDLK_y			= 121,
     SDLK_z			= 122,
     SDLK_DELETE		= 127,
-    /* End of ASCII mapped keysyms */
+    /* End of ASCII mapped KeySyms */
     /*@}*/
 
     /** @name International keyboard syms */
