@@ -60,6 +60,9 @@ impl Event: cmp::Eq {
             _ => false
         }
     }
+    pure fn ne(&&other: Event) -> bool {
+        !self.eq(other)
+    }
 }
 
 

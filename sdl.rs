@@ -25,6 +25,9 @@ impl InitFlag: cmp::Eq {
     pure fn eq(&&other: InitFlag) -> bool {
         self as int == other as int
     }
+    pure fn ne(&&other: InitFlag) -> bool {
+        !self.eq(other)
+    }
 }
 
 enum ErrorCode {
