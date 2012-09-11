@@ -15,7 +15,7 @@ fn on_osmain(f: fn~()) {
 fn test_everything() {
 
     on_osmain(|| {
-        init(~[init_video, init_timer]);
+        init(~[InitVideo, InitTimer]);
         run_tests(~[
             general::test_was_init,
             general::test_set_error,
@@ -39,7 +39,7 @@ fn run_tests(tests: ~[fn()]) {
 
 mod general {
     fn test_was_init() {
-        assert vec::contains(was_init(~[init_timer]), init_timer);
+        assert vec::contains(was_init(~[InitTimer]), InitTimer);
     }
 
     fn test_set_error() {
@@ -50,7 +50,7 @@ mod general {
     fn test_error() {
         clear_error();
         assert str::is_empty(get_error());
-        error(enomem);
+        error(ENoMem);
         assert str::is_not_empty(get_error());
     }
 
@@ -63,20 +63,20 @@ mod general {
 
 mod test_event {
     fn test_poll_event_none() {
-        ::event::poll_event(|event| assert event == ::event::no_event);
+        ::event::poll_event(|event| assert event == ::event::NoEvent);
     }
 
     fn test_keyboard() {
         io::println(~"press a key in the window");
         let surface = ::video::set_video_mode(320, 200, 32,
-            ~[::video::swsurface], ~[::video::doublebuf, ::video::resizable]);
+            ~[::video::SWSurface], ~[::video::DoubleBuf, ::video::Resizable]);
         let mut keydown = false;
         let mut keyup = false;
         while !keydown || !keyup {
             ::event::poll_event(|event| {
                 match event {
-                  event::keyup_event(_) => keyup = true,
-                  event::keydown_event(_) => keydown = true,
+                  event::KeyUpEvent(_) => keyup = true,
+                  event::KeyDownEvent(_) => keydown = true,
                   _ => { }
                 }
             })
@@ -89,14 +89,14 @@ mod video {
 
     fn test_set_video_mode() {
         let surface = ::video::set_video_mode(320, 200, 32,
-            ~[::video::hwsurface], ~[::video::doublebuf]);
+            ~[::video::HWSurface], ~[::video::DoubleBuf]);
         assert surface != ptr::null();
         ::video::free_surface(surface);
     }
 
     fn test_blit() {
         let screen = ::video::set_video_mode(320, 200, 32,
-            ~[::video::swsurface], ~[::video::doublebuf]);
+            ~[::video::SWSurface], ~[::video::DoubleBuf]);
         assert screen != ptr::null();
 
         let image = {
