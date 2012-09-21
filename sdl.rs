@@ -7,8 +7,9 @@ export ErrorCode;
 export ENoMem, EFRead, EFWrite, EFSeek, Unsupported;
 export get_error, set_error, error, clear_error;
 export video, keyboard, event;
-import libc::{c_int, c_char};
-import vec::push;
+
+use libc::{c_int, c_char};
+use vec::push;
 
 enum InitFlag {
     InitTimer       = 0x00000001,
@@ -78,14 +79,14 @@ fn was_init(flags: ~[InitFlag]) -> ~[InitFlag] {
 fn get_error() -> ~str unsafe {
     let cstr = SDL::SDL_GetError();
     // FIXME: Converting sbuf to *c_char
-    let cstr = unsafe::reinterpret_cast(&cstr);
-    str::unsafe::from_c_str(cstr)
+    let cstr = cast::reinterpret_cast(&cstr);
+    str::raw::from_c_str(cstr)
 }
 
 fn set_error(s: ~str) {
     str::as_buf(s, |buf, _len| {
         // FIXME: Converting sbuf to *c_char
-        let buf = unsafe { unsafe::reinterpret_cast(&buf) };
+        let buf = unsafe { cast::reinterpret_cast(&buf) };
         SDL::SDL_SetError(buf)
     });
 }

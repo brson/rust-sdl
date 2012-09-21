@@ -1,9 +1,7 @@
-import libc::c_int;
+use libc::c_int;
 
 export poll_event;
-
 export Event, QuitEvent, NoEvent;
-
 export KeyDownEvent, KeyUpEvent, QuitEvent, NoEvent;
 
 type EventType = u8;
@@ -115,9 +113,9 @@ fn poll_event(f: fn(Event)) unsafe {
         if (raw_event.type_ == quit) {
             f(QuitEvent);
         } else if (raw_event.type_ == keydown) {
-            f(KeyDownEvent(unsafe::reinterpret_cast(&event_ptr)));
+            f(KeyDownEvent(cast::reinterpret_cast(&event_ptr)));
         } else if (raw_event.type_ == keyup) {
-            f(KeyUpEvent(unsafe::reinterpret_cast(&event_ptr)));
+            f(KeyUpEvent(cast::reinterpret_cast(&event_ptr)));
         } else {
             f(NoEvent);
         }
