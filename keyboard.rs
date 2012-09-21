@@ -1,4 +1,4 @@
-import libc::c_int;
+use libc::c_int;
 
 // sym corresponds to the `key` enum, mod_ to the mod_ enum. We should
 // be using the correct type here but our enums don't have the right

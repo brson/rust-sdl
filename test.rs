@@ -34,7 +34,7 @@ fn test_everything() {
 }
 
 fn run_tests(tests: ~[fn()]) {
-    vec::iter(tests, |test| test());
+    vec::each(tests, |test| test());
 }
 
 mod general {
