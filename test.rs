@@ -12,7 +12,7 @@ fn on_osmain(f: fn~()) {
 // be a dependency
 #[test]
 #[ignore(cfg(target_os = "macos"))]
-fn test_everything() {
+pub fn test_everything() {
 
     on_osmain(|| {
         init(~[InitVideo, InitTimer]);
@@ -22,10 +22,10 @@ fn test_everything() {
             general::test_error,
             general::test_clear_error,
             video::test_set_video_mode,
+            test_event::test_poll_event_none,
             // FIXME: Doesn't work when called from a directory that
             // doesn't contain the test image file
             //video::test_blit,
-            test_event::test_poll_event_none
             // FIXME: This test is interactive
             //test_event::test_keyboard
         ]);
@@ -40,23 +40,23 @@ fn run_tests(tests: ~[fn()]) {
 }
 
 mod general {
-    fn test_was_init() {
+    pub fn test_was_init() {
         assert vec::contains(was_init(~[InitTimer]), InitTimer);
     }
 
-    fn test_set_error() {
+    pub fn test_set_error() {
         set_error(~"test");
         assert get_error() == ~"test";
     }
 
-    fn test_error() {
+    pub fn test_error() {
         clear_error();
         assert str::is_empty(get_error());
         error(ENoMem);
         assert str::is_not_empty(get_error());
     }
 
-    fn test_clear_error() {
+    pub fn test_clear_error() {
         set_error(~"test");
         clear_error();
         assert str::is_empty(get_error());
@@ -64,11 +64,11 @@ mod general {
 }
 
 mod test_event {
-    fn test_poll_event_none() {
+    pub fn test_poll_event_none() {
         ::event::poll_event(|event| assert event == ::event::NoEvent);
     }
 
-    fn test_keyboard() {
+    pub fn test_keyboard() {
         io::println(~"press a key in the window");
         let surface = ::video::set_video_mode(320, 200, 32,
             ~[::video::SWSurface], ~[::video::DoubleBuf, ::video::Resizable]);
@@ -89,14 +89,14 @@ mod test_event {
 
 mod video {
 
-    fn test_set_video_mode() {
+    pub fn test_set_video_mode() {
         let surface = ::video::set_video_mode(320, 200, 32,
             ~[::video::HWSurface], ~[::video::DoubleBuf]);
         assert surface != ptr::null();
         ::video::free_surface(surface);
     }
 
-    fn test_blit() {
+    pub fn test_blit() {
         let screen = ::video::set_video_mode(320, 200, 32,
             ~[::video::SWSurface], ~[::video::DoubleBuf]);
         assert screen != ptr::null();

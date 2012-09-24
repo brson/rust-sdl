@@ -1,9 +1,5 @@
 use libc::c_int;
 
-export poll_event;
-export Event, QuitEvent, NoEvent;
-export KeyDownEvent, KeyUpEvent, QuitEvent, NoEvent;
-
 type EventType = u8;
 
 const noevent: u8 = 0u8;
@@ -40,16 +36,16 @@ type RawEvent = {
             u64, u64, u64, u64, u64, u64, u64, u64)
 };
 
-enum Event {
-    KeyDownEvent(*KeyboardEvent_),
-    KeyUpEvent(*KeyboardEvent_),
-    QuitEvent,
-    NoEvent
+pub enum Event {
+    pub KeyDownEvent(*KeyboardEvent_),
+    pub KeyUpEvent(*KeyboardEvent_),
+    pub QuitEvent,
+    pub NoEvent
 }
 
 impl Event: cmp::Eq {
-    pure fn eq(&&other: Event) -> bool {
-        match (self, other) {
+    pure fn eq(other: &Event) -> bool {
+        match (self, *other) {
             (QuitEvent, QuitEvent) | (NoEvent, NoEvent) => true,
             (KeyDownEvent(left), KeyDownEvent(right)) |
             (KeyUpEvent(left), KeyUpEvent(right)) => {
@@ -58,7 +54,7 @@ impl Event: cmp::Eq {
             _ => false
         }
     }
-    pure fn ne(&&other: Event) -> bool {
+    pure fn ne(other: &Event) -> bool {
         !self.eq(other)
     }
 }
@@ -87,7 +83,7 @@ fn null_event() -> RawEvent {
     }
 }
 
-fn log_event(e: RawEvent) {
+pub fn log_event(e: RawEvent) {
     if e.type_ == noevent { return }
     let name = if e.type_ == noevent { ~"none" }
     else if e.type_ == activeevent { ~"active" }
@@ -104,7 +100,7 @@ fn log_event(e: RawEvent) {
     #debug("event: %s", name);
 }
 
-fn poll_event(f: fn(Event)) unsafe {
+pub fn poll_event(f: fn(Event)) unsafe {
     let raw_event = null_event();
     let result = SDL::SDL_PollEvent(ptr::addr_of(raw_event));
     if result as int == 1 {
