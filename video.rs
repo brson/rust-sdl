@@ -1,24 +1,8 @@
 use libc::{c_void, c_int, c_char};
 
-export Surface;
-export SurfaceFlag;
-export SWSurface, HWSurface, AsyncBlit;
-export VideoModeFlag;
-export AnyFormat, HWPalette, DoubleBuf, Fullscreen, OpenGL,
-       OpenGLBlit, Resizable, NoFrame;
-export set_video_mode, free_surface;
-export load_bmp;
-export display_format;
-export blit_surface;
-export flip;
-export create_rgb_surface;
-export fill_rect;
-export lock_surface;
-export unlock_surface;
-
 type RWOps = c_void;
 
-type Surface = {
+pub type Surface = {
     flags: u32,
     format: *c_void,
     w: c_int,
@@ -29,31 +13,31 @@ type Surface = {
     // FIXME: Remaining are unlisted
 };
 
-type Rect = {
+pub type Rect = {
     x: i16,
     y: i16,
     w: u16,
     h: u16
 };
 
-enum SurfaceFlag {
-    SWSurface = 0x00000000,
-    HWSurface = 0x00000001,
-    AsyncBlit = 0x00000004,
+pub enum SurfaceFlag {
+    pub SWSurface = 0x00000000,
+    pub HWSurface = 0x00000001,
+    pub AsyncBlit = 0x00000004,
 }
 
-enum VideoModeFlag {
-    AnyFormat  = 0x10000000,
-    HWPalette  = 0x20000000,
-    DoubleBuf  = 0x40000000,
-    Fullscreen = 0x80000000,
-    OpenGL     = 0x00000002,
-    OpenGLBlit = 0x0000000A,
-    Resizable  = 0x00000010,
-    NoFrame    = 0x00000020,
+pub enum VideoModeFlag {
+    pub AnyFormat  = 0x10000000,
+    pub HWPalette  = 0x20000000,
+    pub DoubleBuf  = 0x40000000,
+    pub Fullscreen = 0x80000000,
+    pub OpenGL     = 0x00000002,
+    pub OpenGLBlit = 0x0000000A,
+    pub Resizable  = 0x00000010,
+    pub NoFrame    = 0x00000020,
 }
 
-fn set_video_mode(
+pub fn set_video_mode(
     width: int,
     height: int,
     bitsperpixel: int,
@@ -69,11 +53,11 @@ fn set_video_mode(
     SDL::SDL_SetVideoMode(width as c_int, height as c_int, bitsperpixel as c_int, flags)
 }
 
-fn free_surface(surface: *Surface) {
+pub fn free_surface(surface: *Surface) {
     SDL::SDL_FreeSurface(surface)
 }
 
-fn load_bmp(file: ~str) -> *Surface unsafe {
+pub fn load_bmp(file: ~str) -> *Surface unsafe {
     str::as_buf(file, |buf, _len| {
         let buf = cast::reinterpret_cast(&buf);
         str::as_buf(~"rb", |rbbuf, _len| {
@@ -83,20 +67,20 @@ fn load_bmp(file: ~str) -> *Surface unsafe {
     })
 }
 
-fn display_format(surface: *Surface) -> *Surface {
+pub fn display_format(surface: *Surface) -> *Surface {
     SDL::SDL_DisplayFormat(surface)
 }
 
-fn blit_surface(src: *Surface, srcrect: *Rect, dst: *Surface, dstrect: *Rect) -> bool {
+pub fn blit_surface(src: *Surface, srcrect: *Rect, dst: *Surface, dstrect: *Rect) -> bool {
     let res = SDL::SDL_UpperBlit(src, srcrect, dst, dstrect);
     return res == 0 as c_int;
 }
 
-fn flip(screen: *Surface) -> bool {
+pub fn flip(screen: *Surface) -> bool {
     SDL::SDL_Flip(screen) == 0 as c_int
 }
 
-fn create_rgb_surface(
+pub fn create_rgb_surface(
     surface_flags: ~[SurfaceFlag],
     width: int, height: int, bits_per_pixel: int,
     rmask: u32, gmask: u32, bmask: u32, amask: u32) -> *Surface {
@@ -109,15 +93,15 @@ fn create_rgb_surface(
         rmask, gmask, bmask, amask)
 }
 
-fn fill_rect(surface: *Surface, rect: *Rect, color: u32) {
+pub fn fill_rect(surface: *Surface, rect: *Rect, color: u32) {
     SDL::SDL_FillRect(surface, rect, color);
 }
 
-fn lock_surface(surface: *Surface) {
+pub fn lock_surface(surface: *Surface) {
     SDL::SDL_LockSurface(surface);
 }
 
-fn unlock_surface(surface: *Surface) {
+pub fn unlock_surface(surface: *Surface) {
     SDL::SDL_UnlockSurface(surface);
 }
 
