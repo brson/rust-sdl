@@ -59,8 +59,8 @@ pub fn was_init(flags: ~[InitFlag]) -> ~[InitFlag] {
     let mut vecflags = ~[];
 
     vec::map(all_flags, |flag| {
-        if bitflags & (flag as c_int) != 0 as c_int {
-            push(vecflags, flag);
+        if bitflags & (*flag as c_int) != 0 as c_int {
+            push(&mut vecflags, *flag);
         }
     });
     vecflags
