@@ -45,10 +45,10 @@ pub fn set_video_mode(
     video_mode_flags: ~[VideoModeFlag]
 ) -> *Surface {
     let flags = vec::foldl(0u32, surface_flags, |flags, flag| {
-        flags | flag as u32
+        flags | *flag as u32
     });
     let flags = vec::foldl(flags, video_mode_flags, |flags, flag| {
-        flags | flag as u32
+        flags | *flag as u32
     });
     SDL::SDL_SetVideoMode(width as c_int, height as c_int, bitsperpixel as c_int, flags)
 }
@@ -86,7 +86,7 @@ pub fn create_rgb_surface(
     rmask: u32, gmask: u32, bmask: u32, amask: u32) -> *Surface {
 
     let flags = vec::foldl(0u32, surface_flags, |flags, flag| {
-        flags | flag as u32
+        flags | *flag as u32
     });
     SDL::SDL_CreateRGBSurface(
         flags, width as c_int, height as c_int, bits_per_pixel as c_int,

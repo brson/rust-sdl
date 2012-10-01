@@ -92,7 +92,7 @@ pub fn clear_error() {
 mod util {
     pub fn init_flags_to_bitfield(flags: ~[InitFlag]) -> u32 {
         vec::foldl(0u32, flags, |flags, flag| {
-            flags | flag as u32
+            flags | *flag as u32
         })
     }
 }
