@@ -41,8 +41,8 @@ pub fn set_video_mode(
     width: int,
     height: int,
     bitsperpixel: int,
-    surface_flags: ~[SurfaceFlag],
-    video_mode_flags: ~[VideoModeFlag]
+    surface_flags: &[SurfaceFlag],
+    video_mode_flags: &[VideoModeFlag]
 ) -> *Surface {
     let flags = vec::foldl(0u32, surface_flags, |flags, flag| {
         flags | *flag as u32
@@ -57,7 +57,7 @@ pub fn free_surface(surface: *Surface) {
     SDL::SDL_FreeSurface(surface)
 }
 
-pub fn load_bmp(file: ~str) -> *Surface unsafe {
+pub fn load_bmp(file: &str) -> *Surface unsafe {
     str::as_buf(file, |buf, _len| {
         let buf = cast::reinterpret_cast(&buf);
         str::as_buf(~"rb", |rbbuf, _len| {
@@ -81,7 +81,7 @@ pub fn flip(screen: *Surface) -> bool {
 }
 
 pub fn create_rgb_surface(
-    surface_flags: ~[SurfaceFlag],
+    surface_flags: &[SurfaceFlag],
     width: int, height: int, bits_per_pixel: int,
     rmask: u32, gmask: u32, bmask: u32, amask: u32) -> *Surface {
 

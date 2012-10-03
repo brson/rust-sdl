@@ -83,7 +83,7 @@ fn null_event() -> RawEvent {
     }
 }
 
-pub fn log_event(e: RawEvent) {
+pub fn log_event(e: &RawEvent) {
     if e.type_ == noevent { return }
     let name = if e.type_ == noevent { ~"none" }
     else if e.type_ == activeevent { ~"active" }
@@ -102,10 +102,10 @@ pub fn log_event(e: RawEvent) {
 
 pub fn poll_event(f: fn(Event)) unsafe {
     let raw_event = null_event();
-    let result = SDL::SDL_PollEvent(ptr::addr_of(&raw_event));
+    let result = SDL::SDL_PollEvent(ptr::addr_of(raw_event));
     if result as int == 1 {
         let event_ptr = ptr::addr_of(&raw_event.event);
-        log_event(raw_event);
+        log_event(&raw_event);
         if (raw_event.type_ == quit) {
             f(QuitEvent);
         } else if (raw_event.type_ == keydown) {

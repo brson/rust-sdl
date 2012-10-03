@@ -33,7 +33,7 @@ pub fn test_everything() {
     })
 }
 
-fn run_tests(tests: ~[fn()]) {
+fn run_tests(tests: &[fn()]) {
     for tests.each |test| {
         (*test)();
     }
