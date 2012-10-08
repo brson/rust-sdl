@@ -1,20 +1,10 @@
-fn on_osmain(f: fn~()) {
-    let po = comm::Port();
-    let ch = comm::Chan(po);
-    do task::spawn_sched(task::PlatformThread) |copy f| {
-        f();
-        comm::send(ch, ());
-    }
-    comm::recv(po);
-}
-
 // FIXME: Needs additional cocoa setup on OS X. rust-cocoa should probably just
 // be a dependency
 #[test]
 #[ignore(cfg(target_os = "macos"))]
 pub fn test_everything() {
 
-    on_osmain(|| {
+    do task::spawn {
         init(~[InitVideo, InitTimer]);
         run_tests(~[
             general::test_was_init,
@@ -30,7 +20,7 @@ pub fn test_everything() {
             //test_event::test_keyboard,
         ]);
         quit();
-    })
+    }
 }
 
 fn run_tests(tests: &[fn()]) {

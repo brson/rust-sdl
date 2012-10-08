@@ -102,7 +102,7 @@ pub fn log_event(e: &RawEvent) {
 
 pub fn poll_event(f: fn(Event)) unsafe {
     let raw_event = null_event();
-    let result = SDL::SDL_PollEvent(ptr::addr_of(raw_event));
+    let result = SDL::SDL_PollEvent(ptr::addr_of(&raw_event));
     if result as int == 1 {
         let event_ptr = ptr::addr_of(&raw_event.event);
         log_event(&raw_event);
