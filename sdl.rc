@@ -9,8 +9,9 @@
 
 extern mod std;
 
-mod event;
-mod video;
+pub mod event;
+pub mod video;
+pub mod keyboard;
+
 #[cfg(test)]
 mod test;
-mod keyboard;
