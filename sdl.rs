@@ -45,7 +45,6 @@ pub fn quit() {
     SDL::SDL_Quit()
 }
 
-#[warn(non_implicitly_copyable_typarams)]
 pub fn was_init(flags: &[InitFlag]) -> ~[InitFlag] {
     let bitflags = SDL::SDL_WasInit(util::init_flags_to_bitfield(flags));
     let all_flags = ~[
@@ -63,7 +62,7 @@ pub fn was_init(flags: &[InitFlag]) -> ~[InitFlag] {
             push(&mut vecflags, *flag);
         }
     });
-    vecflags
+    move vecflags
 }
 
 pub fn get_error() -> ~str unsafe {
