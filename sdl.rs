@@ -1,33 +1,4 @@
-use libc::{c_int, c_char};
 use vec::push;
-
-pub enum InitFlag {
-    pub InitTimer       = 0x00000001,
-    pub InitAudio       = 0x00000010,
-    pub InitVideo       = 0x00000020,
-    pub InitCDRom       = 0x00000100,
-    pub InitJoystick    = 0x00000200,
-    pub InitNoParachute = 0x00100000,
-    pub InitEventThread = 0x01000000,
-    pub InitEverything  = 0x0000FFFF,
-}
-
-impl InitFlag: cmp::Eq {
-    pure fn eq(other: &InitFlag) -> bool {
-        self as int == *other as int
-    }
-    pure fn ne(other: &InitFlag) -> bool {
-        !self.eq(other)
-    }
-}
-
-pub enum ErrorCode {
-    pub ENoMem,
-    pub EFRead,
-    pub EFWrite,
-    pub EFSeek,
-    pub Unsupported
-}
 
 pub fn init(flags: &[InitFlag]) -> int {
     SDL::SDL_Init(util::init_flags_to_bitfield(flags)) as int
@@ -95,17 +66,3 @@ mod util {
         })
     }
 }
-
-extern mod SDL {
-    fn SDL_Init(flags: u32) -> c_int;
-    fn SDL_InitSubSystem(flags: u32) -> c_int;
-    fn SDL_QuitSubSystem(flags: u32);
-    fn SDL_Quit();
-    fn SDL_WasInit(flags: u32) -> c_int;
-    fn SDL_GetError() -> *c_char;
-    // FIXME: This is actually a varargs call
-    fn SDL_SetError(fmt: *c_char);
-    fn SDL_Error(code: c_int);
-    fn SDL_ClearError();
-}
-

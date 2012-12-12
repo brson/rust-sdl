@@ -5,7 +5,7 @@ Low-level bindings
 */
 
 use libc::{c_char};
-use core::libc::types::common::c99::{uint32_t};
+use core::libc::types::common::c99::{uint32_t, int32_t};
 
 type c_enum = uint32_t;
 type rust_enum = uint;
@@ -42,10 +42,40 @@ pub mod sdl {
     pub const SDL_INIT_EVERYTHING: sdl_init_flag    = 0x0000FFFF;
 
     extern {
-        fn SDL_Init(flags: uint32_t) -> c_int;
-        fn SDL_InitSubSystem(flags: uint32_t) -> c_int;
+        fn SDL_Init(flags: uint32_t) -> int32_t;
+        fn SDL_InitSubSystem(flags: uint32_t) -> int32_t;
         fn SDL_QuitSubSystem(flags: uint32_t);
         fn SDL_Quit();
-        fn SDL_WasInit(flags: uint32_t) -> c_int;
+        fn SDL_WasInit(flags: uint32_t) -> int32_t;
+    }
+}
+
+pub mod event {
+
+    extern {
+        fn SDL_PollEvent(event: *RawEvent) -> int32_t;
+    }
+}
+
+pub mod keyboard {
+}
+
+pub mod video {
+
+    extern {
+        fn SDL_SetVideoMode(width: c_int, height: c_int, bitsperpixel: c_int, flags: u32) -> *Surface;
+        fn SDL_FreeSurface(surface: *Surface);
+        fn SDL_LoadBMP_RW(src: *RWOps, freesrc: c_int) -> *Surface;
+        fn SDL_RWFromFile(file: *c_char, mode: *c_char) -> *RWOps;
+        fn SDL_DisplayFormat(surface: *Surface) -> *Surface;
+        fn SDL_UpperBlit(src: *Surface, srcrect: *Rect,
+                         dst: *Surface, dstrect: *Rect) -> c_int;
+        fn SDL_Flip(screen: *Surface) -> c_int;
+        fn SDL_CreateRGBSurface(flags: u32, width: c_int, height: c_int,
+                                bitsPerPixel: c_int,
+                                Rmask: u32, Gmask: u32, Bmask: u32, Amask: u32) -> *Surface;
+        fn SDL_FillRect(dst: *Surface, dstrect: *Rect, color: u32);
+        fn SDL_LockSurface(surface: *Surface);
+        fn SDL_UnlockSurface(surface: *Surface);
     }
 }
