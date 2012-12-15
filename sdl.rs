@@ -1,10 +1,6 @@
 use vec::push;
 use core::libc::types::common::c99::{int32_t};
-/*
-    Ze plan:
-        As much as it'd be nice for this to be object oriented, there's little to be gained
-        As none of the basic calls return any sort of handles to store
-*/
+
 pub enum InitFlag {
     InitTimer = 0x00000001,
     InitAudio = 0x00000010,

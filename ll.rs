@@ -65,16 +65,16 @@ pub mod video {
 
     type RWOps = c_void;
 
-    pub struct Surface {
+    pub type Surface = {
         flags: sdl_flag,
         format: *c_void,
         w: uint32_t,
         h: uint32_t,
         pitch: u16,
         pixels: *c_void,
-        offset: c_int
+        offset: uint32_t
         // FIXME: Remaining are unlisted
-    }
+    };
 
     pub type sdl_flag = uint32_t;
     pub type sdl_surface_flag = sdl_flag;

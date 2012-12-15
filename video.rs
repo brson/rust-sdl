@@ -1,5 +1,14 @@
 use libc::{c_void, c_int, c_char};
 
+pub struct Surface {
+
+    priv surface: *ll::video::Surface,
+
+    drop {
+        ll::video::SDL_FreeSurface(self.surface)
+    }
+}
+
 impl Surface {
     //Constructor: Create_rgb_surface
     //Constructor: set_video_mode
@@ -18,7 +27,7 @@ pub fn set_video_mode(
     bitsperpixel: int,
     surface_flags: &[SurfaceFlag],
     video_mode_flags: &[VideoModeFlag]
-) -> *Surface {
+) -> ~Surface {
     let flags = vec::foldl(0u32, surface_flags, |flags, flag| {
         flags | *flag as u32
     });
@@ -26,10 +35,6 @@ pub fn set_video_mode(
         flags | *flag as u32
     });
     SDL::SDL_SetVideoMode(width as c_int, height as c_int, bitsperpixel as c_int, flags)
-}
-
-pub fn free_surface(surface: *Surface) {
-    SDL::SDL_FreeSurface(surface)
 }
 
 pub fn load_bmp(file: &str) -> *Surface unsafe {
@@ -95,4 +100,4 @@ extern mod SDL {
     fn SDL_FillRect(dst: *Surface, dstrect: *Rect, color: u32);
     fn SDL_LockSurface(surface: *Surface);
     fn SDL_UnlockSurface(surface: *Surface);
-}
+}*/
