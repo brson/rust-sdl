@@ -42,7 +42,7 @@ pub mod sdl {
     pub const SDL_INIT_EVENT_THREAD: sdl_init_flag  = 0x01000000;
     pub const SDL_INIT_EVERYTHING: sdl_init_flag    = 0x0000FFFF;
 
-    extern {
+    extern mod SDL {
         fn SDL_Init(flags: uint32_t) -> int32_t;
         fn SDL_InitSubSystem(flags: uint32_t) -> int32_t;
         fn SDL_QuitSubSystem(flags: uint32_t);
