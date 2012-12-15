@@ -9,6 +9,7 @@
 
 extern mod std;
 
+pub mod sdl;
 pub mod event;
 pub mod video;
 pub mod keyboard;

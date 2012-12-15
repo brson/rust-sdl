@@ -1,5 +1,6 @@
 // FIXME: Needs additional cocoa setup on OS X. rust-cocoa should probably just
 // be a dependency
+use sdl::*;
 #[test]
 #[ignore(cfg(target_os = "macos"))]
 pub fn test_everything() {

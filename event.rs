@@ -44,8 +44,8 @@ pub enum Event {
 }
 
 impl Event: cmp::Eq {
-    pure fn eq(other: &Event) -> bool {
-        match (self, *other) {
+    pure fn eq(&self, other: &Event) -> bool {
+        match (*self, *other) {
             (QuitEvent, QuitEvent) | (NoEvent, NoEvent) => true,
             (KeyDownEvent(left), KeyDownEvent(right)) |
             (KeyUpEvent(left), KeyUpEvent(right)) => {
@@ -54,7 +54,7 @@ impl Event: cmp::Eq {
             _ => false
         }
     }
-    pure fn ne(other: &Event) -> bool {
+    pure fn ne(&self, other: &Event) -> bool {
         !self.eq(other)
     }
 }
@@ -97,7 +97,7 @@ pub fn log_event(e: &RawEvent) {
     else if e.type_ == videoresize { ~"videoresize" }
     else if e.type_ == videoexpose { ~"videoexpose" }
     else { ~"other" };
-    #debug("event: %s", name);
+    debug!("event: %s", name);
 }
 
 pub fn poll_event(f: fn(Event)) unsafe {
