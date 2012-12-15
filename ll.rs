@@ -4,7 +4,7 @@ Low-level bindings
 
 */
 
-use libc::{c_char};
+use libc::{c_char, c_int};
 use core::libc::types::common::c99::{uint32_t, int32_t};
 
 type c_enum = uint32_t;
@@ -29,8 +29,9 @@ pub mod error {
 }
 
 pub mod sdl {
+
     pub type sdl_init_flag = uint32_t;
-    
+
     pub const SDL_INIT_TIMER: sdl_init_flag         = 0x00000001;
     pub const SDL_INIT_AUDIO: sdl_init_flag         = 0x00000010;
     pub const SDL_INIT_VIDEO: sdl_init_flag         = 0x00000020;
@@ -50,7 +51,7 @@ pub mod sdl {
     }
 }
 
-pub mod event {
+/*pub mod event {
 
     extern {
         fn SDL_PollEvent(event: *RawEvent) -> int32_t;
@@ -61,6 +62,23 @@ pub mod keyboard {
 }
 
 pub mod video {
+
+    pub type sdl_surface_flag = uint32_t;
+
+    pub const SDL_SWSURFACE: sdl_surface_flag = 0x00000000;
+    pub const SDL_HWSURFACE: sdl_surface_flag = 0x00000001;
+    pub const SDL_ASYNCBLIT: sdl_surface_flag = 0x00000004;
+
+    pub type sdl_video_mode_flag = uint32_t;
+
+    pub const SDL_ANYFORMAT: sdl_video_flag  = 0x10000000;
+    pub const SDL_HWPALETTE: sdl_video_flag  = 0x20000000;
+    pub const SDL_DOUBLEBUF: sdl_video_flag  = 0x40000000;
+    pub const SDL_FULLSCREEN: sdl_video_flag = 0x80000000;
+    pub const SDL_OPENGL: sdl_video_flag     = 0x00000002;
+    pub const SDL_OPENGLBLIT: sdl_video_flag = 0x0000000A;
+    pub const SDL_RESIZABLE: sdl_video_flag  = 0x00000010;
+    pub const SDL_NOFRAME: sdl_video_flag    = 0x00000020;
 
     extern {
         fn SDL_SetVideoMode(width: c_int, height: c_int, bitsperpixel: c_int, flags: u32) -> *Surface;
@@ -78,4 +96,4 @@ pub mod video {
         fn SDL_LockSurface(surface: *Surface);
         fn SDL_UnlockSurface(surface: *Surface);
     }
-}
+}*/

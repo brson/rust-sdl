@@ -20,23 +20,6 @@ pub type Rect = {
     h: u16
 };
 
-pub enum SurfaceFlag {
-    pub SWSurface = 0x00000000,
-    pub HWSurface = 0x00000001,
-    pub AsyncBlit = 0x00000004,
-}
-
-pub enum VideoModeFlag {
-    pub AnyFormat  = 0x10000000,
-    pub HWPalette  = 0x20000000,
-    pub DoubleBuf  = 0x40000000,
-    pub Fullscreen = 0x80000000,
-    pub OpenGL     = 0x00000002,
-    pub OpenGLBlit = 0x0000000A,
-    pub Resizable  = 0x00000010,
-    pub NoFrame    = 0x00000020,
-}
-
 pub fn set_video_mode(
     width: int,
     height: int,
