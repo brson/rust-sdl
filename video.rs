@@ -1,24 +1,16 @@
 use libc::{c_void, c_int, c_char};
 
-type RWOps = c_void;
+impl Surface {
+    //Constructor: Create_rgb_surface
+    //Constructor: set_video_mode
+    //Constructor: display_format
+    //Constructor: load_bmp
 
-pub type Surface = {
-    flags: u32,
-    format: *c_void,
-    w: c_int,
-    h: c_int,
-    pitch: u16,
-    pixels: *c_void,
-    offset: c_int
-    // FIXME: Remaining are unlisted
-};
+    //method: 
 
-pub type Rect = {
-    x: i16,
-    y: i16,
-    w: u16,
-    h: u16
-};
+    //Destructor: free_surface
+}
+
 
 pub fn set_video_mode(
     width: int,
