@@ -12,11 +12,11 @@ pub fn test_everything() {
             general::test_set_error,
             general::test_error,
             general::test_clear_error,
-            video::test_set_video_mode,/*
+            video::test_set_video_mode,
             // FIXME: Doesn't work when called from a directory that
             // doesn't contain the test image file
-            //video::test_blit,
-            test_event::test_poll_event_none,
+            video::test_blit, //Comment out before merge
+            /*test_event::test_poll_event_none,
             // FIXME: This test is interactive
             //test_event::test_keyboard,
             */
@@ -88,30 +88,37 @@ mod video {
         assert result::is_ok(&maybe_surface);
     }
 
-    /*pub fn test_blit() {
-        let screen = ::video::set_video_mode(320, 200, 32,
+    pub fn test_blit() {
+        let maybe_screen = ::video::set_video_mode(320, 200, 32,
             ~[::video::SWSurface], ~[::video::DoubleBuf]);
-        assert screen != ptr::null();
 
-        let image = {
-            // FIXME: We need to load this from the crate instead of
-            // off the filesystem
-            let tmp = ::video::load_bmp(~"rust-logo-128x128-blk.bmp");
-            assert tmp != ptr::null();
-            let image = ::video::display_format(tmp);
-            assert image != ptr::null();
-            ::video::free_surface(tmp);
-            image
+        assert result::is_ok(&maybe_screen);
+
+        match maybe_screen {
+            result::Ok(screen) => {
+                // FIXME: We need to load this from the crate instead of
+                // off the filesystem
+                let maybe_image = match ::video::load_bmp(~"rust-logo-128x128-blk.bmp") {
+                    result::Ok(raw_image) => {
+                        raw_image.display_format()
+                    },
+                    result::Err(err) => result::Err(err)
+                };
+
+                assert result::is_ok(&maybe_image);
+
+                match maybe_image {
+                    result::Ok(image) => {
+                        for iter::repeat(1u) || {
+                            screen.blit_surface(image);
+                            screen.flip();
+                            //::event::poll_event(|_event| {})
+                        };
+                    },
+                    result::Err(_) => ()
+                };
+            },
+            result::Err(_) => ()
         };
-
-        for iter::repeat(1u) || {
-            ::video::blit_surface(image, ptr::null(),
-                                  screen, ptr::null());
-            ::video::flip(screen);
-            ::event::poll_event(|_event| {})
-        };
-
-        ::video::free_surface(image);
-        ::video::free_surface(screen);
-    }*/
+    }
 }

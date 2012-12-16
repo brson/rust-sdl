@@ -52,7 +52,7 @@ impl Surface {
         return ll::video::SDL_UnlockSurface(self.raw_surface) == 0 as c_int;
     }
 
-    fn blit_surface(src: &Surface, srcrect: &util::Rect, dstrect: &util::Rect) -> bool {
+    fn blit_surface_rect(src: &Surface, srcrect: &util::Rect, dstrect: &util::Rect) -> bool {
         let res = ll::video::SDL_UpperBlit(src.raw_surface, srcrect, self.raw_surface, dstrect);
         return res == 0 as c_int;
     }
@@ -66,7 +66,7 @@ impl Surface {
         return ll::video::SDL_FillRect(self.raw_surface, rect, color) == 0 as c_int;
     }
 
-    fn fill_rect(color: u32) -> bool {
+    fn fill(color: u32) -> bool {
         return ll::video::SDL_FillRect(self.raw_surface, ptr::null(), color) == 0 as c_int;
     }
 }
