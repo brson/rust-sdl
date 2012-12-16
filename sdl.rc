@@ -12,7 +12,7 @@ extern mod std;
 pub mod ll;
 pub mod util;
 pub mod sdl;
-//pub mod event;
+pub mod event;
 pub mod video;
 //pub mod keyboard;
 
