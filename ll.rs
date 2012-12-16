@@ -106,8 +106,8 @@ pub mod video {
         fn SDL_CreateRGBSurface(flags: sdl_flag, width: uint32_t, height: uint32_t,
                                 bitsPerPixel: uint32_t,
                                 Rmask: uint32_t, Gmask: uint32_t, Bmask: uint32_t, Amask: uint32_t) -> *Surface;
-        fn SDL_FillRect(dst: *Surface, dstrect: *util::Rect, color: uint32_t);
-        fn SDL_LockSurface(surface: *Surface);
-        fn SDL_UnlockSurface(surface: *Surface);
+        fn SDL_FillRect(dst: *Surface, dstrect: *util::Rect, color: uint32_t) -> c_int;
+        fn SDL_LockSurface(surface: *Surface) -> c_int;
+        fn SDL_UnlockSurface(surface: *Surface) -> c_int;
     }
 }

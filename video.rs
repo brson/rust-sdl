@@ -29,25 +29,57 @@ pub struct Surface {
 }
 
 impl Surface {
-    //Constructor: Create_rgb_surface
-    //Constructor: display_format
-    //Constructor: load_bmp
 
     //method: 
+    fn display_format() -> Result<~Surface, ~str> {
+        let raw_surface = ll::video::SDL_DisplayFormat(self.raw_surface);
+        if raw_surface == ptr::null() {
+            Err(sdl::get_error())
+        } else {
+            Ok(~Surface{ raw_surface: raw_surface })
+        }
+    }
 
-    //Destructor: free_surface
+    fn flip() -> bool {
+        ll::video::SDL_Flip(self.raw_surface) == 0 as c_int
+    }
+
+    fn lock() -> bool {
+        return ll::video::SDL_LockSurface(self.raw_surface) == 0 as c_int;
+    }
+
+    fn unlock() -> bool {
+        return ll::video::SDL_UnlockSurface(self.raw_surface) == 0 as c_int;
+    }
+
+    fn blit_surface(src: &Surface, srcrect: &util::Rect, dstrect: &util::Rect) -> bool {
+        let res = ll::video::SDL_UpperBlit(src.raw_surface, srcrect, self.raw_surface, dstrect);
+        return res == 0 as c_int;
+    }
+
+    fn blit_surface(src: &Surface) -> bool {
+        let res = ll::video::SDL_UpperBlit(src.raw_surface, ptr::null(), self.raw_surface, ptr::null());
+        return res == 0 as c_int;
+    }
+
+    fn fill_rect(rect: &util::Rect, color: u32) -> bool {
+        return ll::video::SDL_FillRect(self.raw_surface, rect, color) == 0 as c_int;
+    }
+
+    fn fill_rect(color: u32) -> bool {
+        return ll::video::SDL_FillRect(self.raw_surface, ptr::null(), color) == 0 as c_int;
+    }
 }
 
 
-//Constructor: set_video_mode
 //FIXME: This needs to be called multiple times on window resize, so Drop is going to do bad things, possibly. Test it out.
+//Consider making videomode surfaces their own type, with a reset method?
 pub fn set_video_mode(
     width: int,
     height: int,
     bitsperpixel: int,
     surface_flags: &[SurfaceFlag],
-    video_mode_flags: &[VideoModeFlag]
-) -> Result<~Surface, ~str> {
+    video_mode_flags: &[VideoModeFlag]) -> Result<~Surface, ~str> {
     let flags = vec::foldl(0u32, surface_flags, |flags, flag| {
         flags | *flag as u32
     });
@@ -60,72 +92,40 @@ pub fn set_video_mode(
     if raw_surface == ptr::null() {
         Err(sdl::get_error())
     } else {
-        Ok(~Surface{ raw_surface: raw_surface})
+        Ok(~Surface{ raw_surface: raw_surface })
     }
 }
 
-/*
-pub fn load_bmp(file: &str) -> *Surface unsafe {
+pub fn load_bmp(file: &str) -> Result<~Surface, ~str> unsafe {
     str::as_buf(file, |buf, _len| {
         let buf = cast::reinterpret_cast(&buf);
         str::as_buf(~"rb", |rbbuf, _len| {
             let rbbuf = cast::reinterpret_cast(&rbbuf);
-            SDL::SDL_LoadBMP_RW(SDL::SDL_RWFromFile(buf, rbbuf), 1 as c_int)
+            let raw_surface = ll::video::SDL_LoadBMP_RW(ll::video::SDL_RWFromFile(buf, rbbuf), 1 as c_int);
+            if raw_surface == ptr::null() {
+                Err(sdl::get_error())
+            } else {
+                Ok(~Surface{ raw_surface: raw_surface })
+            }
         })
     })
-}
-
-pub fn display_format(surface: *Surface) -> *Surface {
-    SDL::SDL_DisplayFormat(surface)
-}
-
-pub fn blit_surface(src: *Surface, srcrect: *Rect, dst: *Surface, dstrect: *Rect) -> bool {
-    let res = SDL::SDL_UpperBlit(src, srcrect, dst, dstrect);
-    return res == 0 as c_int;
-}
-
-pub fn flip(screen: *Surface) -> bool {
-    SDL::SDL_Flip(screen) == 0 as c_int
 }
 
 pub fn create_rgb_surface(
     surface_flags: &[SurfaceFlag],
     width: int, height: int, bits_per_pixel: int,
-    rmask: u32, gmask: u32, bmask: u32, amask: u32) -> *Surface {
+    rmask: u32, gmask: u32, bmask: u32, amask: u32) -> Result<~Surface, ~str> {
 
     let flags = vec::foldl(0u32, surface_flags, |flags, flag| {
         flags | *flag as u32
     });
-    SDL::SDL_CreateRGBSurface(
-        flags, width as c_int, height as c_int, bits_per_pixel as c_int,
-        rmask, gmask, bmask, amask)
-}
 
-pub fn fill_rect(surface: *Surface, rect: *Rect, color: u32) {
-    SDL::SDL_FillRect(surface, rect, color);
+    let raw_surface = ll::video::SDL_CreateRGBSurface(
+        flags, width as uint32_t, height as uint32_t, bits_per_pixel as uint32_t,
+        rmask, gmask, bmask, amask);
+    if raw_surface == ptr::null() {
+        Err(sdl::get_error())
+    } else {
+        Ok(~Surface{ raw_surface: raw_surface })
+    }
 }
-
-pub fn lock_surface(surface: *Surface) {
-    SDL::SDL_LockSurface(surface);
-}
-
-pub fn unlock_surface(surface: *Surface) {
-    SDL::SDL_UnlockSurface(surface);
-}
-
-extern mod SDL {
-    fn SDL_SetVideoMode(width: c_int, height: c_int, bitsperpixel: c_int, flags: u32) -> *Surface;
-    fn SDL_FreeSurface(surface: *Surface);
-    fn SDL_LoadBMP_RW(src: *RWOps, freesrc: c_int) -> *Surface;
-    fn SDL_RWFromFile(file: *c_char, mode: *c_char) -> *RWOps;
-    fn SDL_DisplayFormat(surface: *Surface) -> *Surface;
-    fn SDL_UpperBlit(src: *Surface, srcrect: *Rect,
-                     dst: *Surface, dstrect: *Rect) -> c_int;
-    fn SDL_Flip(screen: *Surface) -> c_int;
-    fn SDL_CreateRGBSurface(flags: u32, width: c_int, height: c_int,
-                            bitsPerPixel: c_int,
-                            Rmask: u32, Gmask: u32, Bmask: u32, Amask: u32) -> *Surface;
-    fn SDL_FillRect(dst: *Surface, dstrect: *Rect, color: u32);
-    fn SDL_LockSurface(surface: *Surface);
-    fn SDL_UnlockSurface(surface: *Surface);
-}*/
