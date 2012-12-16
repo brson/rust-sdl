@@ -1,17 +1,35 @@
 use libc::{c_void, c_int, c_char};
+use core::libc::types::common::c99::{uint32_t, int32_t};
+use core::result::{Result, Err, Ok};
+
+pub enum SurfaceFlag {
+    SWSurface = 0x00000000,
+    HWSurface = 0x00000001,
+    AsyncBlit = 0x00000004,
+}
+
+pub enum VideoModeFlag {
+    AnyFormat = 0x10000000,
+    HWPalette = 0x20000000,
+    DoubleBuf = 0x40000000,
+    Fullscreen = 0x80000000,
+    OpenGL = 0x00000002,
+    OpenGLBlit = 0x0000000A,
+    Resizable  = 0x00000010,
+    NoFrame = 0x00000020,
+}
 
 pub struct Surface {
 
-    priv surface: *ll::video::Surface,
+    priv raw_surface: *ll::video::Surface,
 
     drop {
-        ll::video::SDL_FreeSurface(self.surface)
+        ll::video::SDL_FreeSurface(self.raw_surface)
     }
 }
 
 impl Surface {
     //Constructor: Create_rgb_surface
-    //Constructor: set_video_mode
     //Constructor: display_format
     //Constructor: load_bmp
 
@@ -21,22 +39,32 @@ impl Surface {
 }
 
 
+//Constructor: set_video_mode
+//FIXME: This needs to be called multiple times on window resize, so Drop is going to do bad things, possibly. Test it out.
 pub fn set_video_mode(
     width: int,
     height: int,
     bitsperpixel: int,
     surface_flags: &[SurfaceFlag],
     video_mode_flags: &[VideoModeFlag]
-) -> ~Surface {
+) -> Result<~Surface, ~str> {
     let flags = vec::foldl(0u32, surface_flags, |flags, flag| {
         flags | *flag as u32
     });
     let flags = vec::foldl(flags, video_mode_flags, |flags, flag| {
         flags | *flag as u32
     });
-    SDL::SDL_SetVideoMode(width as c_int, height as c_int, bitsperpixel as c_int, flags)
+
+    let raw_surface = ll::video::SDL_SetVideoMode(width as uint32_t, height as uint32_t, bitsperpixel as uint32_t, flags);
+
+    if raw_surface == ptr::null() {
+        Err(sdl::get_error())
+    } else {
+        Ok(~Surface{ raw_surface: raw_surface})
+    }
 }
 
+/*
 pub fn load_bmp(file: &str) -> *Surface unsafe {
     str::as_buf(file, |buf, _len| {
         let buf = cast::reinterpret_cast(&buf);

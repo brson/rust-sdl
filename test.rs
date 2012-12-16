@@ -12,7 +12,7 @@ pub fn test_everything() {
             general::test_set_error,
             general::test_error,
             general::test_clear_error,
-            /*video::test_set_video_mode,
+            video::test_set_video_mode,/*
             // FIXME: Doesn't work when called from a directory that
             // doesn't contain the test image file
             //video::test_blit,
@@ -77,18 +77,18 @@ mod general {
         }
         ::video::free_surface(surface);
     }
-}
+}*/
 
 mod video {
 
     pub fn test_set_video_mode() {
-        let surface = ::video::set_video_mode(320, 200, 32,
+        let maybe_surface = ::video::set_video_mode(320, 200, 32,
             ~[::video::HWSurface], ~[::video::DoubleBuf]);
-        assert surface != ptr::null();
-        ::video::free_surface(surface);
+
+        assert result::is_ok(&maybe_surface);
     }
 
-    pub fn test_blit() {
+    /*pub fn test_blit() {
         let screen = ::video::set_video_mode(320, 200, 32,
             ~[::video::SWSurface], ~[::video::DoubleBuf]);
         assert screen != ptr::null();
@@ -113,5 +113,5 @@ mod video {
 
         ::video::free_surface(image);
         ::video::free_surface(screen);
-    }
-}*/
+    }*/
+}
