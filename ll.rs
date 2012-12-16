@@ -51,13 +51,41 @@ pub mod sdl {
     }
 }
 
-/*pub mod event {
+pub mod event {
+
+    type sdl_event_type = u8; //FIXME: Should this be c_enum?
+
+    const SDL_NOEVENT: sdl_event_type = 0u8;
+    const SDL_ACTIVEEVENT: sdl_event_type = 1u8;
+    const SDL_KEYDOWN: sdl_event_type = 2u8;
+    const SDL_KEYUP: sdl_event_type = 3u8;
+    const SDL_MOUSEMOTION: sdl_event_type = 4u8;
+    const SDL_MOUSEBUTTONDown: sdl_event_type = 5u8;
+    const SDL_MOUSEBUTTONUP: sdl_event_type = 6u8;
+    const SDL_JOYAXISMOTION: sdl_event_type = 7u8;
+    const SDL_JOYBALLMOTION: sdl_event_type = 8u8;
+    const SDL_JOYHATMOTION: sdl_event_type = 9u8;
+    const SDL_JOYBUTTONDOWN: sdl_event_type = 10u8;
+    const SDL_JOYBUTTONUP: sdl_event_type = 11u8;
+    const SDL_QUIT: sdl_event_type = 12u8;
+    const SDL_SYSWMEVENT: sdl_event_type = 13u8;
+    const SDL_EVENT_RESERVEDA: sdl_event_type = 14u8;
+    const SDL_EVENT_RESERVEDB: sdl_event_type = 15u8;
+    const SDL_VIDEORESIZE: sdl_event_type = 16u8;
+    const SDL_VIDEOEXPOSE: sdl_event_type = 17u8;
+    const SDL_EVENT_RESERVED2: sdl_event_type = 18u8;
+    const SDL_EVENT_RESERVED3: sdl_event_type = 19u8;
+    const SDL_EVENT_RESERVED4: sdl_event_type = 20u8;
+    const SDL_EVENT_RESERVED5: sdl_event_type = 21u8;
+    const SDL_EVENT_RESERVED6: sdl_event_type = 22u8;
+    const SDL_EVENT_RESERVED7: sdl_event_type = 23u8;
+    const SDL_EVENT_USEREVENT: sdl_event_type = 24u8;
 
     extern {
-        fn SDL_PollEvent(event: *RawEvent) -> int32_t;
+        fn SDL_PollEvent(event: *RawEvent) -> c_int;
     }
 }
-
+/*
 pub mod keyboard {
 }
 */
