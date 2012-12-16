@@ -87,7 +87,7 @@ pub fn set_video_mode(
         flags | *flag as u32
     });
 
-    let raw_surface = ll::video::SDL_SetVideoMode(width as uint32_t, height as uint32_t, bitsperpixel as uint32_t, flags);
+    let raw_surface = ll::video::SDL_SetVideoMode(width as c_int, height as c_int, bitsperpixel as c_int, flags);
 
     if raw_surface == ptr::null() {
         Err(sdl::get_error())
@@ -121,7 +121,7 @@ pub fn create_rgb_surface(
     });
 
     let raw_surface = ll::video::SDL_CreateRGBSurface(
-        flags, width as uint32_t, height as uint32_t, bits_per_pixel as uint32_t,
+        flags, width as c_int, height as c_int, bits_per_pixel as c_int,
         rmask, gmask, bmask, amask);
     if raw_surface == ptr::null() {
         Err(sdl::get_error())

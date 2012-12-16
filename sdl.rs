@@ -63,7 +63,7 @@ pub fn was_init(flags: &[InitFlag]) -> ~[InitFlag] {
     let mut vecflags = ~[];
 
     vec::map(all_flags, |flag| {
-        if bitflags & (*flag as int32_t) != 0 as int32_t {
+        if bitflags & (*flag as ll::sdl::sdl_init_flag) != 0 as ll::sdl::sdl_init_flag {
             push(&mut vecflags, *flag);
         }
     });
