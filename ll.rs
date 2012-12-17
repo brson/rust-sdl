@@ -86,7 +86,7 @@ pub mod event {
     pub const SDL_EVENT_RESERVED7: sdl_event_type = 23u8;
     pub const SDL_EVENT_USEREVENT: sdl_event_type = 24u8;
 
-    pub type Event = {
+    pub type SDL_Event = {
         type_: sdl_event_type,
         // FIXME: Not sure exactly how big this needs to be
         event: (u64, u64, u64, u64, u64, u64, u64, u64,
@@ -94,8 +94,19 @@ pub mod event {
                 u64, u64, u64, u64, u64, u64, u64, u64)
     };
 
+    pub type SDL_QuitEvent_ = {
+        type_: ll::event::sdl_event_type
+    };
+
+    pub type SDL_KeyboardEvent = {
+        type_: ll::event::sdl_event_type,
+        which: u8,
+        state: u8,
+        keysym: ll::keyboard::SDL_keysym
+    };
+
     extern {
-        fn SDL_PollEvent(event: *Event) -> c_int;
+        fn SDL_PollEvent(event: *SDL_Event) -> c_int;
     }
 }
 
