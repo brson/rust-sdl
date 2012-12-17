@@ -16,10 +16,10 @@ pub fn test_everything() {
             // FIXME: Doesn't work when called from a directory that
             // doesn't contain the test image file
             video::test_blit, //Comment out before merge
-            /*test_event::test_poll_event_none,
+            test_event::test_poll_event_none, //Comment out before merge
             // FIXME: This test is interactive
-            //test_event::test_keyboard,
-            */
+            test_event::test_keyboard, //Comment out before merge
+            
         ]);
         sdl::quit();
     }
@@ -55,29 +55,36 @@ mod general {
     }
 }
 
-/*mod test_event {
+mod test_event {
     pub fn test_poll_event_none() {
         ::event::poll_event(|event| assert event == ::event::NoEvent);
     }
 
     pub fn test_keyboard() {
         io::println(~"press a key in the window");
-        let surface = ::video::set_video_mode(320, 200, 32,
+        let maybe_surface = ::video::set_video_mode(320, 200, 32,
             ~[::video::SWSurface], ~[::video::DoubleBuf, ::video::Resizable]);
-        let mut keydown = false;
-        let mut keyup = false;
-        while !keydown || !keyup {
-            ::event::poll_event(|event| {
-                match event {
-                  event::KeyUpEvent(_) => keyup = true,
-                  event::KeyDownEvent(_) => keydown = true,
-                  _ => { }
+
+        match maybe_surface {
+            result::Ok(_) => {
+                let mut keydown = false;
+                let mut keyup = false;
+                while !keydown || !keyup {
+                    ::event::poll_event(|event| {
+                        match event {
+                          event::KeyUpEvent(_) => keyup = true,
+                          event::KeyDownEvent(_) => keydown = true,
+                          _ => { }
+                        }
+                    })
                 }
-            })
+            }
+            result::Err(_) => {
+                fail;
+            }
         }
-        ::video::free_surface(surface);
     }
-}*/
+}
 
 mod video {
 
@@ -112,7 +119,7 @@ mod video {
                         for iter::repeat(1u) || {
                             screen.blit_surface(image);
                             screen.flip();
-                            //::event::poll_event(|_event| {})
+                            ::event::poll_event(|_event| {})
                         };
                     },
                     result::Err(_) => ()

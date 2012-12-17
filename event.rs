@@ -31,7 +31,7 @@ type KeyboardEvent_ = {
     type_: ll::event::sdl_event_type,
     which: u8,
     state: u8,
-    keysym: keyboard::KeySym
+    keysym: ll::keyboard::SDL_keysym
 };
 
 fn null_event() -> ll::event::Event {
