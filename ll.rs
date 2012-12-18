@@ -94,12 +94,12 @@ pub mod event {
                 u64, u64, u64, u64, u64, u64, u64, u64)
     };
 
-    pub type SDL_QuitEvent_ = {
-        type_: ll::event::sdl_event_type
+    pub type SDL_QuitEvent = {
+        type_: sdl_event_type
     };
 
     pub type SDL_KeyboardEvent = {
-        type_: ll::event::sdl_event_type,
+        type_: sdl_event_type,
         which: u8,
         state: u8,
         keysym: ll::keyboard::SDL_keysym

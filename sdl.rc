@@ -10,11 +10,12 @@
 extern mod std;
 
 pub mod ll;
+pub mod conversions;
 pub mod util;
 pub mod sdl;
 pub mod event;
 pub mod video;
-//pub mod keyboard;
+pub mod keyboard;
 
 #[cfg(test)]
 mod test;

@@ -233,6 +233,8 @@ pub enum Key {
     pub SDLKUndo = 322,
 }
 
+pub type CombinedModifier = u32;
+
 pub enum Mod {
     pub KMODNone            = 0x0000,
     pub KMODLShift          = 0x0001,
