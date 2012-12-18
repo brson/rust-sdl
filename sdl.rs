@@ -1,5 +1,5 @@
 use vec::push;
-use core::libc::types::common::c99::{int32_t};
+use core::libc::c_int;
 
 pub enum InitFlag {
     InitTimer = 0x00000001,
@@ -31,12 +31,12 @@ pub enum ErrorFlag {
     Unsupported = 4,
 }
 
-pub fn init(flags: &[InitFlag]) -> int {
-    ll::sdl::SDL::SDL_Init(util::init_flags_to_bitfield(flags)) as int
+pub fn init(flags: &[InitFlag]) -> bool {
+    (ll::sdl::SDL::SDL_Init(util::init_flags_to_bitfield(flags)) == 0 as c_int)
 }
 
-pub fn init_subsystem(flags: &[InitFlag]) -> int {
-    ll::sdl::SDL::SDL_InitSubSystem(util::init_flags_to_bitfield(flags)) as int
+pub fn init_subsystem(flags: &[InitFlag]) -> bool {
+    (ll::sdl::SDL::SDL_InitSubSystem(util::init_flags_to_bitfield(flags)) == 0 as c_int)
 }
 
 pub fn quit_subsystem(flags: &[InitFlag]) {

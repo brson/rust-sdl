@@ -6,7 +6,7 @@
 pub fn test_everything() {
 
     do task::spawn {
-        sdl::init(~[sdl::InitVideo, sdl::InitTimer]);
+        assert sdl::init(~[sdl::InitVideo, sdl::InitTimer]) == true;
         run_tests(~[
             general::test_was_init,
             general::test_set_error,
