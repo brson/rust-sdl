@@ -1,4 +1,5 @@
 use libc::c_int;
+use conversions::*;
 
 pub enum Event {
     pub KeyDownEvent(KeyboardEvent),
@@ -6,7 +7,6 @@ pub enum Event {
     pub QuitEvent,
     pub NoEvent
 }
-
 
 impl Event: cmp::Eq {
     pure fn eq(&self, other: &Event) -> bool {
@@ -29,6 +29,19 @@ pub struct KeyboardEvent {
     state: u8,
     keycode: keyboard::Key,
     modifier: keyboard::CombinedModifier 
+}
+
+impl KeyboardEvent: cmp::Eq {
+    pure fn eq(&self, other: &KeyboardEvent) -> bool {
+        (self.window_id == other.window_id &&
+        self.state == other.state &&
+        self.keycode == other.keycode &&
+        self.modifier == other.modifier)
+    }
+
+    pure fn ne(&self, other: &KeyboardEvent) -> bool {
+        !self.eq(other)
+    }
 }
 
 fn null_event() -> ll::event::SDL_Event {
@@ -66,11 +79,11 @@ pub fn poll_event(f: fn(Event)) unsafe {
         if (raw_event.type_ == ll::event::SDL_QUIT) {
             f(QuitEvent);
         } else if (raw_event.type_ == ll::event::SDL_KEYDOWN) {
-            let raw_keyboard_event:ll::event::SDL_KeyboardEvent = cast::reinterpret_cast(&event_ptr);
-            f(KeyDownEvent(raw_keyboard_event.to_hl())); //TODO: Figure out a good way of moving away from being really tight to the ll stuff
+            let raw_keyboard_event: *ll::event::SDL_KeyboardEvent = cast::reinterpret_cast(&event_ptr);
+            f(KeyDownEvent((*raw_keyboard_event).to_hl()));
         } else if (raw_event.type_ == ll::event::SDL_KEYUP) {
-            let raw_keyboard_event:ll::event::SDL_KeyboardEvent = cast::reinterpret_cast(&event_ptr);
-            f(KeyUpEvent(raw_keyboard_event.to_hl()));
+            let raw_keyboard_event: *ll::event::SDL_KeyboardEvent = cast::reinterpret_cast(&event_ptr);
+            f(KeyUpEvent((*raw_keyboard_event).to_hl()));
         } else {
             f(NoEvent);
         }

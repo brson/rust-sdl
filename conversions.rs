@@ -9,10 +9,10 @@ pub trait ToHl<T> {
 pub impl ll::event::SDL_KeyboardEvent: ToHl<event::KeyboardEvent> {
     pub fn to_hl(&self) -> event::KeyboardEvent {
         event::KeyboardEvent {
-            window_id: 0,
-            state: 0,
-            keycode: keyboard::SDLKUnknown,
-            modifier: 0
-        };
+            window_id: self.which,
+            state: self.state,
+            keycode: unsafe{ cast::transmute(self.keysym.sym as u64) },
+            modifier: unsafe{ cast::transmute(self.keysym.mod_ as u32) }
+        }
     }
 }

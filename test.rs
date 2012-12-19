@@ -16,7 +16,7 @@ pub fn test_everything() {
             // FIXME: Doesn't work when called from a directory that
             // doesn't contain the test image file
             video::test_blit, //Comment out before merge
-            test_event::test_poll_event_none, //Comment out before merge
+            test_event::test_poll_event_none,
             // FIXME: This test is interactive
             test_event::test_keyboard, //Comment out before merge
             

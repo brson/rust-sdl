@@ -233,6 +233,16 @@ pub enum Key {
     pub SDLKUndo = 322,
 }
 
+impl Key: cmp::Eq {
+    pure fn eq(&self, other: &Key) -> bool {
+        *self == *other
+    }
+
+    pure fn ne(&self, other: &Key) -> bool {
+        !self.eq(other)
+    }
+}
+
 pub type CombinedModifier = u32;
 
 pub enum Mod {
