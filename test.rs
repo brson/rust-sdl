@@ -60,10 +60,6 @@ mod test_event {
         ::event::poll_event(|event| assert event == ::event::NoEvent);
     }
 
-    pub fn test_keyboard_event_conversion() {
-        //TODO: Implement me!
-    }
-
     pub fn test_keyboard() {
         io::println(~"press a key in the window");
         let maybe_surface = ::video::set_video_mode(320, 200, 32,
@@ -76,8 +72,16 @@ mod test_event {
                 while !keydown || !keyup {
                     ::event::poll_event(|event| {
                         match event {
-                          event::KeyUpEvent(_) => keyup = true,
-                          event::KeyDownEvent(event) => keydown = true,
+                          event::KeyUpEvent(keyboard) => {
+                              keyup = true;
+                              assert (keyboard.keycode as u64 != 0);
+                          },
+                          event::KeyDownEvent(keyboard) => {
+                              keydown = true;
+                              //assert (keyboard.keycode != keyboard::SDLKUnknown); //FIXME: This is causing a stack error. Rust bug or code error?
+                              assert (keyboard.keycode as u64 != 0);
+                          },
+                          event::QuitEvent => fail,
                           _ => { }
                         }
                     })

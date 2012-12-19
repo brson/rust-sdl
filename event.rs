@@ -74,7 +74,7 @@ pub fn poll_event(f: fn(Event)) unsafe {
     let raw_event = null_event();
     let result = ll::event::SDL_PollEvent(ptr::addr_of(&raw_event));
     if result as int == 1 {
-        let event_ptr = ptr::addr_of(&raw_event.event);
+        let event_ptr = ptr::addr_of(&raw_event);
         log_event(&raw_event);
         if (raw_event.type_ == ll::event::SDL_QUIT) {
             f(QuitEvent);
