@@ -78,7 +78,7 @@ mod test_event {
                           },
                           event::KeyDownEvent(keyboard) => {
                               keydown = true;
-                              //assert (keyboard.keycode != keyboard::SDLKUnknown); //FIXME: This is causing a stack error. Rust bug or code error?
+                              //assert (keyboard.keycode != keyboard::SDLKUnknown); //FIXME: This is causing a stack error. Rust bug or code error? Seems fine when compared via Match
                               assert (keyboard.keycode as u64 != 0);
                           },
                           event::QuitEvent => fail,
