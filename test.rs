@@ -60,6 +60,10 @@ mod test_event {
         ::event::poll_event(|event| assert event == ::event::NoEvent);
     }
 
+    pub fn test_keyboard_event_conversion() {
+        //TODO: Implement me!
+    }
+
     pub fn test_keyboard() {
         io::println(~"press a key in the window");
         let maybe_surface = ::video::set_video_mode(320, 200, 32,
@@ -73,7 +77,7 @@ mod test_event {
                     ::event::poll_event(|event| {
                         match event {
                           event::KeyUpEvent(_) => keyup = true,
-                          event::KeyDownEvent(_) => keydown = true,
+                          event::KeyDownEvent(event) => keydown = true,
                           _ => { }
                         }
                     })
