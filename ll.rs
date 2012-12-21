@@ -5,24 +5,23 @@ Low-level bindings
 */
 
 use libc::{c_char, c_int, c_void};
-use core::libc::types::common::c99::{uint32_t, int32_t, uint16_t};
+use core::libc::types::common::c99::{uint32_t, uint16_t};
 
 type c_enum = c_int;
-type rust_enum = uint;
 
 pub mod error {
-    pub type sdl_error_flag = c_enum;
+
+    pub type SDL_errorcode = c_enum;
     
-    pub const SDL_ENOMEM: sdl_error_flag      = 0;
-    pub const SDL_EFREAD: sdl_error_flag      = 1;
-    pub const SDL_EFWRITE: sdl_error_flag     = 2;
-    pub const SDL_EFSEEK: sdl_error_flag      = 3;
-    pub const SDL_UNSUPPORTED: sdl_error_flag = 4;
+    pub const SDL_ENOMEM: SDL_errorcode         = 0;
+    pub const SDL_EFREAD: SDL_errorcode         = 1;
+    pub const SDL_EFWRITE: SDL_errorcode        = 2;
+    pub const SDL_EFSEEK: SDL_errorcode         = 3;
+    pub const SDL_UNSUPPORTED: SDL_errorcode    = 4;
 
     extern {
-        fn SDL_Error(code: sdl_error_flag);
-        // FIXME: This is actually a varargs call
-        fn SDL_SetError(fmt: *c_char);
+        fn SDL_Error(code: SDL_errorcode);
+        fn SDL_SetError(fmt: *c_char); // FIXME: This is actually a varargs call
         fn SDL_GetError() -> *c_char;
         fn SDL_ClearError();
     }
@@ -30,24 +29,23 @@ pub mod error {
 
 pub mod sdl {
 
-    pub type sdl_init_flag = uint32_t;
+    pub type SDL_initflag = uint32_t;
 
-    pub const SDL_INIT_TIMER: sdl_init_flag         = 0x00000001;
-    pub const SDL_INIT_AUDIO: sdl_init_flag         = 0x00000010;
-    pub const SDL_INIT_VIDEO: sdl_init_flag         = 0x00000020;
-    pub const SDL_INIT_CDROM: sdl_init_flag         = 0x00000100;
-    pub const SDL_INIT_JOYSTICK: sdl_init_flag      = 0x00000200;
-    pub const SDL_INIT_HAPTIC: sdl_init_flag        = 0x00001000;
-    pub const SDL_INIT_NO_PARACHUTE: sdl_init_flag  = 0x00100000;
-    pub const SDL_INIT_EVENTTHREAD: sdl_init_flag   = 0x01000000;
-    pub const SDL_INIT_EVERYTHING: sdl_init_flag    = 0x0000FFFF;
+    pub const SDL_INIT_TIMER: SDL_initflag         = 0x00000001;
+    pub const SDL_INIT_AUDIO: SDL_initflag         = 0x00000010;
+    pub const SDL_INIT_VIDEO: SDL_initflag         = 0x00000020;
+    pub const SDL_INIT_CDROM: SDL_initflag         = 0x00000100;
+    pub const SDL_INIT_JOYSTICK: SDL_initflag      = 0x00000200;
+    pub const SDL_INIT_NO_PARACHUTE: SDL_initflag  = 0x00100000;
+    pub const SDL_INIT_EVENTTHREAD: SDL_initflag   = 0x01000000;
+    pub const SDL_INIT_EVERYTHING: SDL_initflag    = 0x0000FFFF;
 
     extern mod SDL{ // Note: Rust chokes if this is unspecified, whereas it's fine elsewhere. Go figure.
-        fn SDL_Init(flags: sdl_init_flag) -> c_int;
-        fn SDL_InitSubSystem(flags: sdl_init_flag) -> c_int;
-        fn SDL_QuitSubSystem(flags: sdl_init_flag);
+        fn SDL_Init(flags: SDL_initflag) -> c_int;
+        fn SDL_InitSubSystem(flags: SDL_initflag) -> c_int;
+        fn SDL_QuitSubSystem(flags: SDL_initflag);
         fn SDL_Quit();
-        fn SDL_WasInit(flags: sdl_init_flag) -> sdl_init_flag;
+        fn SDL_WasInit(flags: SDL_initflag) -> SDL_initflag;
     }
 }
 
@@ -58,36 +56,36 @@ pub mod event {
     pub const SDL_RELEASED: sdl_button_state = 0u8;
     pub const SDL_PRESSED: sdl_button_state = 1u8;
 
-    pub type sdl_event_type = u8;
+    pub type SDL_EventType = u8;
 
-    pub const SDL_NOEVENT: sdl_event_type = 0u8;
-    pub const SDL_ACTIVEEVENT: sdl_event_type = 1u8;
-    pub const SDL_KEYDOWN: sdl_event_type = 2u8;
-    pub const SDL_KEYUP: sdl_event_type = 3u8;
-    pub const SDL_MOUSEMOTION: sdl_event_type = 4u8;
-    pub const SDL_MOUSEBUTTONDOWN: sdl_event_type = 5u8;
-    pub const SDL_MOUSEBUTTONUP: sdl_event_type = 6u8;
-    pub const SDL_JOYAXISMOTION: sdl_event_type = 7u8;
-    pub const SDL_JOYBALLMOTION: sdl_event_type = 8u8;
-    pub const SDL_JOYHATMOTION: sdl_event_type = 9u8;
-    pub const SDL_JOYBUTTONDOWN: sdl_event_type = 10u8;
-    pub const SDL_JOYBUTTONUP: sdl_event_type = 11u8;
-    pub const SDL_QUIT: sdl_event_type = 12u8;
-    pub const SDL_SYSWMEVENT: sdl_event_type = 13u8;
-    pub const SDL_EVENT_RESERVEDA: sdl_event_type = 14u8;
-    pub const SDL_EVENT_RESERVEDB: sdl_event_type = 15u8;
-    pub const SDL_VIDEORESIZE: sdl_event_type = 16u8;
-    pub const SDL_VIDEOEXPOSE: sdl_event_type = 17u8;
-    pub const SDL_EVENT_RESERVED2: sdl_event_type = 18u8;
-    pub const SDL_EVENT_RESERVED3: sdl_event_type = 19u8;
-    pub const SDL_EVENT_RESERVED4: sdl_event_type = 20u8;
-    pub const SDL_EVENT_RESERVED5: sdl_event_type = 21u8;
-    pub const SDL_EVENT_RESERVED6: sdl_event_type = 22u8;
-    pub const SDL_EVENT_RESERVED7: sdl_event_type = 23u8;
-    pub const SDL_EVENT_USEREVENT: sdl_event_type = 24u8;
+    pub const SDL_NOEVENT:          SDL_EventType = 0u8;
+    pub const SDL_ACTIVEEVENT:      SDL_EventType = 1u8;
+    pub const SDL_KEYDOWN:          SDL_EventType = 2u8;
+    pub const SDL_KEYUP:            SDL_EventType = 3u8;
+    pub const SDL_MOUSEMOTION:      SDL_EventType = 4u8;
+    pub const SDL_MOUSEBUTTONDOWN:  SDL_EventType = 5u8;
+    pub const SDL_MOUSEBUTTONUP:    SDL_EventType = 6u8;
+    pub const SDL_JOYAXISMOTION:    SDL_EventType = 7u8;
+    pub const SDL_JOYBALLMOTION:    SDL_EventType = 8u8;
+    pub const SDL_JOYHATMOTION:     SDL_EventType = 9u8;
+    pub const SDL_JOYBUTTONDOWN:    SDL_EventType = 10u8;
+    pub const SDL_JOYBUTTONUP:      SDL_EventType = 11u8;
+    pub const SDL_QUIT:             SDL_EventType = 12u8;
+    pub const SDL_SYSWMEVENT:       SDL_EventType = 13u8;
+    pub const SDL_EVENT_RESERVEDA:  SDL_EventType = 14u8;
+    pub const SDL_EVENT_RESERVEDB:  SDL_EventType = 15u8;
+    pub const SDL_VIDEORESIZE:      SDL_EventType = 16u8;
+    pub const SDL_VIDEOEXPOSE:      SDL_EventType = 17u8;
+    pub const SDL_EVENT_RESERVED2:  SDL_EventType = 18u8;
+    pub const SDL_EVENT_RESERVED3:  SDL_EventType = 19u8;
+    pub const SDL_EVENT_RESERVED4:  SDL_EventType = 20u8;
+    pub const SDL_EVENT_RESERVED5:  SDL_EventType = 21u8;
+    pub const SDL_EVENT_RESERVED6:  SDL_EventType = 22u8;
+    pub const SDL_EVENT_RESERVED7:  SDL_EventType = 23u8;
+    pub const SDL_EVENT_USEREVENT:  SDL_EventType = 24u8;
 
     pub type SDL_Event = {
-        type_: sdl_event_type,
+        type_: SDL_EventType,
         // FIXME: Not sure exactly how big this needs to be
         event: (u64, u64, u64, u64, u64, u64, u64, u64,
                 u64, u64, u64, u64, u64, u64, u64, u64,
@@ -95,11 +93,11 @@ pub mod event {
     };
 
     pub type SDL_QuitEvent = {
-        type_: sdl_event_type
+        type_: SDL_EventType
     };
 
     pub type SDL_KeyboardEvent = {
-        type_: sdl_event_type,
+        type_: SDL_EventType,
         which: u8,
         state: u8,
         keysym: ll::keyboard::SDL_keysym
