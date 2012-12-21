@@ -74,12 +74,11 @@ mod test_event {
                         match event {
                           event::KeyUpEvent(keyboard) => {
                               keyup = true;
-                              assert (keyboard.keycode as u64 != 0);
+                              assert keyboard.keycode != keyboard::SDLKUnknown;
                           },
                           event::KeyDownEvent(keyboard) => {
                               keydown = true;
-                              //assert (keyboard.keycode != keyboard::SDLKUnknown); //FIXME: This is causing a stack error. Rust bug or code error? Seems fine when compared via Match
-                              assert (keyboard.keycode as u64 != 0);
+                              assert keyboard.keycode != keyboard::SDLKUnknown;
                           },
                           event::QuitEvent => fail,
                           _ => { }

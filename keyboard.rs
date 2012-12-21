@@ -235,7 +235,7 @@ pub enum Key {
 
 impl Key: cmp::Eq {
     pure fn eq(&self, other: &Key) -> bool {
-        *self == *other
+        *self as u64 == *other as u64
     }
 
     pure fn ne(&self, other: &Key) -> bool {
