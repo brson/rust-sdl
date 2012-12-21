@@ -260,3 +260,13 @@ pub enum Mod {
     pub KMODMode            = 0x4000,
     pub KMODReserved        = 0x8000
 }
+
+impl Mod: cmp::Eq {
+    pure fn eq(&self, other: &Mod) -> bool {
+        *self as u32 == *other as u32
+    }
+
+    pure fn ne(&self, other: &Mod) -> bool {
+        !self.eq(other)
+    }
+}
