@@ -29,7 +29,6 @@ pub struct Surface {
 
 impl Surface {
 
-    //method: 
     fn display_format() -> Result<~Surface, ~str> {
         let raw_surface = ll::video::SDL_DisplayFormat(self.raw_surface);
         if raw_surface == ptr::null() {
