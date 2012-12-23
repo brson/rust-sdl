@@ -4,8 +4,7 @@
 #[test]
 #[ignore(cfg(target_os = "macos"))]
 pub fn test_everything() {
-
-    do task::spawn {
+    do on_osmain {
         assert sdl::init(~[sdl::InitVideo, sdl::InitTimer]) == true;
         run_tests(~[
             general::test_was_init,
@@ -15,14 +14,26 @@ pub fn test_everything() {
             video::test_set_video_mode,
             // FIXME: Doesn't work when called from a directory that
             // doesn't contain the test image file
-            //video::test_blit, //Comment out before merge
+            //video::test_blit,
             test_event::test_poll_event_none,
             // FIXME: This test is interactive
-            //test_event::test_keyboard, //Comment out before merge
+            //test_event::test_keyboard,
             
         ]);
+
         sdl::quit();
     }
+}
+
+fn on_osmain(f: ~fn()) {
+
+    let (port, chan): (pipes::Port<()>, pipes::Chan<()>) = pipes::stream();
+
+    do task::spawn_sched(task::PlatformThread) |move chan| {
+        f();
+        chan.send(());
+    }
+    port.recv();
 }
 
 fn run_tests(tests: &[fn()]) {
