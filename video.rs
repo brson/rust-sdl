@@ -1,5 +1,4 @@
 use libc::{c_void, c_int, c_char};
-use core::libc::types::common::c99::{uint32_t, int32_t};
 use core::result::{Result, Err, Ok};
 
 pub enum SurfaceFlag {
@@ -21,7 +20,7 @@ pub enum VideoModeFlag {
 
 pub struct Surface {
 
-    priv raw_surface: *ll::video::Surface,
+    priv raw_surface: *ll::video::SDL_Surface,
 
     drop {
         ll::video::SDL_FreeSurface(self.raw_surface)

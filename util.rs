@@ -7,6 +7,6 @@ pub type Rect = {
 
 pub fn init_flags_to_bitfield(flags: &[sdl::InitFlag]) -> u32 {
     vec::foldl(0u32, flags, |flags, flag| {
-        flags | *flag as ll::sdl::sdl_init_flag 
+        flags | *flag as ll::sdl::SDL_InitFlag 
     })
 }

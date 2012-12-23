@@ -63,7 +63,7 @@ pub fn was_init(flags: &[InitFlag]) -> ~[InitFlag] {
     let mut vecflags = ~[];
 
     vec::map(all_flags, |flag| {
-        if bitflags & (*flag as ll::sdl::sdl_init_flag) != 0 as ll::sdl::sdl_init_flag {
+        if bitflags & (*flag as ll::sdl::SDL_InitFlag) != 0 as ll::sdl::SDL_InitFlag {
             push(&mut vecflags, *flag);
         }
     });
@@ -86,17 +86,9 @@ pub fn set_error(s: &str) {
 }
 
 pub fn error(code: ErrorFlag) {
-    ll::error::SDL_Error(code as ll::error::sdl_error_flag)
+    ll::error::SDL_Error(code as ll::error::SDL_errorcode)
 }
 
 pub fn clear_error() {
     ll::error::SDL_ClearError()
-}
-
-mod util {
-    pub fn init_flags_to_bitfield(flags: &[InitFlag]) -> u32 {
-        vec::foldl(0u32, flags, |flags, flag| {
-            flags | *flag as ll::sdl::sdl_init_flag 
-        })
-    }
 }
