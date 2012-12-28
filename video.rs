@@ -19,12 +19,7 @@ pub enum VideoModeFlag {
 }
 
 pub struct Surface {
-
     priv raw_surface: *ll::video::SDL_Surface,
-
-    drop {
-        ll::video::SDL_FreeSurface(self.raw_surface)
-    }
 }
 
 impl Surface {
@@ -66,6 +61,13 @@ impl Surface {
 
     fn fill(color: u32) -> bool {
         return ll::video::SDL_FillRect(self.raw_surface, ptr::null(), color) == 0 as c_int;
+    }
+}
+
+impl Surface : Drop {
+
+    fn finalize(&self) {
+        ll::video::SDL_FreeSurface(self.raw_surface)
     }
 }
 
