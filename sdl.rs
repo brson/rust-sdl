@@ -1,5 +1,8 @@
-use libc::{c_int, c_char};
-use vec::push;
+use core::cast;
+use core::cmp;
+use core::libc::{c_int, c_char};
+use core::vec::push;
+use core::vec;
 
 pub enum InitFlag {
     pub InitTimer       = 0x00000001,
@@ -89,6 +92,8 @@ pub fn clear_error() {
 }
 
 mod util {
+    use sdl::InitFlag;
+
     pub fn init_flags_to_bitfield(flags: &[InitFlag]) -> u32 {
         vec::foldl(0u32, flags, |flags, flag| {
             flags | *flag as u32

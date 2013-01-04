@@ -1,4 +1,6 @@
-use libc::c_int;
+use keyboard;
+
+use core::libc::c_int;
 
 type EventType = u8;
 

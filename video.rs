@@ -1,4 +1,7 @@
-use libc::{c_void, c_int, c_char};
+use core::cast;
+use core::libc::{c_void, c_int, c_char};
+use core::str;
+use core::vec;
 
 type RWOps = c_void;
 
