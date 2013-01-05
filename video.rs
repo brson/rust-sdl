@@ -1,5 +1,12 @@
-use libc::{c_void, c_int, c_char};
 use core::result::{Result, Err, Ok};
+use core::cast;
+use core::libc::{c_void, c_int, c_char};
+use core::str;
+use core::vec;
+
+use sdl;
+use ll;
+use util::Rect;
 
 pub enum SurfaceFlag {
     SWSurface = 0x00000000,
@@ -45,7 +52,7 @@ impl Surface {
         return ll::video::SDL_UnlockSurface(self.raw_surface) == 0 as c_int;
     }
 
-    fn blit_surface_rect(src: &Surface, srcrect: &util::Rect, dstrect: &util::Rect) -> bool {
+    fn blit_surface_rect(src: &Surface, srcrect: &Rect, dstrect: &Rect) -> bool {
         let res = ll::video::SDL_UpperBlit(src.raw_surface, srcrect, self.raw_surface, dstrect);
         return res == 0 as c_int;
     }
@@ -55,7 +62,7 @@ impl Surface {
         return res == 0 as c_int;
     }
 
-    fn fill_rect(rect: &util::Rect, color: u32) -> bool {
+    fn fill_rect(rect: &Rect, color: u32) -> bool {
         return ll::video::SDL_FillRect(self.raw_surface, rect, color) == 0 as c_int;
     }
 

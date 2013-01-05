@@ -4,8 +4,9 @@ Low-level bindings
 
 */
 
-use libc::{c_char, c_int, c_void};
+use core::libc::{c_char, c_int, c_void};
 use core::libc::types::common::c99::{uint32_t, uint16_t};
+use util;
 
 type c_enum = c_int;
 
@@ -50,6 +51,8 @@ pub mod sdl {
 }
 
 pub mod event {
+
+    use ll;
 
     pub type SDL_ButtonState = u8;
 
@@ -109,6 +112,8 @@ pub mod event {
 }
 
 pub mod keyboard {
+
+    use ll;
     // sym corresponds to the `Key` enum, mod_ to the `Mod` enum. We should
     // be using the correct type here but our enums don't have the right
     // size yet
@@ -418,6 +423,8 @@ pub mod keysym {
 
 pub mod video {
 
+    use util::Rect;
+
     type RWOps = c_void;
 
     pub type SDL_Surface = {
@@ -455,13 +462,13 @@ pub mod video {
         fn SDL_LoadBMP_RW(src: *RWOps, freesrc: c_int) -> *SDL_Surface;
         fn SDL_RWFromFile(file: *c_char, mode: *c_char) -> *RWOps;
         fn SDL_DisplayFormat(surface: *SDL_Surface) -> *SDL_Surface;
-        fn SDL_UpperBlit(src: *SDL_Surface, srcrect: *util::Rect,
-                         dst: *SDL_Surface, dstrect: *util::Rect) -> c_int;
+        fn SDL_UpperBlit(src: *SDL_Surface, srcrect: *Rect,
+                         dst: *SDL_Surface, dstrect: *Rect) -> c_int;
         fn SDL_Flip(screen: *SDL_Surface) -> c_int;
         fn SDL_CreateRGBSurface(flags: SDL_Flag, width: c_int, height: c_int,
                                 bitsPerPixel: c_int,
                                 Rmask: uint32_t, Gmask: uint32_t, Bmask: uint32_t, Amask: uint32_t) -> *SDL_Surface;
-        fn SDL_FillRect(dst: *SDL_Surface, dstrect: *util::Rect, color: uint32_t) -> c_int;
+        fn SDL_FillRect(dst: *SDL_Surface, dstrect: *Rect, color: uint32_t) -> c_int;
         fn SDL_LockSurface(surface: *SDL_Surface) -> c_int;
         fn SDL_UnlockSurface(surface: *SDL_Surface) -> c_int;
     }

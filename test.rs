@@ -1,27 +1,28 @@
 // FIXME: Needs additional cocoa setup on OS X. rust-cocoa should probably just
 // be a dependency
+use sdl::*;
 
 #[test]
 #[ignore(cfg(target_os = "macos"))]
 pub fn test_everything() {
     do on_osmain {
-        assert sdl::init(~[sdl::InitVideo, sdl::InitTimer]) == true;
+        assert init(~[InitVideo, InitTimer]) == true;
         run_tests(~[
             general::test_was_init,
             general::test_set_error,
             general::test_error,
             general::test_clear_error,
-            video::test_set_video_mode,
+            test_video::test_set_video_mode,
             // FIXME: Doesn't work when called from a directory that
             // doesn't contain the test image file
-            //video::test_blit,
+            //test_video::test_blit,
             test_event::test_poll_event_none,
             // FIXME: This test is interactive
             //test_event::test_keyboard,
             
         ]);
 
-        sdl::quit();
+        quit();
     }
 }
 
@@ -44,44 +45,49 @@ fn run_tests(tests: &[fn()]) {
 
 mod general {
     pub fn test_was_init() {
-        assert vec::contains(~[sdl::InitTimer], &sdl::InitTimer);
+        assert vec::contains(~[InitTimer], &InitTimer);
     }
 
     pub fn test_set_error() {
-        sdl::set_error(~"test");
-        assert sdl::get_error() == ~"test";
+        set_error(~"test");
+        assert get_error() == ~"test";
     }
 
     pub fn test_error() {
-        sdl::clear_error();
-        assert str::is_empty(sdl::get_error());
-        sdl::error(sdl::ENoMem);
-        assert str::is_not_empty(sdl::get_error());
+        clear_error();
+        assert str::is_empty(get_error());
+        ::sdl::error(ENoMem);
+        assert str::is_not_empty(get_error());
     }
 
     pub fn test_clear_error() {
-        sdl::set_error(~"test");
-        sdl::clear_error();
-        assert str::is_empty(sdl::get_error());
+        set_error(~"test");
+        clear_error();
+        assert str::is_empty(get_error());
     }
 }
 
 mod test_event {
+
+    use event;
+    use video;
+    use keyboard;
+
     pub fn test_poll_event_none() {
-        ::event::poll_event(|event| assert event == ::event::NoEvent);
+        event::poll_event(|event| assert event == event::NoEvent);
     }
 
     pub fn test_keyboard() {
         io::println(~"press a key in the window");
-        let maybe_surface = ::video::set_video_mode(320, 200, 32,
-            ~[::video::SWSurface], ~[::video::DoubleBuf, ::video::Resizable]);
+        let maybe_surface = video::set_video_mode(320, 200, 32,
+            ~[video::SWSurface], ~[video::DoubleBuf, video::Resizable]);
 
         match maybe_surface {
             result::Ok(_) => {
                 let mut keydown = false;
                 let mut keyup = false;
                 while !keydown || !keyup {
-                    ::event::poll_event(|event| {
+                    event::poll_event(|event| {
                         match event {
                           event::KeyUpEvent(keyboard) => {
                               keyup = true;
@@ -104,7 +110,7 @@ mod test_event {
     }
 }
 
-mod video {
+mod test_video {
 
     pub fn test_set_video_mode() {
         let maybe_surface = ::video::set_video_mode(320, 200, 32,

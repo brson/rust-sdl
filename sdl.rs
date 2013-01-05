@@ -1,5 +1,10 @@
-use vec::push;
-use core::libc::c_int;
+use core::cast;
+use core::cmp;
+use core::libc::{c_int, c_char};
+use core::vec::push;
+use core::vec;
+use util::init_flags_to_bitfield;
+use ll;
 
 pub enum InitFlag {
     InitTimer = 0x00000001,
@@ -32,15 +37,15 @@ pub enum ErrorFlag {
 }
 
 pub fn init(flags: &[InitFlag]) -> bool {
-    (ll::sdl::SDL::SDL_Init(util::init_flags_to_bitfield(flags)) == 0 as c_int)
+    (ll::sdl::SDL::SDL_Init(init_flags_to_bitfield(flags)) == 0 as c_int)
 }
 
 pub fn init_subsystem(flags: &[InitFlag]) -> bool {
-    (ll::sdl::SDL::SDL_InitSubSystem(util::init_flags_to_bitfield(flags)) == 0 as c_int)
+    (ll::sdl::SDL::SDL_InitSubSystem(init_flags_to_bitfield(flags)) == 0 as c_int)
 }
 
 pub fn quit_subsystem(flags: &[InitFlag]) {
-    ll::sdl::SDL::SDL_QuitSubSystem(util::init_flags_to_bitfield(flags))
+    ll::sdl::SDL::SDL_QuitSubSystem(init_flags_to_bitfield(flags))
 }
 
 pub fn quit() {
@@ -48,7 +53,7 @@ pub fn quit() {
 }
 
 pub fn was_init(flags: &[InitFlag]) -> ~[InitFlag] {
-    let bitflags = ll::sdl::SDL::SDL_WasInit(util::init_flags_to_bitfield(flags));
+    let bitflags = ll::sdl::SDL::SDL_WasInit(init_flags_to_bitfield(flags));
     let all_flags = ~[
         InitTimer,
         InitAudio,

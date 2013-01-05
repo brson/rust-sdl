@@ -1,3 +1,5 @@
+use core::libc::c_int;
+
 pub enum Key {
     pub SDLKUnknown = 0,
     pub SDLKBackspace = 8,

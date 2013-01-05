@@ -1,5 +1,7 @@
-use libc::c_int;
 use conversions::*;
+use keyboard;
+
+use core::libc::c_int;
 
 pub enum Event {
     pub KeyDownEvent(KeyboardEvent),

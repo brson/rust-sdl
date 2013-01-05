@@ -1,3 +1,6 @@
+use sdl::InitFlag;
+use ll;
+
 pub type Rect = {
     x: i16,
     y: i16,
@@ -5,7 +8,7 @@ pub type Rect = {
     h: u16
 };
 
-pub fn init_flags_to_bitfield(flags: &[sdl::InitFlag]) -> u32 {
+pub fn init_flags_to_bitfield(flags: &[InitFlag]) -> u32 {
     vec::foldl(0u32, flags, |flags, flag| {
         flags | *flag as ll::sdl::SDL_InitFlag 
     })

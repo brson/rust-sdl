@@ -9,10 +9,10 @@
 
 extern mod std;
 
+pub mod sdl;
 pub mod ll;
 pub mod conversions;
 pub mod util;
-pub mod sdl;
 pub mod event;
 pub mod video;
 pub mod keyboard;
