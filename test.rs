@@ -37,13 +37,16 @@ fn on_osmain(f: ~fn()) {
     port.recv();
 }
 
-fn run_tests(tests: &[fn()]) {
+fn run_tests(tests: &[extern fn()]) {
     for tests.each |test| {
         (*test)();
     }
 }
 
 mod general {
+
+    use sdl::*;
+
     pub fn test_was_init() {
         assert vec::contains(~[InitTimer], &InitTimer);
     }
@@ -56,7 +59,7 @@ mod general {
     pub fn test_error() {
         clear_error();
         assert str::is_empty(get_error());
-        ::sdl::error(ENoMem);
+        error(ENoMem);
         assert str::is_not_empty(get_error());
     }
 

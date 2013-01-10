@@ -4,13 +4,11 @@ Low-level bindings
 
 */
 
-use core::libc::{c_char, c_int, c_void};
-use core::libc::types::common::c99::{uint32_t, uint16_t};
-use util;
-
-type c_enum = c_int;
-
 pub mod error {
+
+    use core::libc::{c_char, c_int};
+
+    type c_enum = c_int;
 
     pub type SDL_errorcode = c_enum;
     
@@ -29,6 +27,9 @@ pub mod error {
 }
 
 pub mod sdl {
+
+    use core::libc::c_int;
+    use core::libc::types::common::c99::uint32_t;
 
     pub type SDL_InitFlag = uint32_t;
 
@@ -52,6 +53,7 @@ pub mod sdl {
 
 pub mod event {
 
+    use core::libc::c_int;
     use ll;
 
     pub type SDL_ButtonState = u8;
@@ -127,6 +129,10 @@ pub mod keyboard {
 
 pub mod keysym {
     
+    use core::libc::c_int;
+
+    type c_enum = c_int;
+
     /** What we really want is a mapping of every raw key on the keyboard.
      *  To support international keyboards, we use the range 0xA1 - 0xFF
      *  as international virtual keycodes.  We'll follow in the footsteps of X11...
@@ -423,6 +429,8 @@ pub mod keysym {
 
 pub mod video {
 
+    use core::libc::{c_char, c_int, c_void};
+    use core::libc::types::common::c99::{uint32_t, uint16_t};
     use util::Rect;
 
     type RWOps = c_void;
