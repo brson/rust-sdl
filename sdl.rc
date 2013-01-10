@@ -1,5 +1,5 @@
 #[link(name = "sdl",
-       vers = "0.1",
+       vers = "0.2",
        uuid = "0ce89b41-2f92-459e-bbc1-8f5fe32f16cf",
        url = "http://github.com/brson/rust-sdl")];
 
@@ -10,6 +10,9 @@
 extern mod std;
 
 pub mod sdl;
+pub mod ll;
+pub mod conversions;
+pub mod util;
 pub mod event;
 pub mod video;
 pub mod keyboard;
