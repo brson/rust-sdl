@@ -1,40 +1,34 @@
 // FIXME: Needs additional cocoa setup on OS X. rust-cocoa should probably just
 // be a dependency
 use sdl::*;
+use start;
 
 #[test]
-#[ignore(cfg(target_os = "macos"))]
 pub fn test_everything() {
-    do on_osmain {
-        assert init(~[InitVideo, InitTimer]) == true;
-        run_tests(~[
-            general::test_was_init,
-            general::test_set_error,
-            general::test_error,
-            general::test_clear_error,
-            test_video::test_set_video_mode,
-            // FIXME: Doesn't work when called from a directory that
-            // doesn't contain the test image file
-            //test_video::test_blit,
-            test_event::test_poll_event_none,
-            // FIXME: This test is interactive
-            //test_event::test_keyboard,
-            
-        ]);
-
-        quit();
+    do start::start {
+        start_tests();
     }
 }
 
-fn on_osmain(f: ~fn()) {
+fn start_tests() {
+    assert init(~[InitVideo, InitTimer]) == true;
+    run_tests(~[
+        general::test_was_init,
+        // FIXME: Busted, segfault
+        //general::test_set_error,
+        //general::test_error,
+        //general::test_clear_error,
+        test_video::test_set_video_mode,
+        // FIXME: Doesn't work when called from a directory that
+        // doesn't contain the test image file
+        //test_video::test_blit,
+        test_event::test_poll_event_none,
+        // FIXME: This test is interactive
+        //test_event::test_keyboard,
+        
+    ]);
 
-    let (port, chan): (pipes::Port<()>, pipes::Chan<()>) = pipes::stream();
-
-    do task::spawn_sched(task::PlatformThread) |move chan| {
-        f();
-        chan.send(());
-    }
-    port.recv();
+    quit();
 }
 
 fn run_tests(tests: &[extern fn()]) {
@@ -77,7 +71,7 @@ mod test_event {
     use keyboard;
 
     pub fn test_poll_event_none() {
-        event::poll_event(|event| assert event == event::NoEvent);
+        assert event::poll_event() == event::NoEvent;
     }
 
     pub fn test_keyboard() {
@@ -90,20 +84,18 @@ mod test_event {
                 let mut keydown = false;
                 let mut keyup = false;
                 while !keydown || !keyup {
-                    event::poll_event(|event| {
-                        match event {
-                          event::KeyUpEvent(keyboard) => {
-                              keyup = true;
-                              assert keyboard.keycode != keyboard::SDLKUnknown;
-                          },
-                          event::KeyDownEvent(keyboard) => {
-                              keydown = true;
-                              assert keyboard.keycode != keyboard::SDLKUnknown;
-                          },
-                          event::QuitEvent => fail,
-                          _ => { }
-                        }
-                    })
+                    match event::poll_event() {
+                      event::KeyUpEvent(keyboard) => {
+                          keyup = true;
+                          assert keyboard.keycode != keyboard::SDLKUnknown;
+                      },
+                      event::KeyDownEvent(keyboard) => {
+                          keydown = true;
+                          assert keyboard.keycode != keyboard::SDLKUnknown;
+                      },
+                      event::QuitEvent => fail,
+                      _ => { }
+                    }
                 }
             }
             result::Err(_) => {
@@ -146,7 +138,7 @@ mod test_video {
                         for iter::repeat(1u) || {
                             screen.blit_surface(image);
                             screen.flip();
-                            ::event::poll_event(|_event| {})
+                            ::event::poll_event();
                         };
                     },
                     result::Err(_) => ()

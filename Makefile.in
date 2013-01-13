@@ -2,18 +2,42 @@ VPATH=%VPATH%
 
 RUSTC ?= rustc
 RUSTFLAGS ?=
+SDL_PREFIX ?= /usr/local/lib
+AR ?= ar
+CHMOD ?= chmod
+CP ?= cp
+LD ?= ld
+MV ?= mv
+RM ?= rm
 
 RUST_SRC = $(shell find $(VPATH)/. -type f -name '*.rs')
 
 .PHONY: all
 all: libsdl.dummy
 
-libsdl.dummy: sdl.rc $(RUST_SRC)
+UNAME=$(shell uname)
+
+ifeq ($(UNAME),Darwin)
+SDLXMAIN=libSDLXmain.a
+else
+SDLXMAIN=
+endif
+
+libsdl.dummy: sdl.rc $(RUST_SRC) $(SDLXMAIN)
 	$(RUSTC) $(RUSTFLAGS) $< -o $@
 	touch $@
 
-sdl-test: sdl.rc $(RUST_SRC)
+sdl-test: sdl.rc $(RUST_SRC) $(SDLXMAIN)
 	$(RUSTC) $(RUSTFLAGS) $< -o $@ --test
+
+# Darwin-specific hack to change the name of `main` to `SDLX_main`
+$(SDLXMAIN): $(SDL_PREFIX)/libSDLmain.a
+	$(CP) $< $@
+	$(AR) -x $@ SDLMain.o || $(RM) -f $@
+	$(LD) -r SDLMain.o -o SDLXMain.o -alias _main _SDLX_main -unexported_symbol main || $(RM) -f $@
+	$(MV) SDLXMain.o SDLMain.o || $(RM) -f $@
+	$(CHMOD) u+w $@ || $(RM) -f $@
+	$(AR) -r $@ SDLMain.o || $(RM) -f $@
 
 check: sdl-test
 	./sdl-test

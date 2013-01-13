@@ -16,6 +16,7 @@ pub mod util;
 pub mod event;
 pub mod video;
 pub mod keyboard;
+pub mod start;
 
 #[cfg(test)]
 mod test;
