@@ -89,24 +89,22 @@ pub mod event {
     pub const SDL_EVENT_RESERVED7:  SDL_EventType = 23u8;
     pub const SDL_EVENT_USEREVENT:  SDL_EventType = 24u8;
 
-    pub type SDL_Event = {
+    pub struct SDL_Event {
         type_: SDL_EventType,
         // FIXME: Not sure exactly how big this needs to be
-        event: (u64, u64, u64, u64, u64, u64, u64, u64,
-                u64, u64, u64, u64, u64, u64, u64, u64,
-                u64, u64, u64, u64, u64, u64, u64, u64)
-    };
+        event: [ u64 * 24 ]
+    }
 
-    pub type SDL_QuitEvent = {
+    pub struct SDL_QuitEvent {
         type_: SDL_EventType
-    };
+    }
 
-    pub type SDL_KeyboardEvent = {
+    pub struct SDL_KeyboardEvent {
         type_: SDL_EventType,
         which: u8,
         state: u8,
         keysym: ll::keyboard::SDL_keysym
-    };
+    }
 
     extern {
         fn SDL_PollEvent(event: *SDL_Event) -> c_int;

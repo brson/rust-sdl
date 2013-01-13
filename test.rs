@@ -71,7 +71,7 @@ mod test_event {
     use keyboard;
 
     pub fn test_poll_event_none() {
-        event::poll_event(|event| assert event == event::NoEvent);
+        assert event::poll_event() == event::NoEvent;
     }
 
     pub fn test_keyboard() {
@@ -84,20 +84,18 @@ mod test_event {
                 let mut keydown = false;
                 let mut keyup = false;
                 while !keydown || !keyup {
-                    event::poll_event(|event| {
-                        match event {
-                          event::KeyUpEvent(keyboard) => {
-                              keyup = true;
-                              assert keyboard.keycode != keyboard::SDLKUnknown;
-                          },
-                          event::KeyDownEvent(keyboard) => {
-                              keydown = true;
-                              assert keyboard.keycode != keyboard::SDLKUnknown;
-                          },
-                          event::QuitEvent => fail,
-                          _ => { }
-                        }
-                    })
+                    match event::poll_event() {
+                      event::KeyUpEvent(keyboard) => {
+                          keyup = true;
+                          assert keyboard.keycode != keyboard::SDLKUnknown;
+                      },
+                      event::KeyDownEvent(keyboard) => {
+                          keydown = true;
+                          assert keyboard.keycode != keyboard::SDLKUnknown;
+                      },
+                      event::QuitEvent => fail,
+                      _ => { }
+                    }
                 }
             }
             result::Err(_) => {
@@ -140,7 +138,7 @@ mod test_video {
                         for iter::repeat(1u) || {
                             screen.blit_surface(image);
                             screen.flip();
-                            ::event::poll_event(|_event| {})
+                            ::event::poll_event();
                         };
                     },
                     result::Err(_) => ()
