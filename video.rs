@@ -147,3 +147,7 @@ pub fn create_rgb_surface(
         Ok(~Surface{ raw_surface: raw_surface })
     }
 }
+
+pub fn swap_buffers() {
+    ll::video::SDL_GL_SwapBuffers();
+}
