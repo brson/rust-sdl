@@ -27,7 +27,6 @@ impl InitFlag: cmp::Eq {
     }
 }
 
-
 pub enum ErrorFlag {
     ENoMem = 0,
     EFRead = 1,
@@ -75,11 +74,13 @@ pub fn was_init(flags: &[InitFlag]) -> ~[InitFlag] {
     move vecflags
 }
 
-pub fn get_error() -> ~str unsafe {
+pub fn get_error() -> ~str {
     let cstr = ll::error::SDL_GetError();
     // FIXME: Converting sbuf to *c_char
-    let cstr = cast::reinterpret_cast(&cstr);
-    str::raw::from_c_str(cstr)
+    unsafe {
+        let cstr = cast::reinterpret_cast(&cstr);
+        str::raw::from_c_str(cstr)
+    }
 }
 
 pub fn set_error(s: &str) {
