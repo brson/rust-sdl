@@ -477,5 +477,6 @@ pub mod video {
         fn SDL_FillRect(dst: *SDL_Surface, dstrect: *Rect, color: uint32_t) -> c_int;
         fn SDL_LockSurface(surface: *SDL_Surface) -> c_int;
         fn SDL_UnlockSurface(surface: *SDL_Surface) -> c_int;
+        fn SDL_GL_SwapBuffers();
     }
 }
