@@ -36,48 +36,59 @@ pub enum ErrorFlag {
 }
 
 pub fn init(flags: &[InitFlag]) -> bool {
-    (ll::sdl::SDL::SDL_Init(init_flags_to_bitfield(flags)) == 0 as c_int)
+    unsafe {
+        (ll::sdl::SDL::SDL_Init(init_flags_to_bitfield(flags)) == 0 as c_int)
+    }
 }
 
 pub fn init_subsystem(flags: &[InitFlag]) -> bool {
-    (ll::sdl::SDL::SDL_InitSubSystem(init_flags_to_bitfield(flags)) == 0 as c_int)
+    unsafe {
+        (ll::sdl::SDL::SDL_InitSubSystem(init_flags_to_bitfield(flags)) == 0 as c_int)
+    }
 }
 
 pub fn quit_subsystem(flags: &[InitFlag]) {
-    ll::sdl::SDL::SDL_QuitSubSystem(init_flags_to_bitfield(flags))
+    unsafe {
+        ll::sdl::SDL::SDL_QuitSubSystem(init_flags_to_bitfield(flags))
+    }
 }
 
 pub fn quit() {
-    ll::sdl::SDL::SDL_Quit()
+    unsafe {
+        ll::sdl::SDL::SDL_Quit()
+    }
 }
 
 pub fn was_init(flags: &[InitFlag]) -> ~[InitFlag] {
-    let bitflags = ll::sdl::SDL::SDL_WasInit(init_flags_to_bitfield(flags));
-    let all_flags = ~[
-        InitTimer,
-        InitAudio,
-        InitVideo,
-        InitCDRom,
-        InitJoystick,
-        InitHaptic,
-        InitNoParachute,
-        InitEventThread,
-    ];
-    
-    let mut vecflags = ~[];
+    unsafe {
+        let bitflags = ll::sdl::SDL::SDL_WasInit(init_flags_to_bitfield(flags));
+        let all_flags = ~[
+            InitTimer,
+            InitAudio,
+            InitVideo,
+            InitCDRom,
+            InitJoystick,
+            InitHaptic,
+            InitNoParachute,
+            InitEventThread,
+        ];
+        
+        let mut vecflags = ~[];
 
-    vec::map(all_flags, |flag| {
-        if bitflags & (*flag as ll::sdl::SDL_InitFlag) != 0 as ll::sdl::SDL_InitFlag {
-            push(&mut vecflags, *flag);
-        }
-    });
-    move vecflags
+        vec::map(all_flags, |flag| {
+            if bitflags & (*flag as ll::sdl::SDL_InitFlag) != 0 as ll::sdl::SDL_InitFlag {
+                push(&mut vecflags, *flag);
+            }
+        });
+        move vecflags
+    }
 }
 
 pub fn get_error() -> ~str {
-    let cstr = ll::error::SDL_GetError();
-    // FIXME: Converting sbuf to *c_char
     unsafe {
+        let cstr = ll::error::SDL_GetError();
+
+        // FIXME: Converting sbuf to *c_char
         let cstr = cast::reinterpret_cast(&cstr);
         str::raw::from_c_str(cstr)
     }
@@ -85,16 +96,22 @@ pub fn get_error() -> ~str {
 
 pub fn set_error(s: &str) {
     str::as_buf(s, |buf, _len| {
-        // FIXME: Converting sbuf to *c_char
-        let buf = unsafe { cast::reinterpret_cast(&buf) };
-        ll::error::SDL_SetError(buf)
+        unsafe {
+            // FIXME: Converting sbuf to *c_char
+            let buf = cast::reinterpret_cast(&buf);
+            ll::error::SDL_SetError(buf)
+        }
     });
 }
 
 pub fn error(code: ErrorFlag) {
-    ll::error::SDL_Error(code as ll::error::SDL_errorcode)
+    unsafe {
+        ll::error::SDL_Error(code as ll::error::SDL_errorcode)
+    }
 }
 
 pub fn clear_error() {
-    ll::error::SDL_ClearError()
+    unsafe {
+        ll::error::SDL_ClearError()
+    }
 }
