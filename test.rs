@@ -54,7 +54,7 @@ mod general {
         clear_error();
         assert str::is_empty(get_error());
         error(ENoMem);
-        assert str::is_not_empty(get_error());
+        assert (str::is_empty(get_error()) == false);
     }
 
     pub fn test_clear_error() {
