@@ -106,6 +106,16 @@ pub mod event {
         keysym: ll::keyboard::SDL_keysym
     }
 
+    pub struct SDL_MouseMotionEvent {
+        type_: SDL_EventType,
+        which: u8,
+        state: u8,
+        x: u16,
+        y: u16,
+        xrel: i16,
+        yrel: i16
+    }
+
     extern {
         fn SDL_PollEvent(event: *SDL_Event) -> c_int;
     }
