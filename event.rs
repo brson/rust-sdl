@@ -9,6 +9,7 @@ use core::libc::c_int;
 pub enum Event {
     pub KeyDownEvent(KeyboardEvent),
     pub KeyUpEvent(KeyboardEvent),
+    pub MouseMotionEvent(MouseMotionEvent),
     pub QuitEvent,
     pub NoEvent
 }
@@ -19,6 +20,16 @@ pub struct KeyboardEvent {
     state: u8,
     keycode: keyboard::Key,
     modifier: keyboard::CombinedModifier 
+}
+
+#[deriving_eq]
+pub struct MouseMotionEvent {
+    which: u8,
+    state: u8,
+    x: u16,
+    y: u16,
+    xrel: i16,
+    yrel: i16
 }
 
 fn null_event() -> ll::event::SDL_Event {
@@ -63,6 +74,10 @@ pub fn poll_event() -> Event {
             SDL_KEYUP => {
                 let raw_kb_event: &SDL_KeyboardEvent = transmute(&raw_event);
                 KeyUpEvent(raw_kb_event.to_hl())
+            }
+            SDL_MOUSEMOTION => {
+                let raw_mouse_event: &SDL_MouseMotionEvent = transmute(&raw_event);
+                MouseMotionEvent(raw_mouse_event.to_hl())
             }
             _ => NoEvent
         }
