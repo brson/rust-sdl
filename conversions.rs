@@ -19,3 +19,16 @@ pub impl ll::event::SDL_KeyboardEvent: ToHl<event::KeyboardEvent> {
         }
     }
 }
+
+pub impl ll::event::SDL_MouseMotionEvent: ToHl<event::MouseMotionEvent> {
+    pub fn to_hl(&self) -> event::MouseMotionEvent {
+        event::MouseMotionEvent {
+            which: self.which,
+            state: self.state,
+            x: self.x,
+            y: self.y,
+            xrel: self.xrel,
+            yrel: self.yrel
+        }
+    }
+}
