@@ -14,7 +14,7 @@ pub impl ll::event::SDL_KeyboardEvent: ToHl<event::KeyboardEvent> {
         event::KeyboardEvent {
             window_id: self.which,
             state: self.state,
-            keycode: unsafe{ cast::transmute(self.keysym.sym as u64) },
+            keycode: unsafe{ cast::transmute(self.keysym.sym as uint) },
             modifier: unsafe{ cast::transmute(self.keysym.mod_ as u32) }
         }
     }
