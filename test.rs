@@ -93,13 +93,13 @@ mod test_event {
                           keydown = true;
                           assert keyboard.keycode != keyboard::SDLKUnknown;
                       },
-                      event::QuitEvent => fail,
+                      event::QuitEvent => fail!(~"Explicit quit"),
                       _ => { }
                     }
                 }
             }
             result::Err(_) => {
-                fail;
+                fail!(~"Failed to set video mode");
             }
         }
     }

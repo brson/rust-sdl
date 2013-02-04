@@ -51,11 +51,11 @@ pub impl Surface {
     /// Locks a surface so that the pixels can be directly accessed safely.
     fn with_lock<R>(&self, f: &fn(pixels: &mut [u8]) -> R) -> R {
         unsafe {
-            if ll::video::SDL_LockSurface(self.raw_surface) != 0 { fail; }
+            if ll::video::SDL_LockSurface(self.raw_surface) != 0 { fail!(~"Could not lock surface"); }
             let len = (*self.raw_surface).pitch as uint * ((*self.raw_surface).h as uint);
             let pixels: &mut [u8] = transmute(((*self.raw_surface).pixels, len));
             let rv = f(pixels);
-            if ll::video::SDL_UnlockSurface(self.raw_surface) != 0 { fail; }
+            if ll::video::SDL_UnlockSurface(self.raw_surface) != 0 { fail!(~"Could not unlock surface"); }
             rv
         }
     }
