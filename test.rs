@@ -19,6 +19,7 @@ fn start_tests() {
         //general::test_error,
         //general::test_clear_error,
         test_video::test_set_video_mode,
+        test_video::test_with_lock,
         // FIXME: Doesn't work when called from a directory that
         // doesn't contain the test image file
         //test_video::test_blit,
@@ -145,6 +146,38 @@ mod test_video {
                 };
             },
             result::Err(_) => ()
+        };
+    }
+
+    pub fn test_with_lock() {
+        let maybe_screen = ::video::set_video_mode(320, 200, 32,
+            ~[::video::SWSurface], ~[::video::DoubleBuf]);
+
+        assert result::is_ok(&maybe_screen);
+
+        match maybe_screen {
+            result::Ok(screen) => {
+                //Set all the pixels to green
+                do screen.with_lock |raw| {
+                    for uint::range(0, raw.len() / 4) |idx| {
+                        let true_idx = idx * 4;
+                        raw[true_idx] = 0;
+                        raw[true_idx + 1] = 0xFF;
+                        raw[true_idx + 2] = 0;
+                        raw[true_idx + 3] = 0xFF;
+                    }
+                }
+                //Then check that it makes sense
+                do screen.with_lock |raw| {
+                    //Check the 23rd pixel
+                    let start = 23 * 4;
+                    assert raw[start] == 0;
+                    assert raw[start + 1] == 0xFF;
+                    assert raw[start + 2] == 0;
+                    assert raw[start + 3] == 0xFF;
+                }
+            },
+            result::Err(message) => fail!(message)
         };
     }
 }
