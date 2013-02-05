@@ -55,7 +55,7 @@ pub impl Surface {
             let len = (*self.raw_surface).pitch as uint * ((*self.raw_surface).h as uint);
             let pixels: &mut [u8] = transmute(((*self.raw_surface).pixels, len));
             let rv = f(pixels);
-            if ll::video::SDL_UnlockSurface(self.raw_surface) != 0 { fail!(~"Could not unlock surface"); }
+            ll::video::SDL_UnlockSurface(self.raw_surface);
             rv
         }
     }
@@ -66,9 +66,9 @@ pub impl Surface {
         }
     }
 
-    fn unlock(&self) -> bool {
+    fn unlock(&self) {
         unsafe {
-            return ll::video::SDL_UnlockSurface(self.raw_surface) == 0 as c_int;
+            ll::video::SDL_UnlockSurface(self.raw_surface);
         }
     }
 

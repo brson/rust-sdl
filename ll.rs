@@ -486,7 +486,7 @@ pub mod video {
                                 Rmask: uint32_t, Gmask: uint32_t, Bmask: uint32_t, Amask: uint32_t) -> *SDL_Surface;
         fn SDL_FillRect(dst: *SDL_Surface, dstrect: *Rect, color: uint32_t) -> c_int;
         fn SDL_LockSurface(surface: *SDL_Surface) -> c_int;
-        fn SDL_UnlockSurface(surface: *SDL_Surface) -> c_int;
+        fn SDL_UnlockSurface(surface: *SDL_Surface);
         fn SDL_GL_SwapBuffers();
     }
 }
