@@ -28,6 +28,7 @@ pub enum VideoModeFlag {
 
 pub struct Surface {
     priv raw_surface: *ll::video::SDL_Surface,
+    priv needs_freeing: bool
 }
 
 pub impl Surface {
@@ -37,7 +38,7 @@ pub impl Surface {
             if raw_surface == ptr::null() {
                 Err(sdl::get_error())
             } else {
-                Ok(~Surface{ raw_surface: raw_surface })
+                Ok(~Surface{ raw_surface: raw_surface, needs_freeing: true })
             }
         }
     }
@@ -107,15 +108,15 @@ pub impl Surface {
 
 pub impl Surface : Drop {
     pub fn finalize(&self) {
-        unsafe {
-            ll::video::SDL_FreeSurface(self.raw_surface)
+        if self.needs_freeing {
+            unsafe {
+                ll::video::SDL_FreeSurface(self.raw_surface)
+            }
         }
     }
 }
 
 
-//FIXME: This needs to be called multiple times on window resize, so Drop is going to do bad things, possibly. Test it out.
-//Consider making videomode surfaces their own type, with a reset method?
 pub fn set_video_mode(
     width: int,
     height: int,
@@ -138,7 +139,7 @@ pub fn set_video_mode(
         if raw_surface == ptr::null() {
             Err(sdl::get_error())
         } else {
-            Ok(~Surface{ raw_surface: raw_surface })
+            Ok(~Surface{ raw_surface: raw_surface, needs_freeing: false })
         }
     }
 }
@@ -156,7 +157,7 @@ pub fn load_bmp(file: &str) -> Result<~Surface, ~str> {
                 if raw_surface == ptr::null() {
                     Err(sdl::get_error())
                 } else {
-                    Ok(~Surface{ raw_surface: raw_surface })
+                    Ok(~Surface{ raw_surface: raw_surface, needs_freeing: true })
                 }
             }
         })
@@ -179,7 +180,7 @@ pub fn create_rgb_surface(
         if raw_surface == ptr::null() {
             Err(sdl::get_error())
         } else {
-            Ok(~Surface{ raw_surface: raw_surface })
+            Ok(~Surface{ raw_surface: raw_surface, needs_freeing: true })
         }
     }
 }
