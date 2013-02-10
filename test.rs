@@ -94,13 +94,13 @@ mod test_event {
                           keydown = true;
                           assert keyboard.keycode != keyboard::SDLKUnknown;
                       },
-                      event::QuitEvent => fail!(~"Explicit quit"),
+                      event::QuitEvent => die!(~"Explicit quit"),
                       _ => { }
                     }
                 }
             }
             result::Err(_) => {
-                fail!(~"Failed to set video mode");
+                die!(~"Failed to set video mode");
             }
         }
     }
@@ -177,7 +177,7 @@ mod test_video {
                     assert raw[start + 3] == 0xFF;
                 }
             },
-            result::Err(message) => fail!(message)
+            result::Err(message) => die!(message)
         };
     }
 }
