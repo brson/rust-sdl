@@ -4,6 +4,26 @@ Low-level bindings
 
 */
 
+// This "extern" block is just for setting up linking.
+#[cfg(target_os="macos")]
+mod mac {
+    #[cfg(mac_framework)]
+    #[link_args="-framework SDL"]
+    extern {}
+
+    #[cfg(mac_dylib)]
+    #[link_args="-lSDL"]
+    extern {}
+}
+
+#[cfg(target_os="win32")]
+#[cfg(target_os="linux")]
+#[cfg(target_os="freebsd")]
+mod others {
+    #[link_args="-lSDL"]
+    extern {}
+}
+
 pub mod error {
 
     use core::libc::{c_char, c_int};
@@ -42,7 +62,7 @@ pub mod sdl {
     pub const SDL_INIT_EVENTTHREAD: SDL_InitFlag   = 0x01000000;
     pub const SDL_INIT_EVERYTHING: SDL_InitFlag    = 0x0000FFFF;
 
-    extern mod SDL{ // Note: Rust chokes if this is unspecified, whereas it's fine elsewhere. Go figure.
+    extern {
         fn SDL_Init(flags: SDL_InitFlag) -> c_int;
         fn SDL_InitSubSystem(flags: SDL_InitFlag) -> c_int;
         fn SDL_QuitSubSystem(flags: SDL_InitFlag);

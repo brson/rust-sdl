@@ -19,6 +19,13 @@ UNAME=$(shell uname)
 
 ifeq ($(UNAME),Darwin)
 SDLXMAIN=libSDLXmain.a
+
+ifeq (%SDL_MODE%,framework)
+RUSTFLAGS+=--cfg mac_framework
+else
+RUSTFLAGS+=--cfg mac_dylib
+endif
+
 else
 SDLXMAIN=
 endif
