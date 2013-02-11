@@ -16,7 +16,11 @@ pub mod util;
 pub mod event;
 pub mod video;
 pub mod keyboard;
+pub mod audio;
 pub mod start;
+
+#[cfg(mixer)]
+pub mod mixer;
 
 #[cfg(test)]
 mod test;
