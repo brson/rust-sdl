@@ -37,31 +37,31 @@ pub enum ErrorFlag {
 
 pub fn init(flags: &[InitFlag]) -> bool {
     unsafe {
-        (ll::sdl::SDL::SDL_Init(init_flags_to_bitfield(flags)) == 0 as c_int)
+        (ll::sdl::SDL_Init(init_flags_to_bitfield(flags)) == 0 as c_int)
     }
 }
 
 pub fn init_subsystem(flags: &[InitFlag]) -> bool {
     unsafe {
-        (ll::sdl::SDL::SDL_InitSubSystem(init_flags_to_bitfield(flags)) == 0 as c_int)
+        (ll::sdl::SDL_InitSubSystem(init_flags_to_bitfield(flags)) == 0 as c_int)
     }
 }
 
 pub fn quit_subsystem(flags: &[InitFlag]) {
     unsafe {
-        ll::sdl::SDL::SDL_QuitSubSystem(init_flags_to_bitfield(flags))
+        ll::sdl::SDL_QuitSubSystem(init_flags_to_bitfield(flags))
     }
 }
 
 pub fn quit() {
     unsafe {
-        ll::sdl::SDL::SDL_Quit()
+        ll::sdl::SDL_Quit()
     }
 }
 
 pub fn was_init(flags: &[InitFlag]) -> ~[InitFlag] {
     unsafe {
-        let bitflags = ll::sdl::SDL::SDL_WasInit(init_flags_to_bitfield(flags));
+        let bitflags = ll::sdl::SDL_WasInit(init_flags_to_bitfield(flags));
         let all_flags = ~[
             InitTimer,
             InitAudio,
