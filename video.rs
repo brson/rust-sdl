@@ -32,6 +32,10 @@ pub struct Surface {
 }
 
 pub impl Surface {
+    static fn from_raw(raw_surface : *ll::video::SDL_Surface) -> ~Surface {
+        ~Surface{ raw_surface: raw_surface, needs_freeing: true }
+    }
+
     fn display_format(&self) -> Result<~Surface, ~str> {
         unsafe {
             let raw_surface = ll::video::SDL_DisplayFormat(self.raw_surface);

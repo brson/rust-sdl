@@ -510,3 +510,12 @@ pub mod video {
         fn SDL_GL_SwapBuffers();
     }
 }
+
+pub mod img {
+    use ll;
+    use core::libc::{c_char, c_int, c_void};
+
+    extern mod SDL_image {
+        fn IMG_Load(file: *c_char) -> *ll::video::SDL_Surface;
+    }
+}
