@@ -511,6 +511,7 @@ pub mod video {
     }
 }
 
+#[cfg(image)]
 pub mod img {
     use ll;
     use core::libc::{c_char, c_int, c_void};
