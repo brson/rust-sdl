@@ -1,7 +1,7 @@
 VPATH=%VPATH%
 
 RUSTC ?= rustc
-RUSTFLAGS ?= --cfg image
+RUSTFLAGS ?= --cfg image --cfg mixer
 SDL_PREFIX ?= /usr/local/lib
 AR ?= ar
 CHMOD ?= chmod
