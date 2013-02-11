@@ -510,3 +510,38 @@ pub mod video {
         fn SDL_GL_SwapBuffers();
     }
 }
+
+pub mod audio {
+    pub const AUDIO_U8: u16     = 0x0008;
+    pub const AUDIO_S8: u16     = 0x8008;
+    pub const AUDIO_U16LSB: u16 = 0x0010;
+    pub const AUDIO_S16LSB: u16 = 0x8010;
+    pub const AUDIO_U16MSB: u16 = 0x1010;
+    pub const AUDIO_S16MSB: u16 = 0x9010;
+    pub const AUDIO_U16: u16 = AUDIO_U16LSB;
+    pub const AUDIO_S16: u16 = AUDIO_S16LSB;
+}
+
+#[cfg(mixer)]
+pub mod mixer {
+    use core::libc::c_int;
+
+    pub struct Mix_Chunk {
+        allocated: c_int,
+        abuf: *u8,
+        alen: u32,
+        volume: u8,
+    }
+
+    #[link_args="-lSDL_mixer"]
+    extern {
+        fn Mix_OpenAudio(frequency: c_int, format: u16, channels: c_int, chunksize: c_int)
+                      -> c_int;
+        fn Mix_QuerySpec(frequency: *mut c_int, format: *mut u16, channels: *mut c_int) -> c_int;
+        fn Mix_PlayChannelTimed(channel: c_int, chunk: *Mix_Chunk, loops: c_int, ticks: c_int)
+                             -> c_int;
+        fn Mix_GetChunk(channel: c_int) -> *Mix_Chunk;
+        fn Mix_CloseAudio();
+    }
+}
+
