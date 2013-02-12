@@ -538,6 +538,8 @@ pub mod mixer {
         fn Mix_OpenAudio(frequency: c_int, format: u16, channels: c_int, chunksize: c_int)
                       -> c_int;
         fn Mix_QuerySpec(frequency: *mut c_int, format: *mut u16, channels: *mut c_int) -> c_int;
+        fn Mix_AllocateChannels(numchans: c_int) -> c_int;
+        fn Mix_Playing(channel: c_int) -> c_int;
         fn Mix_PlayChannelTimed(channel: c_int, chunk: *Mix_Chunk, loops: c_int, ticks: c_int)
                              -> c_int;
         fn Mix_GetChunk(channel: c_int) -> *Mix_Chunk;
