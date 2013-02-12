@@ -1,6 +1,6 @@
 use audio::AudioFormat;
-use ll::mixer::{Mix_Chunk, Mix_CloseAudio, Mix_GetChunk, Mix_OpenAudio, Mix_PlayChannelTimed};
-use ll::mixer::{Mix_QuerySpec};
+use ll::mixer::{Mix_AllocateChannels, Mix_Chunk, Mix_CloseAudio, Mix_GetChunk, Mix_OpenAudio, };
+use ll::mixer::{Mix_PlayChannelTimed, Mix_Playing, Mix_QuerySpec};
 
 use core::cast::transmute;
 use core::libc::{c_int, malloc, size_t};
@@ -91,6 +91,43 @@ pub fn open(frequency: c_int, format: AudioFormat, channels: Channels, chunksize
 pub fn close() {
     unsafe {
         Mix_CloseAudio()
+    }
+}
+
+struct Query {
+    frequency: c_int,
+    format: AudioFormat,
+    channels: Channels,
+}
+
+pub fn query() -> Option<Query> {
+    unsafe {
+        let mut frequency = 0;
+        let mut ll_format = 0;
+        let mut ll_channels = 0;
+        if Mix_QuerySpec(&mut frequency, &mut ll_format, &mut ll_channels) == 0 {
+            return None;
+        }
+        Some(Query {
+            frequency: frequency,
+            format: AudioFormat::from_ll_format(ll_format),
+            channels: if ll_channels == 1 { Mono } else { Stereo }
+        })
+    }
+}
+
+pub fn allocate_channels(numchans: c_int) -> c_int {
+    unsafe {
+        Mix_AllocateChannels(numchans)
+    }
+}
+
+pub fn playing(channel: Option<c_int>) -> bool {
+    unsafe {
+        match channel {
+            Some(channel) => Mix_Playing(channel) as bool,
+            None => Mix_Playing(-1) as bool
+        }
     }
 }
 
