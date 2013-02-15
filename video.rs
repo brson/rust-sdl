@@ -110,7 +110,7 @@ pub impl Surface {
     }
 }
 
-pub impl Surface : Drop {
+pub impl Drop for Surface {
     pub fn finalize(&self) {
         if self.needs_freeing {
             unsafe {

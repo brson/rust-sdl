@@ -9,7 +9,7 @@ pub trait ToHl<T> {
     fn to_hl(&self) -> T;
 }
 
-pub impl ll::event::SDL_KeyboardEvent: ToHl<event::KeyboardEvent> {
+pub impl ToHl<event::KeyboardEvent> for ll::event::SDL_KeyboardEvent {
     pub fn to_hl(&self) -> event::KeyboardEvent {
         event::KeyboardEvent {
             window_id: self.which,
@@ -20,7 +20,7 @@ pub impl ll::event::SDL_KeyboardEvent: ToHl<event::KeyboardEvent> {
     }
 }
 
-pub impl ll::event::SDL_MouseMotionEvent: ToHl<event::MouseMotionEvent> {
+pub impl ToHl<event::MouseMotionEvent> for ll::event::SDL_MouseMotionEvent {
     pub fn to_hl(&self) -> event::MouseMotionEvent {
         event::MouseMotionEvent {
             which: self.which,
