@@ -1,5 +1,6 @@
 use core::libc::c_int;
 
+#[deriving_eq]
 pub enum Key {
     pub SDLKUnknown = 0,
     pub SDLKBackspace = 8,
@@ -235,18 +236,9 @@ pub enum Key {
     pub SDLKUndo = 322,
 }
 
-impl Key: cmp::Eq {
-    pure fn eq(&self, other: &Key) -> bool {
-        *self as u64 == *other as u64
-    }
-
-    pure fn ne(&self, other: &Key) -> bool {
-        !self.eq(other)
-    }
-}
-
 pub type CombinedModifier = u32;
 
+#[deriving_eq]
 pub enum Mod {
     pub KMODNone            = 0x0000,
     pub KMODLShift          = 0x0001,
@@ -263,12 +255,3 @@ pub enum Mod {
     pub KMODReserved        = 0x8000
 }
 
-impl Mod: cmp::Eq {
-    pure fn eq(&self, other: &Mod) -> bool {
-        *self as u32 == *other as u32
-    }
-
-    pure fn ne(&self, other: &Mod) -> bool {
-        !self.eq(other)
-    }
-}
