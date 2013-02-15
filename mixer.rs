@@ -27,7 +27,7 @@ impl Drop for Chunk {
             let ll_chunk_addr: *Mix_Chunk = &self.ll_chunk;
             for uint::range(0, channels as uint) |ch| {
                 if Mix_GetChunk(ch as i32) == ll_chunk_addr {
-                    die!(~"attempt to free a channel that's playing!")
+                    fail!(~"attempt to free a channel that's playing!")
                 }
             }
         }

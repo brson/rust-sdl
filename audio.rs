@@ -28,7 +28,7 @@ impl AudioFormat {
             AUDIO_S16LSB => S16LsbAudioFormat,
             AUDIO_U16MSB => U16MsbAudioFormat,
             AUDIO_S16MSB => S16MsbAudioFormat,
-            _ => die!(~"unexpected format")
+            _ => fail!(~"unexpected format")
         }
     }
 }
