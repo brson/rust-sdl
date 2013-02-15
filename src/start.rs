@@ -49,4 +49,3 @@ pub fn start(main: MainFunction) {
 extern {
     fn SDLX_main(argc: c_int, argv: **c_char) -> c_int;
 }
-

@@ -1,0 +1,33 @@
+#[link(name = "sdl",
+       vers = "0.3.0",
+       uuid = "0ce89b41-2f92-459e-bbc1-8f5fe32f16cf",
+       url = "http://github.com/brson/rust-sdl")];
+
+#[comment = "SDL bindings"];
+#[license = "MIT"];
+#[crate_type = "lib"];
+
+extern mod std;
+
+pub mod audio;
+pub mod cd;
+pub mod event;
+pub mod joy;
+pub mod sdl;
+pub mod mouse;
+pub mod start;
+pub mod video;
+pub mod wm;
+
+#[cfg(image)]
+pub mod img;
+
+#[cfg(mixer)]
+pub mod mixer;
+
+// FIXME: Glob export video and event (rustc breaks)
+pub use sdl::{Rect, InitTimer, InitAudio, InitVideo, InitCDRom, InitJoystick,
+              InitNoParachute, InitEventThread, InitEverything, init, init_subsystem,
+              was_inited, quit, quit_subsystem, set_error, set_error_from_code,
+              get_error, clear_error};
+pub use start = start::start;

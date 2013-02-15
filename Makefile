@@ -1,4 +1,4 @@
-VPATH=%VPATH%
+VPATH=/home/zack/Code/rust-sdl
 
 RUSTC ?= rustc
 RUSTFLAGS ?= --cfg image --cfg mixer
