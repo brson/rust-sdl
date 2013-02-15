@@ -6,6 +6,7 @@ use core::vec;
 use util::init_flags_to_bitfield;
 use ll;
 
+#[deriving_eq]
 pub enum InitFlag {
     InitTimer = 0x00000001,
     InitAudio = 0x00000010,
@@ -16,15 +17,6 @@ pub enum InitFlag {
     InitNoParachute = 0x00100000,
     InitEventThread = 0x01000000,
     InitEverything = 0x0000ffff,
-}
-
-impl InitFlag: cmp::Eq {
-    pure fn eq(&self, other: &InitFlag) -> bool {
-        *self as int == *other as int
-    }
-    pure fn ne(&self, other: &InitFlag) -> bool {
-        !self.eq(other)
-    }
 }
 
 pub enum ErrorFlag {
