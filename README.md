@@ -17,7 +17,7 @@ Rust-SDL uses the MIT license.
 * *SDL_Mixer* and *SDL_Image* - also available through most package managers, or through http://www.libsdl.org/projects/SDL_mixer/ and http://www.libsdl.org/projects/SDL_image/
 
 # Installation
-Clone this repo, run `./configure`, and then `make`. To try the unit tests, *make check*.
+Clone this repo, run `./configure`, and then `make`. To see an example of the code in use, *make demos*.
 If you don't want SDL_Mixer (if you aren't using sound) or SDL_Image (if you're not using image formats other than BMP) then you can exclude them from make by setting `RUSTFLAGS`. For example, if you wish to use just SDL_Image, `RUSTFLAGS="--cfg image" make`
 
 # When things go wrong
