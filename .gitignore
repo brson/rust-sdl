@@ -6,5 +6,5 @@
 *.dSYM
 *.dll
 *.dummy
-sdl-test
+demos
 build

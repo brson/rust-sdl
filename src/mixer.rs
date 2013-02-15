@@ -1,13 +1,34 @@
 use audio::AudioFormat;
-use ll::mixer::{Mix_AllocateChannels, Mix_Chunk, Mix_CloseAudio, Mix_GetChunk, Mix_OpenAudio, };
-use ll::mixer::{Mix_PlayChannelTimed, Mix_Playing, Mix_QuerySpec};
-
 use core::cast::transmute;
 use core::libc::{c_int, malloc, size_t};
 
+pub mod ll {
+    use core::libc::c_int;
+
+    pub struct Mix_Chunk {
+        allocated: c_int,
+        abuf: *u8,
+        alen: u32,
+        volume: u8,
+    }
+
+    #[link_args = "-lSDL_mixer"]
+    pub extern {
+        fn Mix_OpenAudio(frequency: c_int, format: u16, channels: c_int, chunksize: c_int)
+                      -> c_int;
+        fn Mix_QuerySpec(frequency: *mut c_int, format: *mut u16, channels: *mut c_int) -> c_int;
+        fn Mix_AllocateChannels(numchans: c_int) -> c_int;
+        fn Mix_Playing(channel: c_int) -> c_int;
+        fn Mix_PlayChannelTimed(channel: c_int, chunk: *Mix_Chunk, loops: c_int, ticks: c_int)
+                             -> c_int;
+        fn Mix_GetChunk(channel: c_int) -> *Mix_Chunk;
+        fn Mix_CloseAudio();
+    }
+}
+
 pub struct Chunk {
     buffer: ~[u8],
-    priv ll_chunk: Mix_Chunk
+    priv ll_chunk: ll::Mix_Chunk
 }
 
 impl Drop for Chunk {
@@ -20,13 +41,13 @@ impl Drop for Chunk {
             // knowledge of how SDL_mixer works internally should double check this, though.
 
             let mut frequency = 0, format = 0, channels = 0;
-            if Mix_QuerySpec(&mut frequency, &mut format, &mut channels) == 0 {
+            if ll::Mix_QuerySpec(&mut frequency, &mut format, &mut channels) == 0 {
                 channels = 0;
             }
 
-            let ll_chunk_addr: *Mix_Chunk = &self.ll_chunk;
+            let ll_chunk_addr: *ll::Mix_Chunk = &self.ll_chunk;
             for uint::range(0, channels as uint) |ch| {
-                if Mix_GetChunk(ch as i32) == ll_chunk_addr {
+                if ll::Mix_GetChunk(ch as i32) == ll_chunk_addr {
                     fail!(~"attempt to free a channel that's playing!")
                 }
             }
@@ -41,7 +62,7 @@ impl Chunk {
             let buffer_len = buffer.len() as u32;
             Chunk {
                 buffer: buffer,
-                ll_chunk: Mix_Chunk {
+                ll_chunk: ll::Mix_Chunk {
                     allocated: 0,
                     abuf: buffer_addr,
                     alen: buffer_len,
@@ -59,7 +80,7 @@ impl Chunk {
                 None => -1,
                 Some(channel) => channel,
             };
-            Mix_PlayChannelTimed(ll_channel, &self.ll_chunk, loops, ticks)
+            ll::Mix_PlayChannelTimed(ll_channel, &self.ll_chunk, loops, ticks)
         }
     }
 
@@ -80,7 +101,7 @@ impl Channels {
 pub fn open(frequency: c_int, format: AudioFormat, channels: Channels, chunksize: c_int)
          -> Result<(),()> {
     unsafe {
-        if Mix_OpenAudio(frequency, format.to_ll_format(), channels.count(), chunksize) == 0 {
+        if ll::Mix_OpenAudio(frequency, format.to_ll_format(), channels.count(), chunksize) == 0 {
             Ok(())
         } else {
             Err(())
@@ -90,7 +111,7 @@ pub fn open(frequency: c_int, format: AudioFormat, channels: Channels, chunksize
 
 pub fn close() {
     unsafe {
-        Mix_CloseAudio()
+        ll::Mix_CloseAudio()
     }
 }
 
@@ -105,7 +126,7 @@ pub fn query() -> Option<Query> {
         let mut frequency = 0;
         let mut ll_format = 0;
         let mut ll_channels = 0;
-        if Mix_QuerySpec(&mut frequency, &mut ll_format, &mut ll_channels) == 0 {
+        if ll::Mix_QuerySpec(&mut frequency, &mut ll_format, &mut ll_channels) == 0 {
             return None;
         }
         Some(Query {
@@ -118,15 +139,15 @@ pub fn query() -> Option<Query> {
 
 pub fn allocate_channels(numchans: c_int) -> c_int {
     unsafe {
-        Mix_AllocateChannels(numchans)
+        ll::Mix_AllocateChannels(numchans)
     }
 }
 
 pub fn playing(channel: Option<c_int>) -> bool {
     unsafe {
         match channel {
-            Some(channel) => Mix_Playing(channel) as bool,
-            None => Mix_Playing(-1) as bool
+            Some(channel) => ll::Mix_Playing(channel) as bool,
+            None => ll::Mix_Playing(-1) as bool
         }
     }
 }

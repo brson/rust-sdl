@@ -10,7 +10,7 @@ LD ?= ld
 MV ?= mv
 RM ?= rm
 
-RUST_SRC = $(shell find $(VPATH)/. -type f -name '*.rs')
+RUST_SRC = $(shell find $(VPATH)/src/. -type f -name '*.rs')
 
 .PHONY: all
 all: libsdl.dummy
@@ -30,12 +30,12 @@ else
 SDLXMAIN=
 endif
 
-libsdl.dummy: sdl.rc $(RUST_SRC) $(SDLXMAIN)
+libsdl.dummy: src/sdl.rc $(RUST_SRC) $(SDLXMAIN)
 	$(RUSTC) $(RUSTFLAGS) $< -o $@
 	touch $@
 
-sdl-test: sdl.rc $(RUST_SRC) $(SDLXMAIN)
-	$(RUSTC) $(RUSTFLAGS) $< -o $@ --test
+demos: demo/demo.rc libsdl.dummy
+	$(RUSTC) -L . $< -o $@
 
 # Darwin-specific hack to change the name of `main` to `SDLX_main`
 $(SDLXMAIN): $(SDL_PREFIX)/libSDLmain.a
@@ -46,9 +46,9 @@ $(SDLXMAIN): $(SDL_PREFIX)/libSDLmain.a
 	$(CHMOD) u+w $@ || $(RM) -f $@
 	$(AR) -r $@ SDLMain.o || $(RM) -f $@
 
-check: sdl-test
-	./sdl-test
+demo: demos
+	./demos
 
 .PHONY: clean
 clean:
-	rm -f sdl-test *.so *.dylib *.dll *.dummy
+	rm -f sdl-test *.so *.dylib *.dll *.dummy demos
