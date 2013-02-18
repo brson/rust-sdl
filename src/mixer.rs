@@ -1,4 +1,5 @@
-use audio::AudioFormat;
+use audio::{AudioFormat, Channels, Mono, Stereo};
+
 use core::cast::transmute;
 use core::libc::{c_int, malloc, size_t};
 
@@ -23,6 +24,7 @@ pub mod ll {
                              -> c_int;
         fn Mix_GetChunk(channel: c_int) -> *Mix_Chunk;
         fn Mix_CloseAudio();
+        fn Mix_HaltChannel(channel: c_int) -> c_int;
     }
 }
 
@@ -89,15 +91,6 @@ impl Chunk {
     }
 }
 
-pub enum Channels {
-    Mono,
-    Stereo,
-}
-
-impl Channels {
-    pub fn count(self) -> c_int { match self { Mono => 1, Stereo => 2 } }
-}
-
 pub fn open(frequency: c_int, format: AudioFormat, channels: Channels, chunksize: c_int)
          -> Result<(),()> {
     unsafe {
@@ -149,6 +142,12 @@ pub fn playing(channel: Option<c_int>) -> bool {
             Some(channel) => ll::Mix_Playing(channel) as bool,
             None => ll::Mix_Playing(-1) as bool
         }
+    }
+}
+
+pub fn halt_channel(channel: c_int) -> c_int {
+    unsafe {
+        ll::Mix_HaltChannel(channel)
     }
 }
 
