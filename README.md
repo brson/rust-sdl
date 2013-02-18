@@ -4,7 +4,7 @@ Bindings for SDL in Rust
 
 Rust-SDL is a library for talking to SDL from Rust. Low-level C components are wrapped in Rust code to make them more idiomatic and abstract away inappropriate manual memory management.
 
-In addition, it provides optional APIs no a number of common SDL extension libraries.
+In addition, it provides optional APIs to a number of common SDL extension libraries.
 
 Rust-SDL uses the MIT license.
 
