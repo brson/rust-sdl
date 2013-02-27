@@ -3,7 +3,7 @@ use core::libc::{c_char, c_int};
 use core::task::PlatformThread;
 use core::task::local_data;
 use core::task;
-use std::cell::Cell;
+use core::cell::Cell;
 
 type MainFunction = ~fn();
 
