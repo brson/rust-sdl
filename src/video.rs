@@ -110,6 +110,7 @@ pub mod ll {
         fn SDL_RWFromFile(file: *c_schar, mode: *c_schar) -> *SDL_RWops;
         fn SDL_LoadBMP_RW(src: *SDL_RWops, freesrc: c_int) -> *SDL_Surface;
         fn SDL_SaveBMP_RW(surface: *SDL_Surface, dst: *SDL_RWops, freedst: c_int) -> c_int;
+        fn SDL_GL_SwapBuffers();
     }
 }
 
@@ -590,5 +591,12 @@ pub fn get_gamma_ramp() -> ([u16 * 256], [u16 * 256], [u16 * 256]) {
 
     (r, g, b)
 }
+
+pub fn swap_buffers() {
+    unsafe {
+        ll::SDL_GL_SwapBuffers();
+    }
+}
+
 
 // TODO: YUV
