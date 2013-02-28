@@ -125,7 +125,7 @@ pub impl CD {
 	}
 }
 
-pub impl Drop for CD {
+impl Drop for CD {
     pub fn finalize(&self) {
         unsafe { ll::SDL_CDClose(self.raw); }
     }
