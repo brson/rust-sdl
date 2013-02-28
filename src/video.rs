@@ -124,7 +124,7 @@ fn wrap_surface(raw: *ll::SDL_Surface, owned: bool) -> ~Surface {
     ~Surface{ raw: raw, owned: owned }
 }
 
-pub impl Drop for Surface {
+impl Drop for Surface {
     pub fn finalize(&self) {
         unsafe {
             if self.owned {
@@ -199,7 +199,7 @@ pub enum Color {
     RGBA(u8, u8, u8, u8)
 }
 
-pub impl rand::Rand for Color {
+impl rand::Rand for Color {
     static fn rand(rng: rand::Rng) -> Color {
         if rng.gen() { RGBA(rng.gen(), rng.gen(), rng.gen(), rng.gen()) }
         else { RGB(rng.gen(), rng.gen(), rng.gen()) }

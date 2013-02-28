@@ -62,7 +62,7 @@ pub impl Cursor {
 	}
 }
 
-pub impl Drop for Cursor {
+impl Drop for Cursor {
     pub fn finalize(&self) {
         unsafe {
         	if self.owned {
