@@ -7,7 +7,7 @@ use core::libc::{c_int, c_void, uint16_t};
 use core::ptr::null;
 
 pub mod ll {
-    use libc::{c_int, c_void, uint16_t};
+    use core::libc::{c_int, c_void, uint16_t};
 
     pub const AUDIO_U8: uint16_t = 0x0008;
     pub const AUDIO_S8: uint16_t = 0x8008;

@@ -1,12 +1,12 @@
-use libc::{c_int, c_float};
-use rand;
+use core::libc::{c_int, c_float};
+use core::rand;
 use sdl;
 use sdl::Rect;
 
 pub mod ll {
+    use core::libc::{c_void, c_uint, c_int, c_float, c_schar, c_uchar, uint8_t, uint16_t};
+    use core::libc::{uint32_t, int32_t};
     use sdl;
-    use libc::{c_void, c_uint, c_int, c_float, c_schar, c_uchar,
-               uint8_t, uint16_t, uint32_t, int32_t};
 
     pub type SDL_Rect = sdl::Rect;
 

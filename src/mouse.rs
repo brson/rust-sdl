@@ -1,9 +1,11 @@
-use libc::c_int;
 use sdl;
 
+use core::libc::c_int;
+
 pub mod ll {
-	use libc::{c_void, c_int, uint8_t, uint16_t, int16_t};
 	use sdl::Rect;
+
+	use core::libc::{c_void, c_int, uint8_t, uint16_t, int16_t};
 
 	pub const SDL_DISABLE: c_int = 0;
 	pub const SDL_ENABLE: c_int = 1;

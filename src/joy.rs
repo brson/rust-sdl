@@ -1,8 +1,9 @@
-use libc::c_int;
 use sdl;
 
+use core::libc::c_int;
+
 pub mod ll {
-	use libc::{c_void, c_int, c_schar, uint8_t, int16_t};
+	use core::libc::{c_void, c_int, c_schar, uint8_t, int16_t};
 
 	pub type SDL_Joystick = c_void;
 
