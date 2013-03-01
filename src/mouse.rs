@@ -1,9 +1,9 @@
-use sdl;
+use get_error;
 
 use core::libc::c_int;
 
 pub mod ll {
-	use sdl::Rect;
+	use Rect;
 
 	use core::libc::{c_void, c_int, uint8_t, uint16_t, int16_t};
 
@@ -58,7 +58,7 @@ pub impl Cursor {
 				                           w as c_int, h as c_int, hot_x as c_int,
 				                           hot_y as c_int);
 
-				if raw.is_null() { Err(sdl::get_error()) }
+				if raw.is_null() { Err(get_error()) }
 				else { Ok(wrap_cursor(raw, true)) }
 		}
 	}

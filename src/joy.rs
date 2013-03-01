@@ -1,4 +1,4 @@
-use sdl;
+use get_error;
 
 use core::libc::c_int;
 
@@ -62,7 +62,7 @@ pub impl Joystick {
 		unsafe {
 			let raw = ll::SDL_JoystickOpen(index as c_int);
 
-			if raw.is_null() { Err(sdl::get_error()) }
+			if raw.is_null() { Err(get_error()) }
 			else { Ok(wrap_joystick(raw)) }
 		}
 	}

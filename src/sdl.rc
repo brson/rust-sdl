@@ -13,7 +13,6 @@ pub mod audio;
 pub mod cd;
 pub mod event;
 pub mod joy;
-pub mod sdl;
 pub mod mouse;
 pub mod start;
 pub mod video;
@@ -24,6 +23,8 @@ pub mod img;
 
 #[cfg(mixer)]
 pub mod mixer;
+
+mod sdl;
 
 // FIXME: Glob export video and event (rustc breaks)
 pub use sdl::{Rect, InitTimer, InitAudio, InitVideo, InitCDRom, InitJoystick,

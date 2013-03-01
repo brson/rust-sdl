@@ -1,4 +1,4 @@
-use sdl;
+use get_error;
 
 use core::libc::c_int;
 
@@ -82,7 +82,7 @@ pub impl CD {
 		unsafe {
 			let raw = ll::SDL_CDOpen(index as c_int);
 
-			if raw.is_null() { Err(sdl::get_error()) }
+			if raw.is_null() { Err(get_error()) }
 			else { Ok(wrap_cd(raw)) }
 		}
 	}
