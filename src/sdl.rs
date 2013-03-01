@@ -19,7 +19,7 @@ mod others {
 }
 
 pub mod ll {
-    use libc::{c_int, c_uint, c_schar, uint32_t};
+    use core::libc::{c_int, c_uint, c_schar, uint32_t};
 
     pub type SDL_errorcode = c_uint;
     pub const SDL_ENOMEM: SDL_errorcode = 0;
