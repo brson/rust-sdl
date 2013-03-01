@@ -1,10 +1,12 @@
-use video::Surface;
 use sdl;
-use libc::c_int;
+use video::Surface;
+
+use core::libc::c_int;
 
 pub mod ll {
-    use libc::{c_int, c_uint, c_schar};
     use video::ll::SDL_Surface;
+
+    use core::libc::{c_int, c_uint, c_schar};
 
     pub type IMG_InitFlags = c_uint;
 

@@ -1,8 +1,9 @@
-use libc::c_int;
 use sdl;
 
+use core::libc::c_int;
+
 pub mod ll {
-	use libc::{c_int, c_schar, uint8_t, uint16_t, uint32_t};
+	use core::libc::{c_int, c_schar, uint8_t, uint16_t, uint32_t};
 
 	pub type CDstatus = c_int;
 
