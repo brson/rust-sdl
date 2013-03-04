@@ -1,6 +1,6 @@
 use audio::{AudioFormat, Channels, Mono, Stereo};
 use video::ll::SDL_RWFromFile; // XXX refactoring
-use sdl;
+use get_error;
 
 use core::cast::transmute;
 use core::libc::{c_int, malloc, size_t};
@@ -115,7 +115,7 @@ pub impl Chunk {
             }
         };
 
-        if raw.is_null() { Err(sdl::get_error()) }
+        if raw.is_null() { Err(get_error()) }
         else { Ok(~Chunk { data: Allocated(raw) }) }
     }
 
