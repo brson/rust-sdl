@@ -1,5 +1,3 @@
-use sdl;
-
 use core::libc::c_int;
 
 pub mod ll {

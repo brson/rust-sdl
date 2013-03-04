@@ -1,14 +1,16 @@
+use Rect;
+use get_error;
+
 use core::libc::{c_int, c_float};
 use core::rand;
-use sdl;
-use sdl::Rect;
 
 pub mod ll {
+    use Rect;
+
     use core::libc::{c_void, c_uint, c_int, c_float, c_schar, c_uchar, uint8_t, uint16_t};
     use core::libc::{uint32_t, int32_t};
-    use sdl;
 
-    pub type SDL_Rect = sdl::Rect;
+    pub type SDL_Rect = Rect;
 
     priv struct SDL_RWops_Anon {
         priv data: [c_uchar * 24],
@@ -281,7 +283,7 @@ pub fn set_video_mode(w: int, h: int, bpp: int,
         let raw = ll::SDL_SetVideoMode(w as c_int, h as c_int,
                                        bpp as c_int, flags);
 
-        if raw == ptr::null() { Err(sdl::get_error()) }
+        if raw == ptr::null() { Err(get_error()) }
         else { Ok(wrap_surface(raw, false)) }
     }
 }
@@ -313,7 +315,7 @@ pub enum PaletteType {
 pub fn get_video_surface() -> Result<~Surface, ~str> {
     let raw = unsafe { ll::SDL_GetVideoSurface() };
 
-    if raw.is_null() { Err(sdl::get_error()) }
+    if raw.is_null() { Err(get_error()) }
     else { Ok(wrap_surface(raw, false)) }
 }
 
@@ -331,7 +333,7 @@ pub impl Surface {
                                                rmask, gmask, bmask, amask);
 
             if raw == ptr::null() {
-                Err(sdl::get_error())
+                Err(get_error())
             } else {
                 Ok(~Surface { raw: raw, owned: true })
             }
@@ -347,7 +349,7 @@ pub impl Surface {
             }
         };
 
-        if raw.is_null() { Err(sdl::get_error()) }
+        if raw.is_null() { Err(get_error()) }
         else { Ok(wrap_surface(raw, true)) }
     }
 
@@ -445,21 +447,21 @@ pub impl Surface {
                                                   (*other.raw).format,
                                                   flags) };
 
-        if raw.is_null() { Err(sdl::get_error()) }
+        if raw.is_null() { Err(get_error()) }
         else { Ok(wrap_surface(raw, true)) }
     }
 
     fn display_format(&self) -> Result<~Surface, ~str> {
         let raw = unsafe { ll::SDL_DisplayFormat(self.raw) };
 
-        if raw.is_null() { Err(sdl::get_error()) }
+        if raw.is_null() { Err(get_error()) }
         else { Ok(wrap_surface(raw, true)) }
     }
 
     fn display_format_alpha(&self) -> Result<~Surface, ~str> {
         let raw = unsafe { ll::SDL_DisplayFormatAlpha(self.raw) };
 
-        if raw.is_null() { Err(sdl::get_error()) }
+        if raw.is_null() { Err(get_error()) }
         else { Ok(wrap_surface(raw, true)) }
     }
 
@@ -536,7 +538,7 @@ pub impl Surface {
     fn blit_at(&self, src: &Surface, x: i16, y: i16) -> bool {
         let (w, h) = src.get_size();
 
-        self.blit_rect(src, None, Some(sdl::Rect {
+        self.blit_rect(src, None, Some(Rect {
             x: x,
             y: y,
             w: w,
