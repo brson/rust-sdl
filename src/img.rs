@@ -1,4 +1,4 @@
-use sdl;
+use get_error;
 use video::Surface;
 
 use core::libc::c_int;
@@ -55,7 +55,7 @@ pub fn load(file: &Path) -> Result<~Surface, ~str> {
             let raw = ll::IMG_Load(file);
 
             if raw == ptr::null() {
-                Err(sdl::get_error())
+                Err(get_error())
             } else {
                 Ok(~Surface { raw: raw, owned: true })
             }
