@@ -3,6 +3,7 @@ use get_error;
 
 use core::libc::{c_int, c_float};
 use core::rand;
+use core::rand::RngUtil;
 
 pub mod ll {
     use Rect;
@@ -202,7 +203,7 @@ pub enum Color {
 }
 
 impl rand::Rand for Color {
-    static fn rand(rng: rand::Rng) -> Color {
+    static fn rand(rng: @rand::Rng) -> Color {
         if rng.gen() { RGBA(rng.gen(), rng.gen(), rng.gen(), rng.gen()) }
         else { RGB(rng.gen(), rng.gen(), rng.gen()) }
     }

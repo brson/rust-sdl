@@ -184,7 +184,7 @@ pub fn close() {
 
 pub fn mix(dest: &mut [u8], src: &[u8], volume: c_int) {
     unsafe {
-        assert dest.len() == src.len();
+        fail_unless!(dest.len() == src.len());
         SDL_MixAudio(&mut dest[0], &src[0], dest.len() as u32, volume);
     }
 }
