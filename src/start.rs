@@ -1,5 +1,8 @@
+use core::cast::transmute;
 use core::cell::Cell;
+use core::libc::{c_char, c_int};
 use core::task::PlatformThread;
+use core::task::local_data;
 use core::task;
 
 type MainFunction = ~fn();
