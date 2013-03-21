@@ -30,7 +30,7 @@ pub mod ll {
         userdata: *c_void,
     }
 
-    extern {
+    pub extern {
         pub fn SDL_OpenAudio(desired: *mut SDL_AudioSpec, obtained: *mut SDL_AudioSpec) -> c_int;
         pub fn SDL_PauseAudio(pause_on: c_int);
         pub fn SDL_MixAudio(dst: *mut u8, src: *u8, len: u32, volume: c_int);
@@ -52,7 +52,7 @@ pub enum AudioFormat {
 pub const U16AudioFormat: AudioFormat = U16LsbAudioFormat;
 pub const S16AudioFormat: AudioFormat = S16LsbAudioFormat;
 
-impl AudioFormat {
+pub impl AudioFormat {
     fn to_ll_format(self) -> uint16_t {
         match self {
             U8AudioFormat => AUDIO_U8,
