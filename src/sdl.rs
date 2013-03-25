@@ -22,22 +22,22 @@ pub mod ll {
     use core::libc::{c_int, c_uint, c_schar, uint32_t};
 
     pub type SDL_errorcode = c_uint;
-    pub const SDL_ENOMEM: SDL_errorcode = 0;
-    pub const SDL_EFREAD: SDL_errorcode = 1;
-    pub const SDL_EFWRITE: SDL_errorcode = 2;
-    pub const SDL_EFSEEK: SDL_errorcode = 3;
-    pub const SDL_UNSUPPORTED: SDL_errorcode = 4;
-    pub const SDL_LASTERROR: SDL_errorcode = 5;
+    pub static SDL_ENOMEM: SDL_errorcode = 0;
+    pub static SDL_EFREAD: SDL_errorcode = 1;
+    pub static SDL_EFWRITE: SDL_errorcode = 2;
+    pub static SDL_EFSEEK: SDL_errorcode = 3;
+    pub static SDL_UNSUPPORTED: SDL_errorcode = 4;
+    pub static SDL_LASTERROR: SDL_errorcode = 5;
 
     pub type SDL_InitFlag = uint32_t;
-    pub const SDL_INIT_TIMER: SDL_InitFlag = 0x00000001;
-    pub const SDL_INIT_AUDIO: SDL_InitFlag = 0x00000010;
-    pub const SDL_INIT_VIDEO: SDL_InitFlag = 0x00000020;
-    pub const SDL_INIT_CDROM: SDL_InitFlag = 0x00000100;
-    pub const SDL_INIT_JOYSTICK: SDL_InitFlag = 0x00000200;
-    pub const SDL_INIT_NOPARACHUTE: SDL_InitFlag = 0x00100000;
-    pub const SDL_INIT_EVENTTHREAD: SDL_InitFlag = 0x01000000;
-    pub const SDL_INIT_EVERYTHING: SDL_InitFlag = 0x0000FFFF;
+    pub static SDL_INIT_TIMER: SDL_InitFlag = 0x00000001;
+    pub static SDL_INIT_AUDIO: SDL_InitFlag = 0x00000010;
+    pub static SDL_INIT_VIDEO: SDL_InitFlag = 0x00000020;
+    pub static SDL_INIT_CDROM: SDL_InitFlag = 0x00000100;
+    pub static SDL_INIT_JOYSTICK: SDL_InitFlag = 0x00000200;
+    pub static SDL_INIT_NOPARACHUTE: SDL_InitFlag = 0x00100000;
+    pub static SDL_INIT_EVENTTHREAD: SDL_InitFlag = 0x01000000;
+    pub static SDL_INIT_EVERYTHING: SDL_InitFlag = 0x0000FFFF;
 
     pub extern {
         fn SDL_ClearError();
@@ -52,7 +52,7 @@ pub mod ll {
     }
 }
 
-#[deriving_eq]
+#[deriving(Eq)]
 pub struct Rect {
     pub x: i16,
     pub y: i16,
@@ -65,7 +65,7 @@ pub fn Rect(x: i16, y: i16, w: u16, h: u16) -> Rect {
 }
 
 pub impl Rect {
-    static fn new(x: i16, y: i16, w: u16, h: u16) -> Rect {
+    fn new(x: i16, y: i16, w: u16, h: u16) -> Rect {
         Rect {
             x: x,
             y: y,
@@ -75,7 +75,7 @@ pub impl Rect {
     }
 }
 
-#[deriving_eq]
+#[deriving(Eq)]
 pub enum InitFlag {
     pub InitTimer = ll::SDL_INIT_TIMER as int,
     pub InitAudio = ll::SDL_INIT_AUDIO as int,
@@ -87,7 +87,7 @@ pub enum InitFlag {
     pub InitEverything = ll::SDL_INIT_EVERYTHING as int,
 }
 
-#[deriving_eq]
+#[deriving(Eq)]
 pub enum Error {
     pub NoMemError = ll::SDL_ENOMEM as int,
     pub ReadError = ll::SDL_EFREAD as int,

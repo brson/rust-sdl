@@ -7,11 +7,11 @@ pub mod ll {
 
 	pub type CDstatus = c_int;
 
-	pub const CD_TRAYEMPTY: CDstatus = 0;
-	pub const CD_STOPPED: CDstatus = 1;
-	pub const CD_PLAYING: CDstatus = 2;
-	pub const CD_PAUSED: CDstatus = 3;
-	pub const CD_ERROR: CDstatus = -1;
+	pub static CD_TRAYEMPTY: CDstatus = 0;
+	pub static CD_STOPPED: CDstatus = 1;
+	pub static CD_PLAYING: CDstatus = 2;
+	pub static CD_PAUSED: CDstatus = 3;
+	pub static CD_ERROR: CDstatus = -1;
 
 	pub struct SDL_CDtrack {
 	    pub id: uint8_t,
@@ -59,7 +59,7 @@ pub fn get_drive_name(index: int) -> ~str {
 	}
 }
 
-#[deriving_eq]
+#[deriving(Eq)]
 pub struct CD {
 	pub raw: *ll::SDL_CD
 }
@@ -68,7 +68,7 @@ fn wrap_cd(raw: *ll::SDL_CD) -> ~CD {
 	~CD { raw: raw }
 }
 
-#[deriving_eq]
+#[deriving(Eq)]
 pub enum Status {
 	pub TrayEmptyStatus = ll::CD_TRAYEMPTY as int,
 	pub StoppedStatus = ll::CD_STOPPED as int,
@@ -78,7 +78,7 @@ pub enum Status {
 }
 
 pub impl CD {
-	static fn open(index: int) -> Result<~CD, ~str> {
+	fn open(index: int) -> Result<~CD, ~str> {
 		unsafe {
 			let raw = ll::SDL_CDOpen(index as c_int);
 
@@ -89,7 +89,7 @@ pub impl CD {
 
 	fn get_status(&self) -> Status {
 		unsafe {
-			// FIXME: Rust doesn't like us matching using constants here for some reason
+			// FIXME: Rust doesn't like us matching using staticants here for some reason
 			match ll::SDL_CDStatus(self.raw) {
 				0 => TrayEmptyStatus,
 				1 => StoppedStatus,

@@ -48,7 +48,7 @@ pub fn update_joysticks() {
 	unsafe { ll::SDL_JoystickUpdate(); }
 }
 
-#[deriving_eq]
+#[deriving(Eq)]
 pub struct Joystick {
 	pub raw: *ll::SDL_Joystick
 }
@@ -58,7 +58,7 @@ fn wrap_joystick(raw: *ll::SDL_Joystick) -> ~Joystick {
 }
 
 pub impl Joystick {
-	static fn open(index: int) -> Result<~Joystick, ~str> {
+	fn open(index: int) -> Result<~Joystick, ~str> {
 		unsafe {
 			let raw = ll::SDL_JoystickOpen(index as c_int);
 

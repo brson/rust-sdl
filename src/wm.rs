@@ -7,10 +7,10 @@ pub mod ll {
 
 	pub type SDL_GrabMode = c_int;
 
-	pub const SDL_GRAB_QUERY: SDL_GrabMode = -1;
-	pub const SDL_GRAB_OFF: SDL_GrabMode = 0;
-	pub const SDL_GRAB_ON: SDL_GrabMode = 1;
-	pub const SDL_GRAB_FULLSCREEN: SDL_GrabMode = 2;
+	pub static SDL_GRAB_QUERY: SDL_GrabMode = -1;
+	pub static SDL_GRAB_OFF: SDL_GrabMode = 0;
+	pub static SDL_GRAB_ON: SDL_GrabMode = 1;
+	pub static SDL_GRAB_FULLSCREEN: SDL_GrabMode = 2;
 
 	pub extern {
 		fn SDL_WM_SetCaption(title: *c_schar, icon: *c_schar);
@@ -22,7 +22,7 @@ pub mod ll {
 	}
 }
 
-#[deriving_eq]
+#[deriving(Eq)]
 pub enum GrabMode {
 	pub GrabQuery = ll::SDL_GRAB_QUERY as int,
 	pub GrabOff = ll::SDL_GRAB_OFF as int,
