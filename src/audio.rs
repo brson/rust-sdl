@@ -9,14 +9,14 @@ use core::ptr::null;
 pub mod ll {
     use core::libc::{c_int, c_void, uint16_t};
 
-    pub const AUDIO_U8: uint16_t = 0x0008;
-    pub const AUDIO_S8: uint16_t = 0x8008;
-    pub const AUDIO_U16LSB: uint16_t = 0x0010;
-    pub const AUDIO_S16LSB: uint16_t = 0x8010;
-    pub const AUDIO_U16MSB: uint16_t = 0x1010;
-    pub const AUDIO_S16MSB: uint16_t = 0x9010;
-    pub const AUDIO_U16: uint16_t = AUDIO_U16LSB;
-    pub const AUDIO_S16: uint16_t = AUDIO_S16LSB;
+    pub static AUDIO_U8: uint16_t = 0x0008;
+    pub static AUDIO_S8: uint16_t = 0x8008;
+    pub static AUDIO_U16LSB: uint16_t = 0x0010;
+    pub static AUDIO_S16LSB: uint16_t = 0x8010;
+    pub static AUDIO_U16MSB: uint16_t = 0x1010;
+    pub static AUDIO_S16MSB: uint16_t = 0x9010;
+    pub static AUDIO_U16: uint16_t = AUDIO_U16LSB;
+    pub static AUDIO_S16: uint16_t = AUDIO_S16LSB;
 
     pub struct SDL_AudioSpec {
         freq: c_int,
@@ -49,8 +49,8 @@ pub enum AudioFormat {
     S16MsbAudioFormat = AUDIO_S16MSB as int
 }
 
-pub const U16AudioFormat: AudioFormat = U16LsbAudioFormat;
-pub const S16AudioFormat: AudioFormat = S16LsbAudioFormat;
+pub static U16AudioFormat: AudioFormat = U16LsbAudioFormat;
+pub static S16AudioFormat: AudioFormat = S16LsbAudioFormat;
 
 pub impl AudioFormat {
     fn to_ll_format(self) -> uint16_t {
@@ -63,7 +63,7 @@ pub impl AudioFormat {
             S16MsbAudioFormat => AUDIO_S16MSB,
         }
     }
-    static fn from_ll_format(x: uint16_t) -> AudioFormat {
+    fn from_ll_format(x: uint16_t) -> AudioFormat {
         match x {
             AUDIO_U8 => U8AudioFormat,
             AUDIO_S8 => S8AudioFormat,
@@ -76,15 +76,15 @@ pub impl AudioFormat {
     }
 }
 
-#[deriving_eq]
+#[deriving(Eq)]
 pub enum Channels {
     Mono,
     Stereo,
 }
 
 impl Channels {
-    static pub fn new(count: c_int) -> Channels { if count == 1 { Mono } else { Stereo } }
-    pub fn count(self) -> c_int                 { match self { Mono => 1, Stereo => 2 } }
+    pub fn new(count: c_int) -> Channels { if count == 1 { Mono } else { Stereo } }
+    pub fn count(self) -> c_int          { match self { Mono => 1, Stereo => 2 } }
 }
 
 pub type AudioCallback = ~fn(&mut [u8]);
@@ -126,7 +126,7 @@ pub struct ObtainedAudioSpec {
 }
 
 impl ObtainedAudioSpec {
-    static fn from_ll_spec(spec: &ll::SDL_AudioSpec) -> ObtainedAudioSpec {
+    fn from_ll_spec(spec: &ll::SDL_AudioSpec) -> ObtainedAudioSpec {
         ObtainedAudioSpec {
             freq: spec.freq,
             format: AudioFormat::from_ll_format(spec.format),
