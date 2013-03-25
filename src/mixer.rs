@@ -86,7 +86,7 @@ impl Drop for Chunk {
 }
 
 pub impl Chunk {
-    static pub fn new(buffer: ~[u8], volume: u8) -> ~Chunk {
+    pub fn new(buffer: ~[u8], volume: u8) -> ~Chunk {
         unsafe {
             let buffer_addr: *u8 = transmute(&buffer[0]);
             let buffer_len = buffer.len() as u32;
@@ -106,7 +106,7 @@ pub impl Chunk {
         }
     }
 
-    static fn from_wav(path: &Path) -> Result<~Chunk, ~str> {
+    fn from_wav(path: &Path) -> Result<~Chunk, ~str> {
         let raw = unsafe {
             do str::as_c_str(path.to_str()) |buf| {
                 do str::as_c_str("rb") |mode_buf| {

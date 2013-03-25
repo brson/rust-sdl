@@ -117,7 +117,7 @@ pub mod ll {
     }
 }
 
-#[deriving_eq]
+#[deriving(Eq)]
 pub struct Surface {
     pub raw: *ll::SDL_Surface,
     pub owned: bool
@@ -137,7 +137,7 @@ impl Drop for Surface {
     }
 }
 
-#[deriving_eq]
+#[deriving(Eq)]
 pub struct Palette {
     colors: ~[Color]
 }
@@ -153,7 +153,7 @@ fn unwrap_palette(palette: &Palette) -> ll::SDL_Palette {
     }
 }
 
-#[deriving_eq]
+#[deriving(Eq)]
 pub struct PixelFormat {
     pub palette: Palette,
     pub bpp: u8,
@@ -196,21 +196,21 @@ fn unwrap_pixel_format(fmt: &PixelFormat) -> ll::SDL_PixelFormat {
     }
 }
 
-#[deriving_eq]
+#[deriving(Eq)]
 pub enum Color {
     RGB(u8, u8, u8),
     RGBA(u8, u8, u8, u8)
 }
 
 impl rand::Rand for Color {
-    static fn rand(rng: @rand::Rng) -> Color {
+    fn rand(rng: @rand::Rng) -> Color {
         if rng.gen() { RGBA(rng.gen(), rng.gen(), rng.gen(), rng.gen()) }
         else { RGB(rng.gen(), rng.gen(), rng.gen()) }
     }
 }
 
 pub impl Color {
-    static fn from_mapped(bit: u32, fmt: *ll::SDL_PixelFormat) -> Color {
+    fn from_mapped(bit: u32, fmt: *ll::SDL_PixelFormat) -> Color {
         let r = 0;
         let g = 0;
         let b = 0;
@@ -248,7 +248,7 @@ pub impl Color {
     }
 }
 
-#[deriving_eq]
+#[deriving(Eq)]
 pub enum SurfaceFlag {
     SWSurface = 0x00000000,
     HWSurface = 0x00000001,
@@ -258,7 +258,7 @@ pub enum SurfaceFlag {
     RLEAccel = 0x00004000
 }
 
-#[deriving_eq]
+#[deriving(Eq)]
 pub enum VideoFlag {
     AnyFormat = 0x10000000,
     HWPalette = 0x20000000,
@@ -323,7 +323,7 @@ pub fn get_video_surface() -> Result<~Surface, ~str> {
 // TODO: get_video_modes, get_video_driver_name, get_video_info
 
 pub impl Surface {
-    static fn new(surface_flags: &[SurfaceFlag], width: int, height: int, bpp: int,
+    fn new(surface_flags: &[SurfaceFlag], width: int, height: int, bpp: int,
                   rmask: u32, gmask: u32, bmask: u32, amask: u32) -> Result<~Surface, ~str> {
         let flags = vec::foldl(0, surface_flags, |flags, flag| {
             flags | *flag as u32
@@ -341,7 +341,7 @@ pub impl Surface {
         }
     }
 
-    static fn from_bmp(path: &Path) -> Result<~Surface, ~str> {
+    fn from_bmp(path: &Path) -> Result<~Surface, ~str> {
         let raw = unsafe {
             do str::as_c_str(path.to_str()) |buf| {
                 do str::as_c_str("rb") |mode_buf| {

@@ -7,9 +7,9 @@ pub mod ll {
 
 	use core::libc::{c_void, c_int, uint8_t, uint16_t, int16_t};
 
-	pub const SDL_DISABLE: c_int = 0;
-	pub const SDL_ENABLE: c_int = 1;
-	pub const SDL_QUERY: c_int = -1;
+	pub static SDL_DISABLE: c_int = 0;
+	pub static SDL_ENABLE: c_int = 1;
+	pub static SDL_QUERY: c_int = -1;
 
 	pub type WMcursor = c_void;
 	pub struct SDL_Cursor {
@@ -37,7 +37,7 @@ fn warp_mouse(x: u16, y: u16) {
 	unsafe { ll::SDL_WarpMouse(x, y); }
 }
 
-#[deriving_eq]
+#[deriving(Eq)]
 pub struct Cursor {
 	pub raw: *ll::SDL_Cursor,
 	pub owned: bool
@@ -51,7 +51,7 @@ fn wrap_cursor(raw: *ll::SDL_Cursor, owned: bool) -> ~Cursor {
 }
 
 pub impl Cursor {
-	static fn new(data: &[u8], mask: &[u8], w: int, h: int,
+	fn new(data: &[u8], mask: &[u8], w: int, h: int,
 		          hot_x: int, hot_y: int) -> Result<~Cursor, ~str> {
 		unsafe {
 			let raw = ll::SDL_CreateCursor(vec::raw::to_ptr(data), vec::raw::to_ptr(mask),
