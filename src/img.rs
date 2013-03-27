@@ -10,10 +10,10 @@ pub mod ll {
 
     pub type IMG_InitFlags = c_uint;
 
-    pub const IMG_INIT_JPG: IMG_InitFlags = 1;
-    pub const IMG_INIT_PNG: IMG_InitFlags = 2;
-    pub const IMG_INIT_TIF: IMG_InitFlags = 4;
-    pub const IMG_INIT_WEBP: IMG_InitFlags = 8;
+    pub static IMG_INIT_JPG: IMG_InitFlags = 1;
+    pub static IMG_INIT_PNG: IMG_InitFlags = 2;
+    pub static IMG_INIT_TIF: IMG_InitFlags = 4;
+    pub static IMG_INIT_WEBP: IMG_InitFlags = 8;
 
     #[link_args = "-lSDL_image"]
     pub extern {
@@ -23,7 +23,7 @@ pub mod ll {
     }
 }
 
-#[deriving_eq]
+#[deriving(Eq)]
 pub enum InitFlag {
     InitJPG = ll::IMG_INIT_JPG as int,
     InitPNG = ll::IMG_INIT_PNG as int,

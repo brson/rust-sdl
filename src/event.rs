@@ -7,13 +7,13 @@ pub mod ll {
     pub type SDLMod = c_uint;
     pub type SDL_SysWMmsg = c_void;
 
-    pub const SDL_DISABLE: c_int = 0;
-    pub const SDL_ENABLE: c_int = 1;
-    pub const SDL_QUERY: c_int = -1;
+    pub static SDL_DISABLE: c_int = 0;
+    pub static SDL_ENABLE: c_int = 1;
+    pub static SDL_QUERY: c_int = -1;
 
-    pub const SDL_APPMOUSEFOCUS: c_int = 0x01;
-    pub const SDL_APPINPUTFOCUS: c_int = 0x02;
-    pub const SDL_APPACTIVE: c_int = 0x04;
+    pub static SDL_APPMOUSEFOCUS: c_int = 0x01;
+    pub static SDL_APPINPUTFOCUS: c_int = 0x02;
+    pub static SDL_APPACTIVE: c_int = 0x04;
 
     pub struct SDL_keysym {
         pub scancode: uint8_t,
@@ -187,7 +187,7 @@ pub mod ll {
     }
 }
 
-#[deriving_eq]
+#[deriving(Eq)]
 pub enum AppState {
     pub AppMouseFocusState = ll::SDL_APPMOUSEFOCUS as int,
     pub AppInputFocusState = ll::SDL_APPINPUTFOCUS as int,
@@ -203,19 +203,19 @@ fn wrap_app_state(bitflags: u8) -> ~[AppState] {
     }
 }
 
-#[deriving_eq]
+#[deriving(Eq)]
 pub enum RepeatDelay {
     pub DefaultRepeatDelay,
     pub CustomRepeatDelay(int)
 }
 
-#[deriving_eq]
+#[deriving(Eq)]
 pub enum RepeatInterval {
     pub DefaultRepeatInterval,
     pub CustomRepeatInterval(int)
 }
 
-#[deriving_eq]
+#[deriving(Eq)]
 pub enum Key {
     pub UnknownKey = 0,
     pub BackspaceKey = 8,
@@ -462,7 +462,7 @@ fn wrap_key(i: ll::SDLKey) -> Option<Key> {
     }
 }
 
-#[deriving_eq]
+#[deriving(Eq)]
 pub enum Mod {
     pub NoMod = 0x0000,
     pub LShiftMod = 0x0001,
@@ -498,7 +498,7 @@ fn wrap_mod_state(bitflags: ll::SDLMod) -> ~[Mod] {
     }
 }
 
-#[deriving_eq]
+#[deriving(Eq)]
 pub enum HatState {
     CenteredHatState,
     UpHatState,
@@ -518,7 +518,7 @@ fn wrap_hat_state(bitflags: u8) -> ~[HatState] {
     }
 }
 
-#[deriving_eq]
+#[deriving(Eq)]
 pub enum Mouse {
     LeftMouse,
     MiddleMouse,
@@ -538,7 +538,7 @@ fn wrap_mouse(bitflags: u8) -> Mouse {
     }
 }
 
-#[deriving_eq]
+#[deriving(Eq)]
 pub enum MouseState {
     LeftMouseState = 1,
     MiddleMouseState,
@@ -562,7 +562,7 @@ fn wrap_mouse_state(bitflags: u8) -> ~[MouseState] {
     }
 }
 
-#[deriving_eq]
+#[deriving(Eq)]
 pub enum Event {
     // TODO: TextInputEvent, TextEditingEvent
     pub NoEvent,
@@ -682,7 +682,7 @@ fn wrap_event(raw: ll::SDL_Event) -> Event {
     }
 }
 
-#[deriving_eq]
+#[deriving(Eq)]
 pub enum EventType {
     // TODO: TextInputEventType, TextEditingEventType
     pub NoEventType,
