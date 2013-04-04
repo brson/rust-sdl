@@ -9,7 +9,6 @@
 
 extern mod std;
 
-// FIXME: Glob export video and event (rustc breaks)
 pub use sdl::*;
 pub use start = start::start;
 
