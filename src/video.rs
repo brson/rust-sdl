@@ -14,7 +14,7 @@ pub mod ll {
     pub type SDL_Rect = Rect;
 
     priv struct SDL_RWops_Anon {
-        priv data: [c_uchar * 24],
+        priv data: [c_uchar, ..24],
     }
 
     pub struct SDL_RWops {
@@ -569,8 +569,8 @@ pub fn set_gamma(r: float, g: float, b: float) -> bool {
                               b as c_float) != -1 }
 }
 
-pub fn set_gamma_ramp(r: Option<[u16 * 256]>, g: Option<[u16 * 256]>,
-                      b: Option<[u16 * 256]>) -> bool {
+pub fn set_gamma_ramp(r: Option<[u16, ..256]>, g: Option<[u16, ..256]>,
+                      b: Option<[u16, ..256]>) -> bool {
     unsafe { ll::SDL_SetGammaRamp(match r {
         Some(r) => vec::raw::to_ptr(r),
         None => ptr::null()
@@ -583,7 +583,7 @@ pub fn set_gamma_ramp(r: Option<[u16 * 256]>, g: Option<[u16 * 256]>,
     }) != -1 }
 }
 
-pub fn get_gamma_ramp() -> ([u16 * 256], [u16 * 256], [u16 * 256]) {
+pub fn get_gamma_ramp() -> ([u16, ..256], [u16, ..256], [u16, ..256]) {
     let r = [0u16, .. 256];
     let g = [0u16, .. 256];
     let b = [0u16, .. 256];
