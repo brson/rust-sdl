@@ -23,7 +23,7 @@ pub mod ll {
     }
 
     pub struct SDL_Event {
-        pub data: [c_uchar * 24],
+        pub data: [c_uchar, ..24],
     }
 
     pub struct SDL_ActiveEvent {
