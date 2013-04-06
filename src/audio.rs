@@ -1,5 +1,5 @@
 use self::ll::{AUDIO_S16LSB, AUDIO_S16MSB, AUDIO_S8, AUDIO_U16LSB, AUDIO_U16MSB, AUDIO_U8};
-use self::ll::{SDL_CloseAudio, SDL_LockAudio, SDL_MixAudio, SDL_OpenAudio, SDL_PauseAudio};
+use self::ll::{SDL_LockAudio, SDL_MixAudio, SDL_OpenAudio};
 use self::ll::{SDL_UnlockAudio};
 
 use core::cast::{forget, transmute};
@@ -184,7 +184,7 @@ pub fn close() {
 
 pub fn mix(dest: &mut [u8], src: &[u8], volume: c_int) {
     unsafe {
-        fail_unless!(dest.len() == src.len());
+        assert!(dest.len() == src.len());
         SDL_MixAudio(&mut dest[0], &src[0], dest.len() as u32, volume);
     }
 }
