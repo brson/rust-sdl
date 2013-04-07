@@ -18,7 +18,7 @@ pub mod ll {
 	    pub hot_y: int16_t,
 	    pub data: *uint8_t,
 	    pub mask: *uint8_t,
-	    pub save: [*uint8_t * 2],
+	    pub save: [*uint8_t, ..2],
 	    pub wm_cursor: *WMcursor,
 	}
 
