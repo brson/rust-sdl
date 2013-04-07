@@ -9,11 +9,7 @@
 
 extern mod std;
 
-// FIXME: Glob export video and event (rustc breaks)
-pub use sdl::{Rect, InitTimer, InitAudio, InitVideo, InitCDRom, InitJoystick,
-              InitNoParachute, InitEventThread, InitEverything, init, init_subsystem,
-              was_inited, quit, quit_subsystem, set_error, set_error_from_code,
-              get_error, clear_error};
+pub use sdl::*;
 
 pub use start = start::start;
 
