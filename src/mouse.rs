@@ -51,8 +51,8 @@ fn wrap_cursor(raw: *ll::SDL_Cursor, owned: bool) -> ~Cursor {
 }
 
 pub impl Cursor {
-	fn new(data: &[u8], mask: &[u8], w: int, h: int,
-		          hot_x: int, hot_y: int) -> Result<~Cursor, ~str> {
+	fn new(data: &[u8], mask: &[u8], w: int, h: int, hot_x: int, hot_y: int)
+        -> Result<~Cursor, ~str> {
 		unsafe {
 			let raw = ll::SDL_CreateCursor(vec::raw::to_ptr(data), vec::raw::to_ptr(mask),
 				                           w as c_int, h as c_int, hot_x as c_int,

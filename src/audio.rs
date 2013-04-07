@@ -84,7 +84,7 @@ pub enum Channels {
 
 impl Channels {
     pub fn new(count: c_int) -> Channels { if count == 1 { Mono } else { Stereo } }
-    pub fn count(self) -> c_int                 { match self { Mono => 1, Stereo => 2 } }
+    pub fn count(self) -> c_int          { match self { Mono => 1, Stereo => 2 } }
 }
 
 pub type AudioCallback = ~fn(&mut [u8]);

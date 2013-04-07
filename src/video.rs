@@ -324,10 +324,8 @@ pub fn get_video_surface() -> Result<~Surface, ~str> {
 
 pub impl Surface {
     fn new(surface_flags: &[SurfaceFlag], width: int, height: int, bpp: int,
-                  rmask: u32, gmask: u32, bmask: u32, amask: u32) -> Result<~Surface, ~str> {
-        let flags = vec::foldl(0, surface_flags, |flags, flag| {
-            flags | *flag as u32
-        });
+           rmask: u32, gmask: u32, bmask: u32, amask: u32) -> Result<~Surface, ~str> {
+        let flags = vec::foldl(0, surface_flags, |flags, flag| { flags | *flag as u32 });
 
         unsafe {
             let raw = ll::SDL_CreateRGBSurface(flags, width as c_int, height as c_int, bpp as c_int,
@@ -583,7 +581,7 @@ pub fn set_gamma_ramp(r: Option<[u16, ..256]>, g: Option<[u16, ..256]>,
     }) != -1 }
 }
 
-pub fn get_gamma_ramp() -> ([u16, .. 256], [u16, .. 256], [u16, .. 256]) {
+pub fn get_gamma_ramp() -> ([u16, ..256], [u16, ..256], [u16, ..256]) {
     let r = [0u16, .. 256];
     let g = [0u16, .. 256];
     let b = [0u16, .. 256];
