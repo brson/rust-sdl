@@ -49,6 +49,7 @@ pub mod ll {
         fn SDL_Init(flags: uint32_t) -> c_int;
         fn SDL_InitSubSystem(flags: SDL_InitFlag) -> c_int;
         fn SDL_WasInit(flags: SDL_InitFlag) -> SDL_InitFlag;
+        fn SDL_GetTicks() -> uint32_t;
     }
 }
 
@@ -163,4 +164,8 @@ pub fn set_error_from_code(err: Error) {
 
 pub fn clear_error() {
     unsafe { ll::SDL_ClearError(); }
+}
+
+pub fn get_ticks() -> uint {
+    unsafe { ll::SDL_GetTicks() as uint }
 }
