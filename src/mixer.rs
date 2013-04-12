@@ -3,7 +3,7 @@ use video::ll::SDL_RWFromFile; // XXX refactoring
 use get_error;
 
 use core::cast::transmute;
-use core::libc::{c_int, malloc, size_t};
+use core::libc::{c_int};
 
 pub mod ll {
     use video::ll::SDL_RWops; // XXX refactoring
