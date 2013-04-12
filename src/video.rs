@@ -75,6 +75,14 @@ pub mod ll {
         pub alpha: uint8_t,
     }
 
+    pub struct SDL_VideoInfo {
+        pub flags: uint32_t,        // actually a set of packed fields
+        pub video_mem: uint32_t,
+        pub vfmt: *SDL_PixelFormat,
+        pub current_w: c_int,
+        pub current_h: c_int,
+    }
+
     pub extern "C" {
         fn SDL_CreateRGBSurface(flags: uint32_t, width: c_int, height: c_int,
                                 depth: c_int, Rmask: uint32_t, Gmask: uint32_t, Bmask: uint32_t,
@@ -89,6 +97,7 @@ pub mod ll {
         fn SDL_GetRGBA(pixel: uint32_t, fmt: *SDL_PixelFormat, r: *uint8_t, g: *uint8_t, b: *uint8_t, a: *uint8_t);
         fn SDL_SetVideoMode(width: c_int, height: c_int, bpp: c_int, flags: uint32_t) -> *SDL_Surface;
         fn SDL_VideoModeOK(width: c_int, height: c_int, bpp: c_int, flags: uint32_t) -> c_int;
+        fn SDL_GetVideoInfo() -> *SDL_VideoInfo;
         fn SDL_GetVideoSurface() -> *SDL_Surface;
         fn SDL_UpdateRect(screen: *SDL_Surface, x: int32_t, y: int32_t, w: uint32_t, h: uint32_t);
         fn SDL_UpdateRects(screen: *SDL_Surface, numrects: c_int, rects: *SDL_Rect);
@@ -142,6 +151,19 @@ pub struct Palette {
     colors: ~[Color]
 }
 
+fn wrap_palette(palette: *ll::SDL_Palette) -> Option<Palette> {
+    match palette.is_null() {
+        true => None,
+        _ => Some(Palette {
+            colors: unsafe {
+                do vec::from_buf((*palette).colors, (*palette).ncolors as uint).map |color| {
+                    Color::from_struct(color)
+                }
+            }
+        })
+    }
+}
+
 fn unwrap_palette(palette: &Palette) -> ll::SDL_Palette {
     ll::SDL_Palette {
         ncolors: palette.colors.len() as c_int,
@@ -155,7 +177,7 @@ fn unwrap_palette(palette: &Palette) -> ll::SDL_Palette {
 
 #[deriving(Eq)]
 pub struct PixelFormat {
-    pub palette: Palette,
+    pub palette: Option<Palette>,
     pub bpp: u8,
     pub r_loss: u8,
     pub g_loss: u8,
@@ -173,10 +195,35 @@ pub struct PixelFormat {
     pub alpha: u8
 }
 
+fn wrap_pixel_format(raw: *ll::SDL_PixelFormat) -> PixelFormat {
+    let fmt = & unsafe { *raw };
+    PixelFormat {
+        palette: wrap_palette(fmt.palette),
+        bpp: fmt.BitsPerPixel,
+        r_loss: fmt.Rloss,
+        g_loss: fmt.Gloss,
+        b_loss: fmt.Bloss,
+        a_loss: fmt.Aloss,
+        r_shift: fmt.Rshift,
+        g_shift: fmt.Gshift,
+        b_shift: fmt.Bshift,
+        a_shift: fmt.Ashift,
+        r_mask: fmt.Rmask,
+        g_mask: fmt.Gmask,
+        b_mask: fmt.Bmask,
+        a_mask: fmt.Amask,
+        color_key: fmt.colorkey,
+        alpha: fmt.alpha,
+    }
+}
+
 fn unwrap_pixel_format(fmt: &PixelFormat) -> ll::SDL_PixelFormat {
     ll::SDL_PixelFormat {
         // FIXME: this will be freed at the end of this scope?
-        palette: ptr::addr_of(&unwrap_palette(&fmt.palette)),
+        palette: match fmt.palette {
+            None => ptr::null(),
+            Some(_) => ptr::addr_of(&unwrap_palette(fmt.palette.get_ref()))
+        },
         BitsPerPixel: fmt.bpp,
         BytesPerPixel: fmt.bpp / 8,
         Rloss: fmt.r_loss,
@@ -228,6 +275,10 @@ pub impl Color {
             RGB(r, g, b) => unsafe { ll::SDL_MapRGB(fmt, r, g, b) },
             RGBA(r, g, b, a) => unsafe { ll::SDL_MapRGBA(fmt, r, g, b, a) }
         }
+    }
+
+    fn from_struct(c: &ll::SDL_Color) -> Color {
+        RGB(c.r, c.g, c.b)
     }
 
     fn to_struct(&self) -> ll::SDL_Color {
@@ -308,6 +359,51 @@ pub fn is_video_mode_ok(w: int, h: int, bpp: int,
     }
 }
 
+#[deriving(Eq)]
+pub enum VideoInfoFlag {
+    HWAvailable    = 0x00000001,
+    WMAvailable    = 0x00000002,
+    BlitHW         = 0x00000200,
+    BlitHWColorkey = 0x00000400,
+    BlitHWAlpha    = 0x00000800,
+    BlitSW         = 0x00001000,
+    BlitSWColorkey = 0x00002000,
+    BlitSWAlpha    = 0x00004000,
+    BlitFill       = 0x00008000,
+}
+
+pub struct VideoInfo {
+    pub flags: ~[VideoInfoFlag],
+    pub width: int,
+    pub height: int,
+    pub format: PixelFormat,
+}
+
+fn wrap_video_info_flags(bitflags: u32) -> ~[VideoInfoFlag] {
+    do [HWAvailable,
+        WMAvailable,
+        BlitHW,
+        BlitHWColorkey,
+        BlitHWAlpha,
+        BlitSW,
+        BlitSWColorkey,
+        BlitSWAlpha,
+        BlitFill].filter_mapped |&flag| {
+        if bitflags & (flag as u32) != 0 { Some(flag) }
+        else { None }
+    }
+}
+
+pub fn get_video_info() -> ~VideoInfo {
+    let raw = unsafe { ll::SDL_GetVideoInfo() };
+    ~VideoInfo {
+        flags:  wrap_video_info_flags(unsafe { (*raw).flags } as u32),
+        width:  unsafe { (*raw).current_w } as int,
+        height: unsafe { (*raw).current_h } as int,
+        format: wrap_pixel_format(unsafe { (*raw).vfmt }),
+    }
+}
+
 pub enum PaletteType {
     LogicalPaletteType = 1,
     PhysicalPaletteType
@@ -320,7 +416,7 @@ pub fn get_video_surface() -> Result<~Surface, ~str> {
     else { Ok(wrap_surface(raw, false)) }
 }
 
-// TODO: get_video_modes, get_video_driver_name, get_video_info
+// TODO: get_video_modes, get_video_driver_name
 
 pub impl Surface {
     fn new(surface_flags: &[SurfaceFlag], width: int, height: int, bpp: int,
