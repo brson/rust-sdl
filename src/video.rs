@@ -532,18 +532,18 @@ pub impl Surface {
         unsafe { ll::SDL_Flip(self.raw) == 0 }
     }
 
-    // TODO: proper convert when we have a finished pixelformat type
-    fn convert(&self, other: &Surface,
-               flags: &[SurfaceFlag]) -> Result<~Surface, ~str> {
+    fn convert(&self, fmt: &PixelFormat, flags: &[SurfaceFlag]) -> Result<~Surface, ~str> {
         let flags = do vec::foldl(0, flags) |flags, &flag| {
             flags | flag as u32
         };
-        let raw = unsafe { ll::SDL_ConvertSurface(other.raw,
-                                                  (*other.raw).format,
-                                                  flags) };
 
-        if raw.is_null() { Err(get_error()) }
-        else { Ok(wrap_surface(raw, true)) }
+        let rawfmt = unwrap_pixel_format(fmt);
+
+        let new = unsafe { ll::SDL_ConvertSurface(self.raw, &rawfmt, flags) };
+        match new.is_null() {
+            true  => Err(get_error()),
+            false => Ok(wrap_surface(new, true)),
+        }
     }
 
     fn display_format(&self) -> Result<~Surface, ~str> {
