@@ -250,7 +250,7 @@ pub enum Color {
 }
 
 impl rand::Rand for Color {
-    fn rand(rng: @rand::Rng) -> Color {
+    fn rand<R: rand::Rng>(rng: &R) -> Color {
         if rng.gen() { RGBA(rng.gen(), rng.gen(), rng.gen(), rng.gen()) }
         else { RGB(rng.gen(), rng.gen(), rng.gen()) }
     }
