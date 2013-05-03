@@ -55,7 +55,7 @@ pub fn get_drive_name(index: int) -> ~str {
 	unsafe {
 		let cstr = ll::SDL_CDName(index as c_int);
 
-		str::raw::from_c_str(cast::reinterpret_cast(&cstr))
+		str::raw::from_c_str(cast::transmute_copy(&cstr))
 	}
 }
 

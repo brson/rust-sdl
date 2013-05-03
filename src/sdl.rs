@@ -148,7 +148,7 @@ pub fn get_error() -> ~str {
     unsafe {
         let cstr = ll::SDL_GetError();
 
-        str::raw::from_c_str(cast::reinterpret_cast(&cstr))
+        str::raw::from_c_str(cast::transmute_copy(&cstr))
     }
 }
 
