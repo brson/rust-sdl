@@ -115,59 +115,59 @@ pub mod ll {
 
     pub impl SDL_Event {
         pub fn _type(&self) -> *uint8_t {
-            unsafe { cast::reinterpret_cast(&ptr::to_unsafe_ptr(self)) }
+            unsafe { cast::transmute_copy(&ptr::to_unsafe_ptr(self)) }
         }
 
         pub fn active(&self) -> *SDL_ActiveEvent {
-            unsafe { cast::reinterpret_cast(&ptr::to_unsafe_ptr(self)) }
+            unsafe { cast::transmute_copy(&ptr::to_unsafe_ptr(self)) }
         }
 
         pub fn key(&self) -> *SDL_KeyboardEvent {
-            unsafe { cast::reinterpret_cast(&ptr::to_unsafe_ptr(self)) }
+            unsafe { cast::transmute_copy(&ptr::to_unsafe_ptr(self)) }
         }
 
         pub fn motion(&self) -> *SDL_MouseMotionEvent {
-            unsafe { cast::reinterpret_cast(&ptr::to_unsafe_ptr(self)) }
+            unsafe { cast::transmute_copy(&ptr::to_unsafe_ptr(self)) }
         }
 
         pub fn button(&self) -> *SDL_MouseButtonEvent {
-            unsafe { cast::reinterpret_cast(&ptr::to_unsafe_ptr(self)) }
+            unsafe { cast::transmute_copy(&ptr::to_unsafe_ptr(self)) }
         }
 
         pub fn jaxis(&self) -> *SDL_JoyAxisEvent {
-            unsafe { cast::reinterpret_cast(&ptr::to_unsafe_ptr(self)) }
+            unsafe { cast::transmute_copy(&ptr::to_unsafe_ptr(self)) }
         }
 
         pub fn jball(&self) -> *SDL_JoyBallEvent {
-            unsafe { cast::reinterpret_cast(&ptr::to_unsafe_ptr(self)) }
+            unsafe { cast::transmute_copy(&ptr::to_unsafe_ptr(self)) }
         }
 
         pub fn jhat(&self) -> *SDL_JoyHatEvent {
-            unsafe { cast::reinterpret_cast(&ptr::to_unsafe_ptr(self)) }
+            unsafe { cast::transmute_copy(&ptr::to_unsafe_ptr(self)) }
         }
 
         pub fn jbutton(&self) -> *SDL_JoyButtonEvent {
-            unsafe { cast::reinterpret_cast(&ptr::to_unsafe_ptr(self)) }
+            unsafe { cast::transmute_copy(&ptr::to_unsafe_ptr(self)) }
         }
 
         pub fn resize(&self) -> *SDL_ResizeEvent {
-            unsafe { cast::reinterpret_cast(&ptr::to_unsafe_ptr(self)) }
+            unsafe { cast::transmute_copy(&ptr::to_unsafe_ptr(self)) }
         }
 
         pub fn expose(&self) -> *SDL_ExposeEvent {
-            unsafe { cast::reinterpret_cast(&ptr::to_unsafe_ptr(self)) }
+            unsafe { cast::transmute_copy(&ptr::to_unsafe_ptr(self)) }
         }
 
         pub fn quit(&self) -> *SDL_QuitEvent {
-            unsafe { cast::reinterpret_cast(&ptr::to_unsafe_ptr(self)) }
+            unsafe { cast::transmute_copy(&ptr::to_unsafe_ptr(self)) }
         }
 
         pub fn user(&self) -> *SDL_UserEvent {
-            unsafe { cast::reinterpret_cast(&ptr::to_unsafe_ptr(self)) }
+            unsafe { cast::transmute_copy(&ptr::to_unsafe_ptr(self)) }
         }
 
         pub fn syswm(&self) -> *SDL_SysWMEvent {
-            unsafe { cast::reinterpret_cast(&ptr::to_unsafe_ptr(self)) }
+            unsafe { cast::transmute_copy(&ptr::to_unsafe_ptr(self)) }
         }
     }
 
@@ -717,7 +717,7 @@ pub fn pump_events() {
 
 pub fn wait_event() -> Event {
     let raw = null_event();
-    let success = unsafe { ll::SDL_WaitEvent(ptr::addr_of(&raw))
+    let success = unsafe { ll::SDL_WaitEvent(&raw)
                             == 1 as c_int };
 
     if success { wrap_event(raw) }
@@ -728,7 +728,7 @@ pub fn poll_event() -> Event {
     pump_events();
 
     let raw = null_event();
-    let have = unsafe { ll::SDL_PollEvent(ptr::addr_of(&raw)) };
+    let have = unsafe { ll::SDL_PollEvent(&raw) };
 
     if have != 1 {
         return NoEvent;
@@ -750,7 +750,7 @@ pub fn get_event_state(ty: EventType) -> bool {
 
 pub fn get_key_state() -> ~[(Key, bool)] {
     let num = 0;
-    let data = unsafe { ll::SDL_GetKeyState(ptr::addr_of(&num)) };
+    let data = unsafe { ll::SDL_GetKeyState(&num) };
     let mut i = -1;
 
     unsafe {
@@ -781,7 +781,7 @@ pub fn get_key_name(key: Key) -> ~str {
     unsafe {
         let cstr = ll::SDL_GetKeyName(key as ll::SDLKey);
 
-        str::raw::from_c_str(cast::reinterpret_cast(&cstr))
+        str::raw::from_c_str(cast::transmute_copy(&cstr))
     }
 }
 
