@@ -28,11 +28,11 @@ pub fn main() {
 
 		screen.flip();
 
-		loop main: {
-			loop event: {
+		'main : loop {
+			'event : loop {
 				match sdl::event::poll_event() {
-					sdl::event::QuitEvent => break main,
-					sdl::event::NoEvent => break event,
+					sdl::event::QuitEvent => break 'main,
+					sdl::event::NoEvent => break 'event,
 					_ => {}
 				}
 			}

@@ -222,7 +222,10 @@ fn unwrap_pixel_format(fmt: &PixelFormat) -> ll::SDL_PixelFormat {
         // FIXME: this will be freed at the end of this scope?
         palette: match fmt.palette {
             None => ptr::null(),
-            Some(_) => ptr::addr_of(&unwrap_palette(fmt.palette.get_ref()))
+            Some(_) => {
+                let workaround : *ll::SDL_Palette = &unwrap_palette(fmt.palette.get_ref());
+                workaround
+            }
         },
         BitsPerPixel: fmt.bpp,
         BytesPerPixel: fmt.bpp / 8,
@@ -264,8 +267,8 @@ pub impl Color {
         let a = 0;
 
         unsafe { ll::SDL_GetRGBA(bit, fmt,
-                                 ptr::addr_of(&r), ptr::addr_of(&g),
-                                 ptr::addr_of(&b), ptr::addr_of(&a)) }
+                                 &r, &g,
+                                 &b, &a) }
 
         RGBA(r, g, b, a)
     }
@@ -593,7 +596,7 @@ pub impl Surface {
 
     fn set_clip_rect(&self, rect: &Rect) {
         unsafe {
-            ll::SDL_SetClipRect(self.raw, ptr::addr_of(rect));
+            ll::SDL_SetClipRect(self.raw, rect);
         }
     }
 
@@ -607,7 +610,7 @@ pub impl Surface {
 
         unsafe {
             ll::SDL_SetClipRect(self.raw,
-                                cast::transmute(ptr::addr_of(&rect)));
+                                cast::transmute(&rect));
         }
 
         rect
@@ -617,10 +620,10 @@ pub impl Surface {
                  dest_rect: Option<Rect>) -> bool {
         unsafe {
             ll::SDL_UpperBlit(src.raw, match src_rect {
-                Some(ref rect) => cast::transmute(ptr::addr_of(rect)),
+                Some(ref rect) => cast::transmute(rect),
                 None => ptr::null()
             }, self.raw, match dest_rect {
-                Some(ref rect) => cast::transmute(ptr::addr_of(rect)),
+                Some(ref rect) => cast::transmute(rect),
                 None => ptr::null()
             }) == 0
         }
@@ -644,7 +647,7 @@ pub impl Surface {
     fn fill_rect(&self, rect: Option<Rect>,
                  color: Color) -> bool {
         unsafe { ll::SDL_FillRect(self.raw, match rect {
-            Some(ref rect) => cast::transmute(ptr::addr_of(rect)),
+            Some(ref rect) => cast::transmute(rect),
             None => ptr::null()
         }, color.to_mapped((*self.raw).format)) == 0 }
     }

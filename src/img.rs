@@ -48,7 +48,7 @@ pub fn init(flags: &[InitFlag]) -> ~[InitFlag] {
 pub fn load(file: &Path) -> Result<~Surface, ~str> {
     str::as_buf(file.to_str(), |buf, _len| {
         let file = unsafe {
-            cast::reinterpret_cast(&buf)
+            cast::transmute_copy(&buf)
         };
 
         unsafe {

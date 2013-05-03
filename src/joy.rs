@@ -36,7 +36,7 @@ pub fn get_joystick_name(index: int) -> ~str {
 	unsafe {
 		let cstr = ll::SDL_JoystickName(index as c_int);
 
-		str::raw::from_c_str(cast::reinterpret_cast(&cstr))
+		str::raw::from_c_str(cast::transmute_copy(&cstr))
 	}
 }
 
@@ -104,8 +104,8 @@ pub impl Joystick {
 		let dy = 0;
 
 		unsafe { ll::SDL_JoystickGetBall(self.raw, ball as c_int,
-			                             ptr::addr_of(&dx),
-			                             ptr::addr_of(&dy)); }
+			                             &dx,
+			                             &dy); }
 
 		(dx as int, dy as int)
 	}

@@ -42,11 +42,11 @@ pub fn get_caption() -> (~str, ~str) {
 	let icon_buf = ptr::null();
 
 	unsafe {
-		ll::SDL_WM_GetCaption(ptr::addr_of(&title_buf),
-			                  ptr::addr_of(&icon_buf));
+		ll::SDL_WM_GetCaption(&title_buf,
+			                  &icon_buf);
 
-        (str::raw::from_c_str(cast::reinterpret_cast(&title_buf)),
-         str::raw::from_c_str(cast::reinterpret_cast(&icon_buf)))
+        (str::raw::from_c_str(cast::transmute_copy(&title_buf)),
+         str::raw::from_c_str(cast::transmute_copy(&icon_buf)))
     }
 }
 
