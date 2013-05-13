@@ -92,7 +92,7 @@ pub mod ll {
                                     Amask: uint32_t) -> *SDL_Surface;
         fn SDL_FreeSurface(surface: *SDL_Surface);
         fn SDL_MapRGB(format: *SDL_PixelFormat, r: uint8_t, g: uint8_t, b: uint8_t) -> uint32_t;
-        fn SDL_MapRGBA(format: *SDL_PixelFormat, r: uint8_t, ++g: uint8_t, b: uint8_t, a: uint8_t) -> uint32_t;
+        fn SDL_MapRGBA(format: *SDL_PixelFormat, r: uint8_t, g: uint8_t, b: uint8_t, a: uint8_t) -> uint32_t;
         fn SDL_GetRGB(pixel: uint32_t, fmt: *SDL_PixelFormat, r: *uint8_t, g: *uint8_t, b: *uint8_t);
         fn SDL_GetRGBA(pixel: uint32_t, fmt: *SDL_PixelFormat, r: *uint8_t, g: *uint8_t, b: *uint8_t, a: *uint8_t);
         fn SDL_SetVideoMode(width: c_int, height: c_int, bpp: c_int, flags: uint32_t) -> *SDL_Surface;
@@ -112,7 +112,7 @@ pub mod ll {
         fn SDL_DisplayFormat(surface: *SDL_Surface) -> *SDL_Surface;
         fn SDL_DisplayFormatAlpha(surface: *SDL_Surface) -> *SDL_Surface;
         fn SDL_SetColorKey(surface: *SDL_Surface, flag: uint32_t, key: uint32_t) -> c_int;
-        fn SDL_SetAlpha(surface: *SDL_Surface, flag: uint32_t, ++alpha: uint8_t) -> c_int;
+        fn SDL_SetAlpha(surface: *SDL_Surface, flag: uint32_t, alpha: uint8_t) -> c_int;
         fn SDL_SetClipRect(surface: *SDL_Surface, rect: *SDL_Rect);
         fn SDL_UpperBlit(src: *SDL_Surface, srcrect: *SDL_Rect, dst: *SDL_Surface, dstrect: *SDL_Rect) -> c_int;
         fn SDL_FillRect(dst: *SDL_Surface, dstrect: *SDL_Rect, color: uint32_t) -> c_int;
@@ -253,7 +253,7 @@ pub enum Color {
 }
 
 impl rand::Rand for Color {
-    fn rand<R: rand::Rng>(rng: &R) -> Color {
+    fn rand<R: rand::Rng>(rng: &mut R) -> Color {
         if rng.gen() { RGBA(rng.gen(), rng.gen(), rng.gen(), rng.gen()) }
         else { RGB(rng.gen(), rng.gen(), rng.gen()) }
     }
