@@ -1,11 +1,11 @@
 use get_error;
 
-use core::libc::c_int;
+use std::libc::c_int;
 
 pub mod ll {
 	use Rect;
 
-	use core::libc::{c_void, c_int, uint8_t, uint16_t, int16_t};
+	use std::libc::{c_void, c_int, uint8_t, uint16_t, int16_t};
 
 	pub static SDL_DISABLE: c_int = 0;
 	pub static SDL_ENABLE: c_int = 1;

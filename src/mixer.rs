@@ -2,13 +2,13 @@ use audio::{AudioFormat, Channels, Mono, Stereo};
 use video::ll::SDL_RWFromFile; // XXX refactoring
 use get_error;
 
-use core::cast::transmute;
-use core::libc::{c_int};
+use std::cast::transmute;
+use std::libc::{c_int};
 
 pub mod ll {
     use video::ll::SDL_RWops; // XXX refactoring
 
-    use core::libc::c_int;
+    use std::libc::c_int;
 
     pub struct Mix_Chunk {
         allocated: c_int,

@@ -1,9 +1,9 @@
 use get_error;
 
-use core::libc::c_int;
+use std::libc::c_int;
 
 pub mod ll {
-	use core::libc::{c_int, c_schar, uint8_t, uint16_t, uint32_t};
+	use std::libc::{c_int, c_schar, uint8_t, uint16_t, uint32_t};
 
 	pub type CDstatus = c_int;
 

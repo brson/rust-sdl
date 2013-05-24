@@ -2,12 +2,12 @@ use self::ll::{AUDIO_S16LSB, AUDIO_S16MSB, AUDIO_S8, AUDIO_U16LSB, AUDIO_U16MSB,
 use self::ll::{SDL_LockAudio, SDL_MixAudio, SDL_OpenAudio};
 use self::ll::{SDL_UnlockAudio};
 
-use core::cast::{forget, transmute};
-use core::libc::{c_int, c_void, uint16_t};
-use core::ptr::null;
+use std::cast::{forget, transmute};
+use std::libc::{c_int, c_void, uint16_t};
+use std::ptr::null;
 
 pub mod ll {
-    use core::libc::{c_int, c_void, uint16_t};
+    use std::libc::{c_int, c_void, uint16_t};
 
     pub static AUDIO_U8: uint16_t = 0x0008;
     pub static AUDIO_S8: uint16_t = 0x8008;
