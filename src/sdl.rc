@@ -7,8 +7,6 @@
 #[license = "MIT"];
 #[crate_type = "lib"];
 
-extern mod std;
-
 pub use sdl::*;
 
 pub use start = start::start;

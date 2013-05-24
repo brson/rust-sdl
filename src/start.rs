@@ -1,6 +1,6 @@
-use core::cell::Cell;
-use core::task::PlatformThread;
-use core::task;
+use std::cell::Cell;
+use std::task::PlatformThread;
+use std::task;
 
 type MainFunction = ~fn();
 

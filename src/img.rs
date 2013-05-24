@@ -1,12 +1,12 @@
 use get_error;
 use video::Surface;
 
-use core::libc::c_int;
+use std::libc::c_int;
 
 pub mod ll {
     use video::ll::SDL_Surface;
 
-    use core::libc::{c_int, c_uint, c_schar};
+    use std::libc::{c_int, c_uint, c_schar};
 
     pub type IMG_InitFlags = c_uint;
 

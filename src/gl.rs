@@ -1,7 +1,7 @@
-use core::libc::{c_int};
+use std::libc::{c_int};
 
 pub mod ll {
-    use core::libc::{c_int};
+    use std::libc::{c_int};
 
     pub extern "C" {
         fn SDL_GL_SetAttribute(attr: c_int, value: c_int) -> c_int;

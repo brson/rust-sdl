@@ -1,9 +1,9 @@
 use get_error;
 
-use core::libc::c_int;
+use std::libc::c_int;
 
 pub mod ll {
-	use core::libc::{c_void, c_int, c_schar, uint8_t, int16_t};
+	use std::libc::{c_void, c_int, c_schar, uint8_t, int16_t};
 
 	pub type SDL_Joystick = c_void;
 

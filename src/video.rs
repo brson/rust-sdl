@@ -1,15 +1,15 @@
 use Rect;
 use get_error;
 
-use core::libc::{c_int, c_float};
-use core::rand;
-use core::rand::RngUtil;
+use std::libc::{c_int, c_float};
+use std::rand;
+use std::rand::RngUtil;
 
 pub mod ll {
     use Rect;
 
-    use core::libc::{c_void, c_uint, c_int, c_float, c_schar, c_uchar, uint8_t, uint16_t};
-    use core::libc::{uint32_t, int32_t};
+    use std::libc::{c_void, c_uint, c_int, c_float, c_schar, c_uchar, uint8_t, uint16_t};
+    use std::libc::{uint32_t, int32_t};
 
     pub type SDL_Rect = Rect;
 
