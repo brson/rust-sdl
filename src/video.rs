@@ -167,11 +167,9 @@ fn wrap_palette(palette: *ll::SDL_Palette) -> Option<Palette> {
 fn unwrap_palette(palette: &Palette) -> ll::SDL_Palette {
     ll::SDL_Palette {
         ncolors: palette.colors.len() as c_int,
-        colors: unsafe {
-            vec::raw::to_ptr(do palette.colors.map |color| {
-                color.to_struct()
-            })
-        }
+        colors: vec::raw::to_ptr(do palette.colors.map |color| {
+            color.to_struct()
+        })
     }
 }
 
