@@ -1,5 +1,5 @@
 use sdl;
-use core::rand::RngUtil;
+use std::rand::RngUtil;
 
 pub fn main() {
 	do sdl::start {
