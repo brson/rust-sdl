@@ -1,11 +1,12 @@
+use std::libc::c_int;
+use std::vec;
+
 use get_error;
 
-use std::libc::c_int;
-
 pub mod ll {
-	use Rect;
-
 	use std::libc::{c_void, c_int, uint8_t, uint16_t, int16_t};
+
+	use Rect;
 
 	pub static SDL_DISABLE: c_int = 0;
 	pub static SDL_ENABLE: c_int = 1;
@@ -50,8 +51,8 @@ fn wrap_cursor(raw: *ll::SDL_Cursor, owned: bool) -> ~Cursor {
 	}
 }
 
-pub impl Cursor {
-	fn new(data: &[u8], mask: &[u8], w: int, h: int, hot_x: int, hot_y: int)
+impl Cursor {
+	pub fn new(data: &[u8], mask: &[u8], w: int, h: int, hot_x: int, hot_y: int)
         -> Result<~Cursor, ~str> {
 		unsafe {
 			let raw = ll::SDL_CreateCursor(vec::raw::to_ptr(data), vec::raw::to_ptr(mask),
