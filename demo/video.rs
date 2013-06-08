@@ -1,5 +1,8 @@
-use sdl;
+use std::i16;
 use std::rand::RngUtil;
+use std::rand;
+
+use sdl;
 
 pub fn main() {
 	do sdl::start {

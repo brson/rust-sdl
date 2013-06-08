@@ -1,9 +1,11 @@
+use std::cast::transmute;
+use std::libc::{c_int};
+use std::str;
+use std::uint;
+
 use audio::{AudioFormat, Channels, Mono, Stereo};
 use video::ll::SDL_RWFromFile; // XXX refactoring
 use get_error;
-
-use std::cast::transmute;
-use std::libc::{c_int};
 
 pub mod ll {
     use video::ll::SDL_RWops; // XXX refactoring
@@ -56,7 +58,9 @@ unsafe fn check_if_not_playing(ll_chunk_addr: *ll::Mix_Chunk) {
     // as long as all SDL calls are happening from the same thread. Somebody with better
     // knowledge of how SDL_mixer works internally should double check this, though.
 
-    let mut frequency = 0, format = 0, channels = 0;
+    let mut frequency = 0;
+    let mut format = 0;
+    let mut channels = 0;
     if ll::Mix_QuerySpec(&mut frequency, &mut format, &mut channels) == 0 {
         channels = 0;
     }
@@ -85,7 +89,7 @@ impl Drop for Chunk {
     }
 }
 
-pub impl Chunk {
+impl Chunk {
     pub fn new(buffer: ~[u8], volume: u8) -> ~Chunk {
         unsafe {
             let buffer_addr: *u8 = transmute(&buffer[0]);
@@ -106,7 +110,7 @@ pub impl Chunk {
         }
     }
 
-    fn from_wav(path: &Path) -> Result<~Chunk, ~str> {
+    pub fn from_wav(path: &Path) -> Result<~Chunk, ~str> {
         let raw = unsafe {
             do str::as_c_str(path.to_str()) |buf| {
                 do str::as_c_str("rb") |mode_buf| {
@@ -119,7 +123,7 @@ pub impl Chunk {
         else { Ok(~Chunk { data: Allocated(raw) }) }
     }
 
-    fn to_ll_chunk(&self) -> *ll::Mix_Chunk {
+    pub fn to_ll_chunk(&self) -> *ll::Mix_Chunk {
         match self.data {
             Borrowed(ll_chunk) => ll_chunk,
             Allocated(ll_chunk) => ll_chunk,
@@ -129,12 +133,12 @@ pub impl Chunk {
         }
     }
 
-    fn volume(&self) -> u8 {
+    pub fn volume(&self) -> u8 {
         let ll_chunk: *ll::Mix_Chunk = self.to_ll_chunk();
         unsafe { (*ll_chunk).volume }
     }
 
-    fn play_timed(&self, channel: Option<c_int>, loops: c_int, ticks: c_int) -> c_int {
+    pub fn play_timed(&self, channel: Option<c_int>, loops: c_int, ticks: c_int) -> c_int {
         unsafe {
             let ll_channel = match channel {
                 None => -1,
@@ -144,7 +148,7 @@ pub impl Chunk {
         }
     }
 
-    fn play(&self, channel: Option<c_int>, loops: c_int) -> c_int {
+    pub fn play(&self, channel: Option<c_int>, loops: c_int) -> c_int {
         self.play_timed(channel, loops, -1)
     }
 }

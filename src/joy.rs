@@ -1,6 +1,8 @@
-use get_error;
-
+use std::cast;
 use std::libc::c_int;
+use std::str;
+
+use get_error;
 
 pub mod ll {
 	use std::libc::{c_void, c_int, c_schar, uint8_t, int16_t};
@@ -57,8 +59,8 @@ fn wrap_joystick(raw: *ll::SDL_Joystick) -> ~Joystick {
 	~Joystick { raw: raw }
 }
 
-pub impl Joystick {
-	fn open(index: int) -> Result<~Joystick, ~str> {
+impl Joystick {
+	pub fn open(index: int) -> Result<~Joystick, ~str> {
 		unsafe {
 			let raw = ll::SDL_JoystickOpen(index as c_int);
 
@@ -67,39 +69,39 @@ pub impl Joystick {
 		}
 	}
 
-	fn get_index(&self) -> int {
+	pub fn get_index(&self) -> int {
 		unsafe { ll::SDL_JoystickIndex(self.raw) as int }
 	}
 
-	fn get_num_axes(&self) -> int {
+	pub fn get_num_axes(&self) -> int {
 		unsafe { ll::SDL_JoystickNumAxes(self.raw) as int }
 	}
 
-	fn get_num_balls(&self) -> int {
+	pub fn get_num_balls(&self) -> int {
 		unsafe { ll::SDL_JoystickNumBalls(self.raw) as int }
 	}
 
-	fn get_num_hats(&self) -> int {
+	pub fn get_num_hats(&self) -> int {
 		unsafe { ll::SDL_JoystickNumHats(self.raw) as int }
 	}
 
-	fn get_num_buttons(&self) -> int {
+	pub fn get_num_buttons(&self) -> int {
 		unsafe { ll::SDL_JoystickNumButtons(self.raw) as int }
 	}
 
-	fn get_axis(&self, axis: int) -> i16 {
+	pub fn get_axis(&self, axis: int) -> i16 {
 		unsafe { ll::SDL_JoystickGetAxis(self.raw, axis as c_int) as i16 }
 	}
 
-	fn get_hat(&self, hat: int) -> u8 {
+	pub fn get_hat(&self, hat: int) -> u8 {
 		unsafe { ll::SDL_JoystickGetAxis(self.raw, hat as c_int) as u8 }
 	}
 
-	fn get_button(&self, button: int) -> u8 {
+	pub fn get_button(&self, button: int) -> u8 {
 		unsafe { ll::SDL_JoystickGetButton(self.raw, button as c_int) as u8 }
 	}
 
-	fn get_ball(&self, ball: int) -> (int, int) {
+	pub fn get_ball(&self, ball: int) -> (int, int) {
 		let dx = 0;
 		let dy = 0;
 

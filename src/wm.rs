@@ -1,3 +1,7 @@
+use std::cast;
+use std::ptr;
+use std::str;
+
 use video;
 
 pub mod ll {

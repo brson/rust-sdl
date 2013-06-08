@@ -1,7 +1,11 @@
+use std::cast;
+use std::libc::c_int;
+use std::ptr;
+use std::str;
+use std::vec;
+
 use get_error;
 use video::Surface;
-
-use std::libc::c_int;
 
 pub mod ll {
     use video::ll::SDL_Surface;

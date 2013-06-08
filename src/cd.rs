@@ -1,6 +1,8 @@
-use get_error;
-
+use std::cast;
 use std::libc::c_int;
+use std::str;
+
+use get_error;
 
 pub mod ll {
 	use std::libc::{c_int, c_schar, uint8_t, uint16_t, uint32_t};
@@ -77,8 +79,8 @@ pub enum Status {
 	pub ErrorStatus = ll::CD_ERROR as int
 }
 
-pub impl CD {
-	fn open(index: int) -> Result<~CD, ~str> {
+impl CD {
+    pub fn open(index: int) -> Result<~CD, ~str> {
 		unsafe {
 			let raw = ll::SDL_CDOpen(index as c_int);
 
@@ -87,7 +89,7 @@ pub impl CD {
 		}
 	}
 
-	fn get_status(&self) -> Status {
+	pub fn get_status(&self) -> Status {
 		unsafe {
 			// FIXME: Rust doesn't like us matching using staticants here for some reason
 			match ll::SDL_CDStatus(self.raw) {
@@ -101,11 +103,11 @@ pub impl CD {
 		}
 	}
 
-	fn play(&self, start: int, len: int) -> bool {
+	pub fn play(&self, start: int, len: int) -> bool {
 		unsafe { ll::SDL_CDPlay(self.raw, start as c_int, len as c_int) == 0 }
 	}
 
-	fn play_tracks(&self, start_track: int, start_frame: int, ntracks: int,
+	pub fn play_tracks(&self, start_track: int, start_frame: int, ntracks: int,
 		           nframes: int) -> bool {
 		unsafe {
 			ll::SDL_CDPlayTracks(self.raw, start_track as c_int, start_frame as c_int,
@@ -113,15 +115,15 @@ pub impl CD {
 		}
 	}
 
-	fn pause(&self) -> bool {
+	pub fn pause(&self) -> bool {
 		unsafe { ll::SDL_CDPause(self.raw) == 0 }
 	}
 
-	fn resume(&self) -> bool {
+	pub fn resume(&self) -> bool {
 		unsafe { ll::SDL_CDResume(self.raw) == 0 }
 	}
 
-	fn stop(&self) -> bool {
+	pub fn stop(&self) -> bool {
 		unsafe { ll::SDL_CDStop(self.raw) == 0 }
 	}
 }

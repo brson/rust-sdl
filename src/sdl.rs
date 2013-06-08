@@ -1,3 +1,7 @@
+use std::cast;
+use std::str;
+use std::vec;
+
 // Setup linking for all targets.
 #[cfg(target_os="macos")]
 mod mac {
@@ -65,8 +69,8 @@ pub fn Rect(x: i16, y: i16, w: u16, h: u16) -> Rect {
     Rect { x: x, y: y, w: w, h: h }
 }
 
-pub impl Rect {
-    fn new(x: i16, y: i16, w: u16, h: u16) -> Rect {
+impl Rect {
+    pub fn new(x: i16, y: i16, w: u16, h: u16) -> Rect {
         Rect {
             x: x,
             y: y,

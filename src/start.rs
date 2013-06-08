@@ -1,8 +1,10 @@
+use std::cast::transmute;
 use std::cell::Cell;
+use std::libc::{c_int, c_char};
+use std::local_data;
+use std::os;
 use std::task::PlatformThread;
 use std::task;
-use std::libc::{c_int, c_char};
-use std::cast::transmute;
 
 type MainFunction = ~fn();
 
@@ -18,7 +20,7 @@ pub extern fn SDL_main(_: c_int, _: **c_char) {
 
 #[cfg(target_os="macos")]
 pub fn start(main: MainFunction) {
-    let cell = Cell(main);
+    let cell = Cell::new(main);
     let mut task = task::task();
     task.sched_mode(PlatformThread);
     do task.spawn {

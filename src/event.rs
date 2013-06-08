@@ -1,7 +1,12 @@
+use std::cast;
 use std::libc::c_int;
+use std::str;
+use std::vec;
 
 pub mod ll {
+    use std::cast;
     use std::libc::{c_void, c_int, c_uint, c_uchar, c_schar, uint8_t, uint16_t, int16_t};
+    use std::ptr;
 
     pub type SDLKey = c_uint;
     pub type SDLMod = c_uint;
@@ -113,7 +118,7 @@ pub mod ll {
         pub msg: *SDL_SysWMmsg,
     }
 
-    pub impl SDL_Event {
+    impl SDL_Event {
         pub fn _type(&self) -> *uint8_t {
             unsafe { cast::transmute_copy(&ptr::to_unsafe_ptr(self)) }
         }
@@ -704,9 +709,9 @@ pub enum EventType {
     pub UserEventType = 24
 }
 
-pub impl EventType {
-    fn get_state(&self) -> bool { get_event_state(*self) }
-    fn set_state(&self, state: bool) { set_event_state(*self, state) }
+impl EventType {
+    pub fn get_state(&self) -> bool { get_event_state(*self) }
+    pub fn set_state(&self, state: bool) { set_event_state(*self, state) }
 }
 
 pub fn pump_events() {

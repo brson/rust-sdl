@@ -52,8 +52,8 @@ pub enum AudioFormat {
 pub static U16AudioFormat: AudioFormat = U16LsbAudioFormat;
 pub static S16AudioFormat: AudioFormat = S16LsbAudioFormat;
 
-pub impl AudioFormat {
-    fn to_ll_format(self) -> uint16_t {
+impl AudioFormat {
+    pub fn to_ll_format(self) -> uint16_t {
         match self {
             U8AudioFormat => AUDIO_U8,
             S8AudioFormat => AUDIO_S8,
@@ -63,7 +63,8 @@ pub impl AudioFormat {
             S16MsbAudioFormat => AUDIO_S16MSB,
         }
     }
-    fn from_ll_format(x: uint16_t) -> AudioFormat {
+
+    pub fn from_ll_format(x: uint16_t) -> AudioFormat {
         match x {
             AUDIO_U8 => U8AudioFormat,
             AUDIO_S8 => S8AudioFormat,
