@@ -2,7 +2,6 @@ use std::cast;
 use std::libc::c_int;
 use std::ptr;
 use std::str;
-use std::vec;
 
 use get_error;
 use video::Surface;
@@ -36,7 +35,7 @@ pub enum InitFlag {
 
 pub fn init(flags: &[InitFlag]) -> ~[InitFlag] {
     let bitflags = unsafe {
-        ll::IMG_Init(do vec::foldl(0, flags) |flags, &flag| {
+        ll::IMG_Init(do flags.foldl(0i32) |flags, &flag| {
             flags | flag as c_int
         })
     };

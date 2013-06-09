@@ -329,10 +329,10 @@ pub enum VideoFlag {
 pub fn set_video_mode(w: int, h: int, bpp: int,
                       surface_flags: &[SurfaceFlag],
                       video_flags: &[VideoFlag]) -> Result<~Surface, ~str> {
-    let flags = do vec::foldl(0, surface_flags) |flags, &flag| {
+    let flags = do surface_flags.foldl(0u32) |flags, &flag| {
         flags | flag as u32
     };
-    let flags = do vec::foldl(flags, video_flags) |flags, &flag| {
+    let flags = do video_flags.foldl(flags) |flags, &flag| {
         flags | flag as u32
     };
 
@@ -348,10 +348,10 @@ pub fn set_video_mode(w: int, h: int, bpp: int,
 pub fn is_video_mode_ok(w: int, h: int, bpp: int,
                         surface_flags: &[SurfaceFlag],
                         video_flags: &[VideoFlag]) -> Option<int> {
-    let flags = do vec::foldl(0u32, surface_flags) |flags, &flag| {
+    let flags = do surface_flags.foldl(0u32) |flags, &flag| {
         flags | flag as u32
     };
-    let flags = do vec::foldl(flags, video_flags) |flags, &flag| {
+    let flags = do video_flags.foldl(flags) |flags, &flag| {
         flags | flag as u32
     };
 
@@ -426,7 +426,7 @@ pub fn get_video_surface() -> Result<~Surface, ~str> {
 impl Surface {
     pub fn new(surface_flags: &[SurfaceFlag], width: int, height: int, bpp: int,
                rmask: u32, gmask: u32, bmask: u32, amask: u32) -> Result<~Surface, ~str> {
-        let flags = vec::foldl(0, surface_flags, |flags, flag| { flags | *flag as u32 });
+        let flags = surface_flags.foldl(0u32, |flags, flag| { flags | *flag as u32 });
 
         unsafe {
             let raw = ll::SDL_CreateRGBSurface(flags, width as c_int, height as c_int, bpp as c_int,
@@ -504,7 +504,7 @@ impl Surface {
         let colors = do colors.map |color| {
             color.to_struct()
         };
-        let flags = do vec::foldl(0 as c_int, palettes) |flags, &flag| {
+        let flags = do palettes.foldl(0 as c_int) |flags, &flag| {
             flags | flag as c_int
         };
 
@@ -538,7 +538,7 @@ impl Surface {
     }
 
     pub fn convert(&self, fmt: &PixelFormat, flags: &[SurfaceFlag]) -> Result<~Surface, ~str> {
-        let flags = do vec::foldl(0, flags) |flags, &flag| {
+        let flags = do flags.foldl(0u32) |flags, &flag| {
             flags | flag as u32
         };
 
@@ -576,7 +576,7 @@ impl Surface {
     }
 
     pub fn set_alpha(&self, flags: &[SurfaceFlag], alpha: u8) -> bool {
-        let flags = do vec::foldl(0, flags) |flags, &flag| {
+        let flags = do flags.foldl(0u32) |flags, &flag| {
             flags | flag as u32
         };
 
@@ -586,7 +586,7 @@ impl Surface {
     }
 
     pub fn set_color_key(&self, flags: &[SurfaceFlag], color: Color) -> bool {
-        let flags = do vec::foldl(0, flags) |flags, &flag| {
+        let flags = do flags.foldl(0u32) |flags, &flag| {
             flags | flag as u32
         };
 
