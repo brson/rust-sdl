@@ -1,9 +1,13 @@
-use Rect;
-use get_error;
-
+use std::cast;
 use std::libc::{c_int, c_float};
+use std::ptr;
 use std::rand;
 use std::rand::RngUtil;
+use std::str;
+use std::vec;
+
+use Rect;
+use get_error;
 
 pub mod ll {
     use Rect;
@@ -257,8 +261,8 @@ impl rand::Rand for Color {
     }
 }
 
-pub impl Color {
-    fn from_mapped(bit: u32, fmt: *ll::SDL_PixelFormat) -> Color {
+impl Color {
+    pub fn from_mapped(bit: u32, fmt: *ll::SDL_PixelFormat) -> Color {
         let r = 0;
         let g = 0;
         let b = 0;
@@ -271,18 +275,18 @@ pub impl Color {
         RGBA(r, g, b, a)
     }
 
-    fn to_mapped(&self, fmt: *ll::SDL_PixelFormat) -> u32 {
+    pub fn to_mapped(&self, fmt: *ll::SDL_PixelFormat) -> u32 {
         match *self {
             RGB(r, g, b) => unsafe { ll::SDL_MapRGB(fmt, r, g, b) },
             RGBA(r, g, b, a) => unsafe { ll::SDL_MapRGBA(fmt, r, g, b, a) }
         }
     }
 
-    fn from_struct(c: &ll::SDL_Color) -> Color {
+    pub fn from_struct(c: &ll::SDL_Color) -> Color {
         RGB(c.r, c.g, c.b)
     }
 
-    fn to_struct(&self) -> ll::SDL_Color {
+    pub fn to_struct(&self) -> ll::SDL_Color {
         match *self {
             RGB(r, g, b) => ll::SDL_Color {
                 r: r,
@@ -419,9 +423,9 @@ pub fn get_video_surface() -> Result<~Surface, ~str> {
 
 // TODO: get_video_modes, get_video_driver_name
 
-pub impl Surface {
-    fn new(surface_flags: &[SurfaceFlag], width: int, height: int, bpp: int,
-           rmask: u32, gmask: u32, bmask: u32, amask: u32) -> Result<~Surface, ~str> {
+impl Surface {
+    pub fn new(surface_flags: &[SurfaceFlag], width: int, height: int, bpp: int,
+               rmask: u32, gmask: u32, bmask: u32, amask: u32) -> Result<~Surface, ~str> {
         let flags = vec::foldl(0, surface_flags, |flags, flag| { flags | *flag as u32 });
 
         unsafe {
@@ -436,7 +440,7 @@ pub impl Surface {
         }
     }
 
-    fn from_bmp(path: &Path) -> Result<~Surface, ~str> {
+    pub fn from_bmp(path: &Path) -> Result<~Surface, ~str> {
         let raw = unsafe {
             do str::as_c_str(path.to_str()) |buf| {
                 do str::as_c_str("rb") |mode_buf| {
@@ -451,19 +455,19 @@ pub impl Surface {
 
     // TODO: from_data (hard because the pixel data has to stay alive)
 
-    fn get_width(&self) -> u16 {
+    pub fn get_width(&self) -> u16 {
         unsafe { (*self.raw).w as u16 }
     }
 
-    fn get_height(&self) -> u16 {
+    pub fn get_height(&self) -> u16 {
         unsafe { (*self.raw).h as u16 }
     }
 
-    fn get_size(&self) -> (u16, u16) {
+    pub fn get_size(&self) -> (u16, u16) {
         (self.get_width(), self.get_height())
     }
 
-    fn get_rect(&self) -> Rect {
+    pub fn get_rect(&self) -> Rect {
         Rect {
             x: 0,
             y: 0,
@@ -472,21 +476,21 @@ pub impl Surface {
         }
     }
 
-    fn update_rect(&self, rect: &Rect) {
+    pub fn update_rect(&self, rect: &Rect) {
         unsafe {
             ll::SDL_UpdateRect(self.raw, rect.x as i32, rect.y as i32,
                                rect.w as u32, rect.h as u32);
         }
     }
 
-    fn update_rects(&self, rects: &[Rect]) {
+    pub fn update_rects(&self, rects: &[Rect]) {
         unsafe {
             ll::SDL_UpdateRects(self.raw, rects.len() as c_int,
                                 cast::transmute(vec::raw::to_ptr(rects)));
         }
     }
 
-    fn set_colors(&self, colors: ~[Color]) -> bool {
+    pub fn set_colors(&self, colors: ~[Color]) -> bool {
         let colors = do colors.map |color| {
             color.to_struct()
         };
@@ -495,7 +499,7 @@ pub impl Surface {
                                    colors.len() as c_int) == 1 }
     }
 
-    fn set_palette(&self, palettes: &[PaletteType],
+    pub fn set_palette(&self, palettes: &[PaletteType],
                    colors: ~[Color]) -> bool {
         let colors = do colors.map |color| {
             color.to_struct()
@@ -509,12 +513,12 @@ pub impl Surface {
                                     colors.len() as c_int) == 1 }
     }
 
-    fn lock(&self) -> bool {
+    pub fn lock(&self) -> bool {
         unsafe { ll::SDL_LockSurface(self.raw) == 0 }
     }
 
     /// Locks a surface so that the pixels can be directly accessed safely.
-    fn with_lock<R>(&self, f: &fn(pixels: &mut [u8]) -> R) -> R {
+    pub fn with_lock<R>(&self, f: &fn(pixels: &mut [u8]) -> R) -> R {
         unsafe {
             if ll::SDL_LockSurface(self.raw) != 0 { fail!(~"could not lock surface"); }
             let len = (*self.raw).pitch as uint * ((*self.raw).h as uint);
@@ -525,15 +529,15 @@ pub impl Surface {
         }
     }
 
-    fn unlock(&self) {
+    pub fn unlock(&self) {
         unsafe { ll::SDL_UnlockSurface(self.raw); }
     }
 
-    fn flip(&self) -> bool {
+    pub fn flip(&self) -> bool {
         unsafe { ll::SDL_Flip(self.raw) == 0 }
     }
 
-    fn convert(&self, fmt: &PixelFormat, flags: &[SurfaceFlag]) -> Result<~Surface, ~str> {
+    pub fn convert(&self, fmt: &PixelFormat, flags: &[SurfaceFlag]) -> Result<~Surface, ~str> {
         let flags = do vec::foldl(0, flags) |flags, &flag| {
             flags | flag as u32
         };
@@ -547,21 +551,21 @@ pub impl Surface {
         }
     }
 
-    fn display_format(&self) -> Result<~Surface, ~str> {
+    pub fn display_format(&self) -> Result<~Surface, ~str> {
         let raw = unsafe { ll::SDL_DisplayFormat(self.raw) };
 
         if raw.is_null() { Err(get_error()) }
         else { Ok(wrap_surface(raw, true)) }
     }
 
-    fn display_format_alpha(&self) -> Result<~Surface, ~str> {
+    pub fn display_format_alpha(&self) -> Result<~Surface, ~str> {
         let raw = unsafe { ll::SDL_DisplayFormatAlpha(self.raw) };
 
         if raw.is_null() { Err(get_error()) }
         else { Ok(wrap_surface(raw, true)) }
     }
 
-    fn save_bmp(&self, path: &Path) -> bool {
+    pub fn save_bmp(&self, path: &Path) -> bool {
         unsafe {
             do str::as_c_str(path.to_str()) |buf| {
                 do str::as_c_str("wb") |mode_buf| {
@@ -571,7 +575,7 @@ pub impl Surface {
         }
     }
 
-    fn set_alpha(&self, flags: &[SurfaceFlag], alpha: u8) -> bool {
+    pub fn set_alpha(&self, flags: &[SurfaceFlag], alpha: u8) -> bool {
         let flags = do vec::foldl(0, flags) |flags, &flag| {
             flags | flag as u32
         };
@@ -581,7 +585,7 @@ pub impl Surface {
         }
     }
 
-    fn set_color_key(&self, flags: &[SurfaceFlag], color: Color) -> bool {
+    pub fn set_color_key(&self, flags: &[SurfaceFlag], color: Color) -> bool {
         let flags = do vec::foldl(0, flags) |flags, &flag| {
             flags | flag as u32
         };
@@ -592,13 +596,13 @@ pub impl Surface {
         }
     }
 
-    fn set_clip_rect(&self, rect: &Rect) {
+    pub fn set_clip_rect(&self, rect: &Rect) {
         unsafe {
             ll::SDL_SetClipRect(self.raw, rect);
         }
     }
 
-    fn get_clip_rect(&self) -> Rect {
+    pub fn get_clip_rect(&self) -> Rect {
         let rect = Rect {
             x: 0,
             y: 0,
@@ -614,8 +618,8 @@ pub impl Surface {
         rect
     }
 
-    fn blit_rect(&self, src: &Surface, src_rect: Option<Rect>,
-                 dest_rect: Option<Rect>) -> bool {
+    pub fn blit_rect(&self, src: &Surface, src_rect: Option<Rect>,
+                     dest_rect: Option<Rect>) -> bool {
         unsafe {
             ll::SDL_UpperBlit(src.raw, match src_rect {
                 Some(ref rect) => cast::transmute(rect),
@@ -627,11 +631,11 @@ pub impl Surface {
         }
     }
 
-    fn blit(&self, src: &Surface) -> bool {
+    pub fn blit(&self, src: &Surface) -> bool {
         self.blit_rect(src, None, None)
     }
 
-    fn blit_at(&self, src: &Surface, x: i16, y: i16) -> bool {
+    pub fn blit_at(&self, src: &Surface, x: i16, y: i16) -> bool {
         let (w, h) = src.get_size();
 
         self.blit_rect(src, None, Some(Rect {
@@ -642,19 +646,19 @@ pub impl Surface {
         }))
     }
 
-    fn fill_rect(&self, rect: Option<Rect>,
-                 color: Color) -> bool {
+    pub fn fill_rect(&self, rect: Option<Rect>,
+                     color: Color) -> bool {
         unsafe { ll::SDL_FillRect(self.raw, match rect {
             Some(ref rect) => cast::transmute(rect),
             None => ptr::null()
         }, color.to_mapped((*self.raw).format)) == 0 }
     }
 
-    fn fill(&self, color: Color) -> bool {
+    pub fn fill(&self, color: Color) -> bool {
         self.fill_rect(None, color)
     }
 
-    fn clear(&self) -> bool {
+    pub fn clear(&self) -> bool {
         self.fill(RGB(0, 0, 0))
     }
 }
