@@ -41,7 +41,7 @@ pub fn start(main: MainFunction) {
 #[cfg(target_os="linux")]
 #[cfg(target_os="freebsd")]
 pub fn start(main: MainFunction) {
-    let cell = Cell(main);
+    let cell = Cell::new(main);
     let mut task = task::task();
     task.sched_mode(PlatformThread);
     do task.spawn {
