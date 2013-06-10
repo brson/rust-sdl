@@ -776,7 +776,7 @@ pub fn get_mod_state() -> ~[Mod] {
 
 pub fn set_mod_state(states: &[Mod]) {
     unsafe {
-        ll::SDL_SetModState(do vec::foldl(0, states) |states, &state| {
+        ll::SDL_SetModState(do states.foldl(0u32) |states, &state| {
             states | state as ll::SDLMod
         });
     }
