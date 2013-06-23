@@ -1,29 +1,41 @@
-use std::cast::transmute;
 use std::cell::Cell;
-use std::libc::{c_int, c_char};
-use std::local_data;
-use std::os;
 use std::task::PlatformThread;
 use std::task;
 
-type MainFunction = ~fn();
 
-fn key(_: @MainFunction) {}
+pub type MainFunction = ~fn();
 
-#[no_mangle]
-#[cfg(target_os="macos")]
-pub extern fn SDL_main(_: c_int, _: **c_char) {
-    unsafe {
-        (*local_data::local_data_get(key).get())();
-    }
-}
-
-#[cfg(target_os="macos")]
 pub fn start(main: MainFunction) {
     let cell = Cell::new(main);
     let mut task = task::task();
     task.sched_mode(PlatformThread);
-    do task.spawn {
+    task.spawn_with(cell, platform_specific::run_main)
+}
+
+#[cfg(target_os="win32")]
+#[cfg(target_os="linux")]
+#[cfg(target_os="freebsd")]
+mod platform_specific {
+    use std::cell::Cell;
+    use super::MainFunction;
+
+    pub fn run_main(cell: Cell<MainFunction>) {
+        cell.take()()
+    }
+}
+
+#[cfg(target_os="macos")]
+mod platform_specific {
+    use std::cell::Cell;
+    use super::MainFunction;
+    use std::cast::transmute;
+    use std::libc::{c_int, c_char};
+    use std::local_data;
+    use std::os;
+
+    fn key(_: @MainFunction) {}
+
+    pub fn run_main(cell: Cell<MainFunction>) {
         let args = os::args();
         unsafe {
             local_data::local_data_set(key, @cell.take());
@@ -35,22 +47,16 @@ pub fn start(main: MainFunction) {
             let _ = SDLX_main(args.len() as c_int, &c_args[0]);
         }
     }
-}
 
-#[cfg(target_os="win32")]
-#[cfg(target_os="linux")]
-#[cfg(target_os="freebsd")]
-pub fn start(main: MainFunction) {
-    let cell = Cell::new(main);
-    let mut task = task::task();
-    task.sched_mode(PlatformThread);
-    do task.spawn {
-        cell.take()();
+    #[no_mangle]
+    extern fn SDL_main(_: c_int, _: **c_char) {
+        unsafe {
+            (*local_data::local_data_get(key).get())();
+        }
     }
-}
 
-#[cfg(target_os="macos")]
-#[link_args="-L. -lSDLXmain -framework AppKit -framework Foundation"]
-extern {
-    fn SDLX_main(argc: c_int, argv: **c_char) -> c_int;
+    #[link_args="-L. -lSDLXmain -framework AppKit -framework Foundation"]
+    extern {
+        fn SDLX_main(argc: c_int, argv: **c_char) -> c_int;
+    }
 }
