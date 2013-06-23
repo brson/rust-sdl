@@ -102,7 +102,7 @@ pub enum Error {
 
 pub fn init(flags: &[InitFlag]) -> bool {
     unsafe {
-        ll::SDL_Init(do flags.foldl(0u32) |flags, &flag| {
+        ll::SDL_Init(do flags.iter().fold(0u32) |flags, &flag| {
             flags | flag as ll::SDL_InitFlag
         }) == 0
     }
@@ -110,14 +110,14 @@ pub fn init(flags: &[InitFlag]) -> bool {
 
 pub fn init_subsystem(flags: &[InitFlag]) -> bool {
     unsafe {
-        ll::SDL_InitSubSystem(do flags.foldl(0u32) |flags, &flag| {
+        ll::SDL_InitSubSystem(do flags.iter().fold(0u32) |flags, &flag| {
             flags | flag as ll::SDL_InitFlag
         }) == 0
     }
 }
 
 pub fn quit_subsystem(flags: &[InitFlag]) {
-    let flags = do flags.foldl(0u32) |flags, &flag| {
+    let flags = do flags.iter().fold(0u32) |flags, &flag| {
         flags | flag as ll::SDL_InitFlag
     };
 
@@ -129,7 +129,7 @@ pub fn quit() {
 }
 
 pub fn was_inited(flags: &[InitFlag]) -> ~[InitFlag] {
-    let flags = do flags.foldl(0u32) |flags, &flag| {
+    let flags = do flags.iter().fold(0u32) |flags, &flag| {
         flags | flag as ll::SDL_InitFlag
     };
     let bitflags = unsafe { ll::SDL_WasInit(flags) };

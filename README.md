@@ -20,5 +20,16 @@ Rust-SDL uses the MIT license.
 Clone this repo, run `./configure`, and then `make`. To see an example of the code in use, *make demos*.
 If you don't want SDL_Mixer (if you aren't using sound) or SDL_Image (if you're not using image formats other than BMP) then you can exclude them from make by setting `RUSTFLAGS`. For example, if you wish to use just SDL_Image, `RUSTFLAGS="--cfg image" make`
 
+# Demo
+
+To compile the demo:
+
+> rustc -L$PWD/src demo/demo.rc
+
+
+Then run:
+
+> ./demo/demo
+
 # When things go wrong
 Rust, and Rust-SDL, are both still heavily in development, and you may run into teething issues when using this. Before panicking, check that you're using the latest Incoming branch of Rust, check that you've updated Rust-SDL to the latest version, and run `make clean` and `./configure`. If that fails, please let us know on the issue tracker.
