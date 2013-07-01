@@ -141,7 +141,7 @@ fn wrap_surface(raw: *ll::SDL_Surface, owned: bool) -> ~Surface {
 }
 
 impl Drop for Surface {
-    pub fn finalize(&self) {
+    pub fn drop(&self) {
         unsafe {
             if self.owned {
                 ll::SDL_FreeSurface(self.raw);
