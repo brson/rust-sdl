@@ -129,7 +129,7 @@ impl CD {
 }
 
 impl Drop for CD {
-    pub fn finalize(&self) {
+    pub fn drop(&self) {
         unsafe { ll::SDL_CDClose(self.raw); }
     }
 }
