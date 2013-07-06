@@ -200,12 +200,14 @@ pub enum AppState {
 }
 
 fn wrap_app_state(bitflags: u8) -> ~[AppState] {
-    do [AppMouseFocusState,
+    let flags = [AppMouseFocusState,
         AppInputFocusState,
-        AppActiveState].filter_mapped |&flag| {
+        AppActiveState];
+
+    do flags.iter().filter_map |&flag| {
         if bitflags & (flag as u8) != 0 { Some(flag) }
         else { None }
-    }
+    }.collect()
 }
 
 #[deriving(Eq)]
@@ -485,7 +487,7 @@ pub enum Mod {
 }
 
 fn wrap_mod_state(bitflags: ll::SDLMod) -> ~[Mod] {
-    do [NoMod,
+    let flags = [NoMod,
         LShiftMod,
         RShiftMod,
         LCtrlMod,
@@ -497,10 +499,12 @@ fn wrap_mod_state(bitflags: ll::SDLMod) -> ~[Mod] {
         NumMod,
         CapsMod,
         ModeMod,
-        ReservedMod].filter_mapped |&flag| {
+        ReservedMod];
+
+    do flags.iter().filter_map |&flag| {
         if bitflags & (flag as ll::SDLMod) != 0 { Some(flag) }
         else { None }
-    }
+    }.collect()
 }
 
 #[deriving(Eq)]
@@ -513,14 +517,16 @@ pub enum HatState {
 }
 
 fn wrap_hat_state(bitflags: u8) -> ~[HatState] {
-    do [CenteredHatState,
+    let flags = [CenteredHatState,
         UpHatState,
         RightHatState,
         DownHatState,
-        LeftHatState].filter_mapped |&flag| {
+        LeftHatState];
+
+    do flags.iter().filter_map |&flag| {
         if bitflags & (flag as u8) != 0 { Some(flag) }
         else { None }
-    }
+    }.collect()
 }
 
 #[deriving(Eq)]
@@ -555,16 +561,18 @@ pub enum MouseState {
 }
 
 fn wrap_mouse_state(bitflags: u8) -> ~[MouseState] {
-    do [LeftMouseState,
+    let flags = [LeftMouseState,
         MiddleMouseState,
         RightMouseState,
         WheelUpMouseState,
         WheelDownMouseState,
         X1MouseState,
-        X2MouseState].filter_mapped |&flag| {
+        X2MouseState];
+
+    do flags.iter().filter_map |&flag| {
         if bitflags & (flag as u8) != 0 { Some(flag) }
         else { None }
-    }
+    }.collect()
 }
 
 #[deriving(Eq)]
@@ -759,14 +767,15 @@ pub fn get_key_state() -> ~[(Key, bool)] {
     let mut i = -1;
 
     unsafe {
-        do vec::raw::from_buf_raw(data, num as uint).filter_mapped |&state| {
+        let buf = vec::raw::from_buf_raw(data, num as uint);
+        do buf.iter().filter_map |&state| {
             i += 1;
 
             match wrap_key(i as ll::SDLKey) {
                 Some(key) => Some((key, state == 1)),
                 None => None
             }
-        }
+        }.collect()
     }
 }
 
