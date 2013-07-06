@@ -49,8 +49,8 @@ pub enum AudioFormat {
     S16MsbAudioFormat = AUDIO_S16MSB as int
 }
 
-pub static U16AudioFormat: AudioFormat = U16LsbAudioFormat;
-pub static S16AudioFormat: AudioFormat = S16LsbAudioFormat;
+pub static U16_AUDIO_FORMAT: AudioFormat = U16LsbAudioFormat;
+pub static S16_AUDIO_FORMAT: AudioFormat = S16LsbAudioFormat;
 
 impl AudioFormat {
     pub fn to_ll_format(self) -> uint16_t {

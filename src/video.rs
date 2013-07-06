@@ -385,7 +385,7 @@ pub struct VideoInfo {
 }
 
 fn wrap_video_info_flags(bitflags: u32) -> ~[VideoInfoFlag] {
-    do [HWAvailable,
+    let flags = [HWAvailable,
         WMAvailable,
         BlitHW,
         BlitHWColorkey,
@@ -393,10 +393,12 @@ fn wrap_video_info_flags(bitflags: u32) -> ~[VideoInfoFlag] {
         BlitSW,
         BlitSWColorkey,
         BlitSWAlpha,
-        BlitFill].filter_mapped |&flag| {
+        BlitFill];
+
+    do flags.iter().filter_map |&flag| {
         if bitflags & (flag as u32) != 0 { Some(flag) }
         else { None }
-    }
+    }.collect()
 }
 
 pub fn get_video_info() -> ~VideoInfo {

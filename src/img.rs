@@ -40,12 +40,14 @@ pub fn init(flags: &[InitFlag]) -> ~[InitFlag] {
         })
     };
 
-    do [InitJPG,
+    let flags = [InitJPG,
         InitPNG,
-        InitTIF].filter_mapped |&flag| {
+        InitTIF];
+
+    do flags.iter().filter_map |&flag| {
         if bitflags & (flag as c_int) != 0 { Some(flag) }
         else { None }
-    }
+    }.collect()
 }
 
 pub fn load(file: &Path) -> Result<~Surface, ~str> {
