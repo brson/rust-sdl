@@ -112,9 +112,3 @@ impl Joystick {
 		(dx as int, dy as int)
 	}
 }
-
-impl Drop for Joystick {
-    pub fn finalize(&self) {
-        unsafe { ll::SDL_JoystickClose(self.raw); }
-    }
-}

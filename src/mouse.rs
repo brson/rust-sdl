@@ -65,16 +65,6 @@ impl Cursor {
 	}
 }
 
-impl Drop for Cursor {
-    pub fn finalize(&self) {
-        unsafe {
-        	if self.owned {
-        		ll::SDL_FreeCursor(self.raw);
-        	}
-        }
-    }
-}
-
 pub fn set_cursor(cursor: &Cursor) {
 	unsafe { ll::SDL_SetCursor(cursor.raw); }
 }

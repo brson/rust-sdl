@@ -140,16 +140,6 @@ fn wrap_surface(raw: *ll::SDL_Surface, owned: bool) -> ~Surface {
     ~Surface{ raw: raw, owned: owned }
 }
 
-impl Drop for Surface {
-    pub fn finalize(&self) {
-        unsafe {
-            if self.owned {
-                ll::SDL_FreeSurface(self.raw);
-            }
-        }
-    }
-}
-
 #[deriving(Eq)]
 pub struct Palette {
     colors: ~[Color]

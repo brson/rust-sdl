@@ -72,23 +72,6 @@ unsafe fn check_if_not_playing(ll_chunk_addr: *ll::Mix_Chunk) {
     }
 }
 
-impl Drop for Chunk {
-    fn finalize(&self) {
-        unsafe {
-            match self.data {
-                Borrowed(_) => (),
-                Allocated(ll_chunk) => {
-                    check_if_not_playing(ll_chunk);
-                    ll::Mix_FreeChunk(ll_chunk);
-                },
-                OwnedBuffer(ref chunk) => {
-                    check_if_not_playing(&chunk.ll_chunk);
-                }
-            }
-        }
-    }
-}
-
 impl Chunk {
     pub fn new(buffer: ~[u8], volume: u8) -> ~Chunk {
         unsafe {
