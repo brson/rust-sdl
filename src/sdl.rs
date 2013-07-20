@@ -134,17 +134,19 @@ pub fn was_inited(flags: &[InitFlag]) -> ~[InitFlag] {
     };
     let bitflags = unsafe { ll::SDL_WasInit(flags) };
 
-    do [InitTimer,
+    let flags = [InitTimer,
         InitAudio,
         InitVideo,
         InitCDRom,
         InitJoystick,
         InitNoParachute,
         InitEventThread,
-        InitEverything].filter_mapped |&flag| {
+        InitEverything];
+
+    do flags.iter().filter_map |&flag| {
         if bitflags & (flag as ll::SDL_InitFlag) != 0 { Some(flag) }
         else { None }
-    }
+    }.collect()
 }
 
 pub fn get_error() -> ~str {
