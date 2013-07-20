@@ -27,5 +27,5 @@ pub mod img;
 #[cfg(mixer)]
 pub mod mixer;
 
-mod sdl;
+pub mod sdl;
 
