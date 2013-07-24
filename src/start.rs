@@ -25,20 +25,21 @@ mod platform_specific {
 }
 
 #[cfg(target_os="macos")]
-mod platform_specific {
+pub mod platform_specific {
     use std::cell::Cell;
     use super::MainFunction;
     use std::cast::transmute;
     use std::libc::{c_int, c_char};
+    use std::local_data::Key;
     use std::local_data;
     use std::os;
 
-    fn key(_: @MainFunction) {}
+    static KEY: Key<MainFunction> = &Key;
 
     pub fn run_main(cell: Cell<MainFunction>) {
         let args = os::args();
         unsafe {
-            local_data::local_data_set(key, @cell.take());
+            local_data::set(KEY, cell.take());
 
             // XXX: Use return value to set program return code.
             // XXX: This isn't really safe... args might not be null-
@@ -49,10 +50,8 @@ mod platform_specific {
     }
 
     #[no_mangle]
-    extern fn SDL_main(_: c_int, _: **c_char) {
-        unsafe {
-            (*local_data::local_data_get(key).get())();
-        }
+    pub extern fn SDL_main(_: c_int, _: **c_char) {
+        local_data::get(KEY, |f| (*f.get())())
     }
 
     #[link_args="-L. -lSDLXmain -framework AppKit -framework Foundation"]

@@ -3,9 +3,9 @@ use std::libc::{c_int};
 pub mod ll {
     use std::libc::{c_int};
 
-    pub extern "C" {
-        fn SDL_GL_SetAttribute(attr: c_int, value: c_int) -> c_int;
-        fn SDL_GL_SwapBuffers();
+    extern "C" {
+        pub fn SDL_GL_SetAttribute(attr: c_int, value: c_int) -> c_int;
+        pub fn SDL_GL_SwapBuffers();
     }
 }
 

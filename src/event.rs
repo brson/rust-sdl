@@ -176,19 +176,19 @@ pub mod ll {
         }
     }
 
-    pub extern {
-        fn SDL_PollEvent(event: *SDL_Event) -> c_int;
-        fn SDL_WaitEvent(event: *SDL_Event) -> c_int;
-        fn SDL_EventState(_type: uint8_t, state: c_int) -> uint8_t;
-        fn SDL_GetKeyState(numkeys: *c_int) -> *uint8_t;
-        fn SDL_GetModState() -> SDLMod;
-        fn SDL_GetKeyName(key: SDLKey) -> *c_schar;
-        fn SDL_JoystickEventState(state: c_int) -> c_int;
-        fn SDL_GetAppState() -> uint8_t;
-        fn SDL_EnableUNICODE(enable: c_int) -> c_int;
-        fn SDL_EnableKeyRepeat(delay: c_int, interval: c_int) -> c_int;
-        fn SDL_SetModState(modstate: SDLMod);
-        fn SDL_PumpEvents();
+    extern {
+        pub fn SDL_PollEvent(event: *SDL_Event) -> c_int;
+        pub fn SDL_WaitEvent(event: *SDL_Event) -> c_int;
+        pub fn SDL_EventState(_type: uint8_t, state: c_int) -> uint8_t;
+        pub fn SDL_GetKeyState(numkeys: *c_int) -> *uint8_t;
+        pub fn SDL_GetModState() -> SDLMod;
+        pub fn SDL_GetKeyName(key: SDLKey) -> *c_schar;
+        pub fn SDL_JoystickEventState(state: c_int) -> c_int;
+        pub fn SDL_GetAppState() -> uint8_t;
+        pub fn SDL_EnableUNICODE(enable: c_int) -> c_int;
+        pub fn SDL_EnableKeyRepeat(delay: c_int, interval: c_int) -> c_int;
+        pub fn SDL_SetModState(modstate: SDLMod);
+        pub fn SDL_PumpEvents();
     }
 }
 

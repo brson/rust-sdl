@@ -42,17 +42,17 @@ pub mod ll {
     pub static SDL_INIT_EVENTTHREAD: SDL_InitFlag = 0x01000000;
     pub static SDL_INIT_EVERYTHING: SDL_InitFlag = 0x0000FFFF;
 
-    pub extern {
-        fn SDL_ClearError();
-        fn SDL_Error(code: SDL_errorcode);
-        fn SDL_SetError(fmt: *c_schar);
-        fn SDL_GetError() -> *c_schar;
-        fn SDL_Quit();
-        fn SDL_QuitSubSystem(flags: SDL_InitFlag);
-        fn SDL_Init(flags: uint32_t) -> c_int;
-        fn SDL_InitSubSystem(flags: SDL_InitFlag) -> c_int;
-        fn SDL_WasInit(flags: SDL_InitFlag) -> SDL_InitFlag;
-        fn SDL_GetTicks() -> uint32_t;
+    extern {
+        pub fn SDL_ClearError();
+        pub fn SDL_Error(code: SDL_errorcode);
+        pub fn SDL_SetError(fmt: *c_schar);
+        pub fn SDL_GetError() -> *c_schar;
+        pub fn SDL_Quit();
+        pub fn SDL_QuitSubSystem(flags: SDL_InitFlag);
+        pub fn SDL_Init(flags: uint32_t) -> c_int;
+        pub fn SDL_InitSubSystem(flags: SDL_InitFlag) -> c_int;
+        pub fn SDL_WasInit(flags: SDL_InitFlag) -> SDL_InitFlag;
+        pub fn SDL_GetTicks() -> uint32_t;
     }
 }
 
