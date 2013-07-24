@@ -16,13 +16,13 @@ pub mod ll {
 	pub static SDL_GRAB_ON: SDL_GrabMode = 1;
 	pub static SDL_GRAB_FULLSCREEN: SDL_GrabMode = 2;
 
-	pub extern {
-		fn SDL_WM_SetCaption(title: *c_schar, icon: *c_schar);
-	    fn SDL_WM_GetCaption(title: **c_schar, icon: **c_schar);
-	    fn SDL_WM_SetIcon(icon: *SDL_Surface, mask: *uint8_t);
-	    fn SDL_WM_IconifyWindow() -> c_int;
-	    fn SDL_WM_ToggleFullScreen(surface: *SDL_Surface) -> c_int;
-	    fn SDL_WM_GrabInput(mode: SDL_GrabMode) -> SDL_GrabMode;
+	extern {
+		pub fn SDL_WM_SetCaption(title: *c_schar, icon: *c_schar);
+	    pub fn SDL_WM_GetCaption(title: **c_schar, icon: **c_schar);
+	    pub fn SDL_WM_SetIcon(icon: *SDL_Surface, mask: *uint8_t);
+	    pub fn SDL_WM_IconifyWindow() -> c_int;
+	    pub fn SDL_WM_ToggleFullScreen(surface: *SDL_Surface) -> c_int;
+	    pub fn SDL_WM_GrabInput(mode: SDL_GrabMode) -> SDL_GrabMode;
 	}
 }
 

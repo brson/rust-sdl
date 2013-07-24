@@ -19,10 +19,10 @@ pub mod ll {
     pub static IMG_INIT_WEBP: IMG_InitFlags = 8;
 
     #[link_args = "-lSDL_image"]
-    pub extern {
-        fn IMG_Init(flags: c_int) -> c_int;
-        fn IMG_Quit();
-        fn IMG_Load(file: *c_schar) -> *SDL_Surface;
+    extern {
+        pub fn IMG_Init(flags: c_int) -> c_int;
+        pub fn IMG_Quit();
+        pub fn IMG_Load(file: *c_schar) -> *SDL_Surface;
     }
 }
 

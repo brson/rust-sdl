@@ -30,7 +30,7 @@ pub mod ll {
         userdata: *c_void,
     }
 
-    pub extern {
+    extern {
         pub fn SDL_OpenAudio(desired: *mut SDL_AudioSpec, obtained: *mut SDL_AudioSpec) -> c_int;
         pub fn SDL_PauseAudio(pause_on: c_int);
         pub fn SDL_MixAudio(dst: *mut u8, src: *u8, len: u32, volume: c_int);
