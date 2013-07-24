@@ -32,20 +32,22 @@ pub mod ll {
 	    pub track: [SDL_CDtrack, ..100],
 	}
 
-	pub extern {
-		fn SDL_CDNumDrives() -> c_int;
-		fn SDL_CDName(drive: c_int) -> *c_schar;
-		fn SDL_CDOpen(drive: c_int) -> *SDL_CD;
-		fn SDL_CDStatus(cdrom: *SDL_CD) -> CDstatus;
-		fn SDL_CDClose(cdrom: *SDL_CD);
-		fn SDL_CDStop(cdrom: *SDL_CD) -> c_int;
-    	fn SDL_CDEject(cdrom: *SDL_CD) -> c_int;
-    	fn SDL_CDResume(cdrom: *SDL_CD) -> c_int;
-    	fn SDL_CDPlay(cdrom: *SDL_CD, start: c_int, length: c_int) -> c_int;
-    	fn SDL_CDPlayTracks(cdrom: *SDL_CD, start_track: c_int,
-                            start_frame: c_int, ntracks: c_int,
-                            nframes: c_int) -> c_int;
-    	fn SDL_CDPause(cdrom: *SDL_CD) -> c_int;
+	extern {
+		pub fn SDL_CDNumDrives() -> c_int;
+		pub fn SDL_CDName(drive: c_int) -> *c_schar;
+		pub fn SDL_CDOpen(drive: c_int) -> *SDL_CD;
+		pub fn SDL_CDStatus(cdrom: *SDL_CD) -> CDstatus;
+		pub fn SDL_CDClose(cdrom: *SDL_CD);
+		pub fn SDL_CDStop(cdrom: *SDL_CD) -> c_int;
+    	pub fn SDL_CDEject(cdrom: *SDL_CD) -> c_int;
+    	pub fn SDL_CDResume(cdrom: *SDL_CD) -> c_int;
+    	pub fn SDL_CDPlay(cdrom: *SDL_CD, start: c_int, length: c_int) -> c_int;
+    	pub fn SDL_CDPlayTracks(cdrom: *SDL_CD,
+                                start_track: c_int,
+                                start_frame: c_int,
+                                ntracks: c_int,
+                                nframes: c_int) -> c_int;
+    	pub fn SDL_CDPause(cdrom: *SDL_CD) -> c_int;
 	}
 }
 

@@ -23,14 +23,19 @@ pub mod ll {
 	    pub wm_cursor: *WMcursor,
 	}
 
-	pub extern {
-		fn SDL_ShowCursor(toggle: c_int) -> c_int;
-		fn SDL_CreateCursor(data: *uint8_t, mask: *uint8_t, w: c_int,
-		                    h: c_int, hot_x: c_int, hot_y: c_int) -> *SDL_Cursor;
-		fn SDL_SetCursor(cursor: *SDL_Cursor);
-		fn SDL_GetCursor() -> *SDL_Cursor;
-		fn SDL_FreeCursor(cursor: *SDL_Cursor);
-		fn SDL_WarpMouse(x: uint16_t, y: uint16_t);
+	extern {
+		pub fn SDL_ShowCursor(toggle: c_int) -> c_int;
+		pub fn SDL_CreateCursor(data: *uint8_t,
+                                mask: *uint8_t,
+                                w: c_int,
+		                        h: c_int,
+                                hot_x: c_int,
+                                hot_y: c_int)
+                                -> *SDL_Cursor;
+		pub fn SDL_SetCursor(cursor: *SDL_Cursor);
+		pub fn SDL_GetCursor() -> *SDL_Cursor;
+		pub fn SDL_FreeCursor(cursor: *SDL_Cursor);
+		pub fn SDL_WarpMouse(x: uint16_t, y: uint16_t);
 	}
 }
 
