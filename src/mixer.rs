@@ -1,6 +1,5 @@
 use std::cast::transmute;
 use std::libc::{c_int};
-use std::str;
 use std::uint;
 
 use audio::{AudioFormat, Channels, Mono, Stereo};
@@ -113,8 +112,8 @@ impl Chunk {
 
     pub fn from_wav(path: &Path) -> Result<~Chunk, ~str> {
         let raw = unsafe {
-            do str::as_c_str(path.to_str()) |buf| {
-                do str::as_c_str("rb") |mode_buf| {
+            do path.to_str().as_c_str |buf| {
+                do "rb".as_c_str |mode_buf| {
                     ll::Mix_LoadWAV_RW(SDL_RWFromFile(buf, mode_buf), 1)
                 }
             }

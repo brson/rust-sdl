@@ -1,7 +1,6 @@
 use std::cast;
 use std::libc::c_int;
 use std::ptr;
-use std::str;
 
 use get_error;
 use video::Surface;
@@ -51,7 +50,7 @@ pub fn init(flags: &[InitFlag]) -> ~[InitFlag] {
 }
 
 pub fn load(file: &Path) -> Result<~Surface, ~str> {
-    str::as_buf(file.to_str(), |buf, _len| {
+    do file.to_str().as_imm_buf |buf, _len| {
         let file = unsafe {
             cast::transmute_copy(&buf)
         };
@@ -65,7 +64,7 @@ pub fn load(file: &Path) -> Result<~Surface, ~str> {
                 Ok(~Surface { raw: raw, owned: true })
             }
         }
-    })
+    }
 }
 
 pub fn quit() {
