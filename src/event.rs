@@ -462,9 +462,9 @@ pub enum Key {
 fn wrap_key(i: ll::SDLKey) -> Option<Key> {
     unsafe {
         // Handle edge cases where there's no variant (they're ignored)
-        if (i < 8) || (i > 13 && i < 19) || (i > 19 && i < 27) ||
-           (i > 27 && i < 32) || (i > 64 && i < 91) || (i > 122 && i < 127) ||
-           (i > 127 && i < 160) { None }
+        if (i < 8) || (i > 9 && i < 12) || (i > 13 && i < 19) || (i > 19 && i < 27) ||
+           (i > 27 && i < 32) || (i > 36 && i < 38) || (i > 64 && i < 91) || (i > 122 && i < 127) ||
+           (i > 127 && i < 160) || (i > 296 && i < 300) { None }
         else { Some(cast::transmute(i as uint)) }
     }
 }
