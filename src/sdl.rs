@@ -158,7 +158,7 @@ pub fn get_error() -> ~str {
 }
 
 pub fn set_error(err: &str) {
-    do str::as_c_str(err) |buf| {
+    do err.as_c_str |buf| {
         unsafe { ll::SDL_SetError(buf); }
     }
 }

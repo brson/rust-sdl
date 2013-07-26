@@ -492,8 +492,8 @@ impl Surface {
 
     pub fn from_bmp(path: &Path) -> Result<~Surface, ~str> {
         let raw = unsafe {
-            do str::as_c_str(path.to_str()) |buf| {
-                do str::as_c_str("rb") |mode_buf| {
+            do path.to_str().as_c_str |buf| {
+                do "rb".as_c_str |mode_buf| {
                     ll::SDL_LoadBMP_RW(ll::SDL_RWFromFile(buf, mode_buf), 1)
                 }
             }
@@ -617,8 +617,8 @@ impl Surface {
 
     pub fn save_bmp(&self, path: &Path) -> bool {
         unsafe {
-            do str::as_c_str(path.to_str()) |buf| {
-                do str::as_c_str("wb") |mode_buf| {
+            do path.to_str().as_c_str |buf| {
+                do "wb".as_c_str |mode_buf| {
                     ll::SDL_SaveBMP_RW(self.raw, ll::SDL_RWFromFile(buf, mode_buf), 1) == 0
                 }
             }
