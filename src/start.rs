@@ -1,5 +1,5 @@
 use std::cell::Cell;
-use std::task::PlatformThread;
+use std::task::DefaultScheduler;
 use std::task;
 
 
@@ -8,7 +8,7 @@ pub type MainFunction = ~fn();
 pub fn start(main: MainFunction) {
     let cell = Cell::new(main);
     let mut task = task::task();
-    task.sched_mode(PlatformThread);
+    task.sched_mode(DefaultScheduler);
     task.spawn_with(cell, platform_specific::run_main)
 }
 
