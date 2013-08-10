@@ -16,8 +16,8 @@ pub mod ll {
 
     pub type SDL_Rect = Rect;
 
-    priv struct SDL_RWops_Anon {
-        priv data: [c_uchar, ..24],
+    struct SDL_RWops_Anon {
+        data: [c_uchar, ..24],
     }
 
     pub struct SDL_RWops {
