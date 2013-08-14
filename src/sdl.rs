@@ -158,9 +158,7 @@ pub fn get_error() -> ~str {
 }
 
 pub fn set_error(err: &str) {
-    do err.with_c_str |buf| {
-        unsafe { ll::SDL_SetError(buf); }
-    }
+    unsafe { ll::SDL_SetError(err.to_c_str().unwrap()); }
 }
 
 pub fn set_error_from_code(err: Error) {
