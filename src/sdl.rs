@@ -58,10 +58,10 @@ pub mod ll {
 
 #[deriving(Eq)]
 pub struct Rect {
-    pub x: i16,
-    pub y: i16,
-    pub w: u16,
-    pub h: u16
+     x: i16,
+     y: i16,
+     w: u16,
+     h: u16
 }
 
 pub fn Rect(x: i16, y: i16, w: u16, h: u16) -> Rect {
@@ -81,23 +81,23 @@ impl Rect {
 
 #[deriving(Eq)]
 pub enum InitFlag {
-    pub InitTimer = ll::SDL_INIT_TIMER as int,
-    pub InitAudio = ll::SDL_INIT_AUDIO as int,
-    pub InitVideo = ll::SDL_INIT_VIDEO as int,
-    pub InitCDRom = ll::SDL_INIT_CDROM as int,
-    pub InitJoystick = ll::SDL_INIT_JOYSTICK as int,
-    pub InitNoParachute = ll::SDL_INIT_NOPARACHUTE as int,
-    pub InitEventThread = ll::SDL_INIT_EVENTTHREAD as int,
-    pub InitEverything = ll::SDL_INIT_EVERYTHING as int,
+     InitTimer = ll::SDL_INIT_TIMER as int,
+     InitAudio = ll::SDL_INIT_AUDIO as int,
+     InitVideo = ll::SDL_INIT_VIDEO as int,
+     InitCDRom = ll::SDL_INIT_CDROM as int,
+     InitJoystick = ll::SDL_INIT_JOYSTICK as int,
+     InitNoParachute = ll::SDL_INIT_NOPARACHUTE as int,
+     InitEventThread = ll::SDL_INIT_EVENTTHREAD as int,
+     InitEverything = ll::SDL_INIT_EVERYTHING as int,
 }
 
 #[deriving(Eq)]
 pub enum Error {
-    pub NoMemError = ll::SDL_ENOMEM as int,
-    pub ReadError = ll::SDL_EFREAD as int,
-    pub WriteError = ll::SDL_EFWRITE as int,
-    pub SeekError = ll::SDL_EFSEEK as int,
-    pub UnsupportedError = ll::SDL_UNSUPPORTED as int
+     NoMemError = ll::SDL_ENOMEM as int,
+     ReadError = ll::SDL_EFREAD as int,
+     WriteError = ll::SDL_EFWRITE as int,
+     SeekError = ll::SDL_EFSEEK as int,
+     UnsupportedError = ll::SDL_UNSUPPORTED as int
 }
 
 pub fn init(flags: &[InitFlag]) -> bool {
@@ -158,7 +158,7 @@ pub fn get_error() -> ~str {
 }
 
 pub fn set_error(err: &str) {
-    do err.as_c_str |buf| {
+    do err.with_c_str |buf| {
         unsafe { ll::SDL_SetError(buf); }
     }
 }

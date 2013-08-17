@@ -112,8 +112,8 @@ impl Chunk {
 
     pub fn from_wav(path: &Path) -> Result<~Chunk, ~str> {
         let raw = unsafe {
-            do path.to_str().as_c_str |buf| {
-                do "rb".as_c_str |mode_buf| {
+            do path.to_str().with_c_str |buf| {
+                do "rb".with_c_str |mode_buf| {
                     ll::Mix_LoadWAV_RW(SDL_RWFromFile(buf, mode_buf), 1)
                 }
             }

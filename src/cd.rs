@@ -16,20 +16,20 @@ pub mod ll {
 	pub static CD_ERROR: CDstatus = -1;
 
 	pub struct SDL_CDtrack {
-	    pub id: uint8_t,
-	    pub _type: uint8_t,
-	    pub unused: uint16_t,
-	    pub length: uint32_t,
-	    pub offset: uint32_t
+	    id: uint8_t,
+	    _type: uint8_t,
+	    unused: uint16_t,
+	    length: uint32_t,
+	    offset: uint32_t
 	}
 
 	pub struct SDL_CD {
-	    pub id: c_int,
-	    pub status: CDstatus,
-	    pub numtracks: c_int,
-	    pub cur_track: c_int,
-	    pub cur_frame: c_int,
-	    pub track: [SDL_CDtrack, ..100],
+	    id: c_int,
+	    status: CDstatus,
+	    numtracks: c_int,
+	    cur_track: c_int,
+	    cur_frame: c_int,
+	    track: [SDL_CDtrack, ..100],
 	}
 
 	extern {
@@ -65,7 +65,7 @@ pub fn get_drive_name(index: int) -> ~str {
 
 #[deriving(Eq)]
 pub struct CD {
-	pub raw: *ll::SDL_CD
+	raw: *ll::SDL_CD
 }
 
 fn wrap_cd(raw: *ll::SDL_CD) -> ~CD {
@@ -74,11 +74,11 @@ fn wrap_cd(raw: *ll::SDL_CD) -> ~CD {
 
 #[deriving(Eq)]
 pub enum Status {
-	pub TrayEmptyStatus = ll::CD_TRAYEMPTY as int,
-	pub StoppedStatus = ll::CD_STOPPED as int,
-	pub PlayingStatus = ll::CD_PLAYING as int,
-	pub PausedStatus = ll::CD_PAUSED as int,
-	pub ErrorStatus = ll::CD_ERROR as int
+	TrayEmptyStatus = ll::CD_TRAYEMPTY as int,
+	StoppedStatus = ll::CD_STOPPED as int,
+	PlayingStatus = ll::CD_PLAYING as int,
+	PausedStatus = ll::CD_PAUSED as int,
+	ErrorStatus = ll::CD_ERROR as int
 }
 
 impl CD {
@@ -131,7 +131,7 @@ impl CD {
 }
 
 impl Drop for CD {
-    pub fn drop(&self) {
+    fn drop(&self) {
         unsafe { ll::SDL_CDClose(self.raw); }
     }
 }

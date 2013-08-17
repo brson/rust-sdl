@@ -28,14 +28,14 @@ pub mod ll {
 
 #[deriving(Eq)]
 pub enum GrabMode {
-	pub GrabQuery = ll::SDL_GRAB_QUERY as int,
-	pub GrabOff = ll::SDL_GRAB_OFF as int,
-	pub GrabOn = ll::SDL_GRAB_ON as int
+	 GrabQuery = ll::SDL_GRAB_QUERY as int,
+	 GrabOff = ll::SDL_GRAB_OFF as int,
+	 GrabOn = ll::SDL_GRAB_ON as int
 }
 
 pub fn set_caption(title: &str, icon: &str) {
-	do title.as_c_str |title_buf| {
-		do icon.as_c_str |icon_buf| {
+	do title.with_c_str |title_buf| {
+		do icon.with_c_str |icon_buf| {
 			unsafe { ll::SDL_WM_SetCaption(title_buf, icon_buf); }
 		}
 	}

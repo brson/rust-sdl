@@ -16,74 +16,74 @@ pub mod ll {
 
     pub type SDL_Rect = Rect;
 
-    priv struct SDL_RWops_Anon {
+    struct SDL_RWops_Anon {
         priv data: [c_uchar, ..24],
     }
 
     pub struct SDL_RWops {
-        pub seek: *uint8_t,
-        pub read: *uint8_t,
-        pub write: *uint8_t,
-        pub close: *uint8_t,
-        pub _type: uint32_t,
-        pub hidden: SDL_RWops_Anon
+         seek: *uint8_t,
+         read: *uint8_t,
+         write: *uint8_t,
+         close: *uint8_t,
+         _type: uint32_t,
+         hidden: SDL_RWops_Anon
     }
 
     pub struct SDL_Surface {
-        pub flags: uint32_t,
-        pub format: *SDL_PixelFormat,
-        pub w: c_int,
-        pub h: c_int,
-        pub pitch: uint16_t,
-        pub pixels: *c_void,
-        pub offset: c_int,
-        pub hwdata: *c_void,
-        pub clip_rect: SDL_Rect,
-        pub unused1: uint32_t,
-        pub locked: uint32_t,
-        pub map: *c_void,
-        pub format_version: c_uint,
-        pub refcount: c_int
+         flags: uint32_t,
+         format: *SDL_PixelFormat,
+         w: c_int,
+         h: c_int,
+         pitch: uint16_t,
+         pixels: *c_void,
+         offset: c_int,
+         hwdata: *c_void,
+         clip_rect: SDL_Rect,
+         unused1: uint32_t,
+         locked: uint32_t,
+         map: *c_void,
+         format_version: c_uint,
+         refcount: c_int
     }
 
     pub struct SDL_Color {
-        pub r: uint8_t,
-        pub g: uint8_t,
-        pub b: uint8_t,
-        pub unused: uint8_t
+         r: uint8_t,
+         g: uint8_t,
+         b: uint8_t,
+         unused: uint8_t
     }
 
     pub struct SDL_Palette {
-        pub ncolors: c_int,
-        pub colors: *SDL_Color,
+         ncolors: c_int,
+         colors: *SDL_Color,
     }
 
     pub struct SDL_PixelFormat {
-        pub palette: *SDL_Palette,
-        pub BitsPerPixel: uint8_t,
-        pub BytesPerPixel: uint8_t,
-        pub Rloss: uint8_t,
-        pub Gloss: uint8_t,
-        pub Bloss: uint8_t,
-        pub Aloss: uint8_t,
-        pub Rshift: uint8_t,
-        pub Gshift: uint8_t,
-        pub Bshift: uint8_t,
-        pub Ashift: uint8_t,
-        pub Rmask: uint32_t,
-        pub Gmask: uint32_t,
-        pub Bmask: uint32_t,
-        pub Amask: uint32_t,
-        pub colorkey: uint32_t,
-        pub alpha: uint8_t,
+         palette: *SDL_Palette,
+         BitsPerPixel: uint8_t,
+         BytesPerPixel: uint8_t,
+         Rloss: uint8_t,
+         Gloss: uint8_t,
+         Bloss: uint8_t,
+         Aloss: uint8_t,
+         Rshift: uint8_t,
+         Gshift: uint8_t,
+         Bshift: uint8_t,
+         Ashift: uint8_t,
+         Rmask: uint32_t,
+         Gmask: uint32_t,
+         Bmask: uint32_t,
+         Amask: uint32_t,
+         colorkey: uint32_t,
+         alpha: uint8_t,
     }
 
     pub struct SDL_VideoInfo {
-        pub flags: uint32_t,        // actually a set of packed fields
-        pub video_mem: uint32_t,
-        pub vfmt: *SDL_PixelFormat,
-        pub current_w: c_int,
-        pub current_h: c_int,
+         flags: uint32_t,        // actually a set of packed fields
+         video_mem: uint32_t,
+         vfmt: *SDL_PixelFormat,
+         current_w: c_int,
+         current_h: c_int,
     }
 
     extern "C" {
@@ -179,8 +179,8 @@ pub mod ll {
 
 #[deriving(Eq)]
 pub struct Surface {
-    pub raw: *ll::SDL_Surface,
-    pub owned: bool
+    raw: *ll::SDL_Surface,
+    owned: bool
 }
 
 fn wrap_surface(raw: *ll::SDL_Surface, owned: bool) -> ~Surface {
@@ -188,7 +188,7 @@ fn wrap_surface(raw: *ll::SDL_Surface, owned: bool) -> ~Surface {
 }
 
 impl Drop for Surface {
-    pub fn drop(&self) {
+    fn drop(&self) {
         unsafe {
             if self.owned {
                 ll::SDL_FreeSurface(self.raw);
@@ -226,22 +226,22 @@ fn unwrap_palette(palette: &Palette) -> ll::SDL_Palette {
 
 #[deriving(Eq)]
 pub struct PixelFormat {
-    pub palette: Option<Palette>,
-    pub bpp: u8,
-    pub r_loss: u8,
-    pub g_loss: u8,
-    pub b_loss: u8,
-    pub a_loss: u8,
-    pub r_shift: u8,
-    pub g_shift: u8,
-    pub b_shift: u8,
-    pub a_shift: u8,
-    pub r_mask: u32,
-    pub g_mask: u32,
-    pub b_mask: u32,
-    pub a_mask: u32,
-    pub color_key: u32,
-    pub alpha: u8
+     palette: Option<Palette>,
+     bpp: u8,
+     r_loss: u8,
+     g_loss: u8,
+     b_loss: u8,
+     a_loss: u8,
+     r_shift: u8,
+     g_shift: u8,
+     b_shift: u8,
+     a_shift: u8,
+     r_mask: u32,
+     g_mask: u32,
+     b_mask: u32,
+     a_mask: u32,
+     color_key: u32,
+     alpha: u8
 }
 
 fn wrap_pixel_format(raw: *ll::SDL_PixelFormat) -> PixelFormat {
@@ -425,10 +425,10 @@ pub enum VideoInfoFlag {
 }
 
 pub struct VideoInfo {
-    pub flags: ~[VideoInfoFlag],
-    pub width: int,
-    pub height: int,
-    pub format: PixelFormat,
+     flags: ~[VideoInfoFlag],
+     width: int,
+     height: int,
+     format: PixelFormat,
 }
 
 fn wrap_video_info_flags(bitflags: u32) -> ~[VideoInfoFlag] {
@@ -491,8 +491,8 @@ impl Surface {
 
     pub fn from_bmp(path: &Path) -> Result<~Surface, ~str> {
         let raw = unsafe {
-            do path.to_str().as_c_str |buf| {
-                do "rb".as_c_str |mode_buf| {
+            do path.to_str().with_c_str |buf| {
+                do "rb".with_c_str |mode_buf| {
                     ll::SDL_LoadBMP_RW(ll::SDL_RWFromFile(buf, mode_buf), 1)
                 }
             }
@@ -616,8 +616,8 @@ impl Surface {
 
     pub fn save_bmp(&self, path: &Path) -> bool {
         unsafe {
-            do path.to_str().as_c_str |buf| {
-                do "wb".as_c_str |mode_buf| {
+            do path.to_str().with_c_str |buf| {
+                do "wb".with_c_str |mode_buf| {
                     ll::SDL_SaveBMP_RW(self.raw, ll::SDL_RWFromFile(buf, mode_buf), 1) == 0
                 }
             }
