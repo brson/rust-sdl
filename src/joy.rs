@@ -52,7 +52,7 @@ pub fn update_joysticks() {
 
 #[deriving(Eq)]
 pub struct Joystick {
-	pub raw: *ll::SDL_Joystick
+	raw: *ll::SDL_Joystick
 }
 
 fn wrap_joystick(raw: *ll::SDL_Joystick) -> ~Joystick {
@@ -114,7 +114,7 @@ impl Joystick {
 }
 
 impl Drop for Joystick {
-    pub fn drop(&self) {
+    fn drop(&self) {
         unsafe { ll::SDL_JoystickClose(self.raw); }
     }
 }
