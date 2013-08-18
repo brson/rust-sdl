@@ -17,7 +17,7 @@ pub mod ll {
     pub type SDL_Rect = Rect;
 
     struct SDL_RWops_Anon {
-        priv data: [c_uchar, ..24],
+        data: [c_uchar, ..24],
     }
 
     pub struct SDL_RWops {
@@ -491,11 +491,7 @@ impl Surface {
 
     pub fn from_bmp(path: &Path) -> Result<~Surface, ~str> {
         let raw = unsafe {
-            do path.to_str().with_c_str |buf| {
-                do "rb".with_c_str |mode_buf| {
-                    ll::SDL_LoadBMP_RW(ll::SDL_RWFromFile(buf, mode_buf), 1)
-                }
-            }
+            ll::SDL_LoadBMP_RW(ll::SDL_RWFromFile(path.to_c_str().unwrap(), "rb".to_c_str().unwrap()), 1)
         };
 
         if raw.is_null() { Err(get_error()) }
@@ -615,13 +611,9 @@ impl Surface {
     }
 
     pub fn save_bmp(&self, path: &Path) -> bool {
-        unsafe {
-            do path.to_str().with_c_str |buf| {
-                do "wb".with_c_str |mode_buf| {
-                    ll::SDL_SaveBMP_RW(self.raw, ll::SDL_RWFromFile(buf, mode_buf), 1) == 0
-                }
-            }
-        }
+		unsafe {
+        	ll::SDL_SaveBMP_RW(self.raw, ll::SDL_RWFromFile(path.to_c_str().unwrap(), "wb".to_c_str().unwrap()), 1) == 0
+		}
     }
 
     pub fn set_alpha(&self, flags: &[SurfaceFlag], alpha: u8) -> bool {
