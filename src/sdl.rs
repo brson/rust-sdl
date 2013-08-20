@@ -13,9 +13,7 @@ mod mac {
     extern {}
 }
 
-#[cfg(target_os="win32")]
-#[cfg(target_os="linux")]
-#[cfg(target_os="freebsd")]
+#[cfg(not(target_os="macos"))]
 mod others {
     #[link_args="-lSDL"]
     extern {}

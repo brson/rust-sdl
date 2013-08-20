@@ -6,6 +6,24 @@ use audio::{AudioFormat, Channels, Mono, Stereo};
 use video::ll::SDL_RWFromFile; // XXX refactoring
 use get_error;
 
+// Setup linking for all targets.
+#[cfg(target_os="macos")]
+mod mac {
+    #[cfg(mac_framework)]
+    #[link_args="-framework SDL_mixer"]
+    extern {}
+
+    #[cfg(mac_dylib)]
+    #[link_args="-lSDL_mixer"]
+    extern {}
+}
+
+#[cfg(not(target_os="macos"))]
+mod others {
+    #[link_args="-lSDL_mixer"]
+    extern {}
+}
+
 pub mod ll {
     use video::ll::SDL_RWops; // XXX refactoring
 
@@ -17,9 +35,6 @@ pub mod ll {
         alen: u32,
         volume: u8,
     }
-
-    #[link_args = "-lSDL_mixer"]
-    extern {}
 
     externfn!(fn Mix_OpenAudio(frequency: c_int, format: u16, channels: c_int, chunksize: c_int)
                     -> c_int)
