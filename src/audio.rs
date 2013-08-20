@@ -30,14 +30,12 @@ pub mod ll {
         userdata: *c_void,
     }
 
-    extern {
-        pub fn SDL_OpenAudio(desired: *mut SDL_AudioSpec, obtained: *mut SDL_AudioSpec) -> c_int;
-        pub fn SDL_PauseAudio(pause_on: c_int);
-        pub fn SDL_MixAudio(dst: *mut u8, src: *u8, len: u32, volume: c_int);
-        pub fn SDL_LockAudio();
-        pub fn SDL_UnlockAudio();
-        pub fn SDL_CloseAudio();
-    }
+    externfn!(fn SDL_OpenAudio(desired: *mut SDL_AudioSpec, obtained: *mut SDL_AudioSpec) -> c_int)
+    externfn!(fn SDL_PauseAudio(pause_on: c_int))
+    externfn!(fn SDL_MixAudio(dst: *mut u8, src: *u8, len: u32, volume: c_int))
+    externfn!(fn SDL_LockAudio())
+    externfn!(fn SDL_UnlockAudio())
+    externfn!(fn SDL_CloseAudio())
 }
 
 pub enum AudioFormat {
