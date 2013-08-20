@@ -19,21 +19,21 @@ pub mod ll {
     }
 
     #[link_args = "-lSDL_mixer"]
-    extern {
-        pub fn Mix_OpenAudio(frequency: c_int, format: u16, channels: c_int, chunksize: c_int)
-                             -> c_int;
-        pub fn Mix_QuerySpec(frequency: *mut c_int, format: *mut u16, channels: *mut c_int)
-                             -> c_int;
-        pub fn Mix_LoadWAV_RW(src: *SDL_RWops, freesrc: c_int) -> *Mix_Chunk;
-        pub fn Mix_FreeChunk(chunk: *Mix_Chunk);
-        pub fn Mix_AllocateChannels(numchans: c_int) -> c_int;
-        pub fn Mix_Playing(channel: c_int) -> c_int;
-        pub fn Mix_PlayChannelTimed(channel: c_int, chunk: *Mix_Chunk, loops: c_int, ticks: c_int)
-                                    -> c_int;
-        pub fn Mix_GetChunk(channel: c_int) -> *Mix_Chunk;
-        pub fn Mix_CloseAudio();
-        pub fn Mix_HaltChannel(channel: c_int) -> c_int;
-    }
+    extern {}
+
+    externfn!(fn Mix_OpenAudio(frequency: c_int, format: u16, channels: c_int, chunksize: c_int)
+                    -> c_int)
+    externfn!(fn Mix_QuerySpec(frequency: *mut c_int, format: *mut u16, channels: *mut c_int)
+                    -> c_int)
+    externfn!(fn Mix_LoadWAV_RW(src: *SDL_RWops, freesrc: c_int) -> *Mix_Chunk)
+    externfn!(fn Mix_FreeChunk(chunk: *Mix_Chunk))
+    externfn!(fn Mix_AllocateChannels(numchans: c_int) -> c_int)
+    externfn!(fn Mix_Playing(channel: c_int) -> c_int)
+    externfn!(fn Mix_PlayChannelTimed(channel: c_int, chunk: *Mix_Chunk, loops: c_int, ticks: c_int)
+                    -> c_int)
+    externfn!(fn Mix_GetChunk(channel: c_int) -> *Mix_Chunk)
+    externfn!(fn Mix_CloseAudio())
+    externfn!(fn Mix_HaltChannel(channel: c_int) -> c_int)
 }
 
 pub struct Chunk {
