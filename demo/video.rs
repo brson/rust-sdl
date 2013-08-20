@@ -1,4 +1,3 @@
-use std::i16;
 use std::rand::RngUtil;
 use std::rand;
 
@@ -18,11 +17,11 @@ pub fn main() {
 
 		// Note: You'll want to put this and the flip call inside the main loop
 		// but we don't as to not startle epileptics
-		for i16::range(0, 10) |i| {
-			for i16::range(0, 10) |j| {
+		for i in range(0, 10) {
+			for j in range(0, 10) {
 				screen.fill_rect(Some(sdl::Rect {
-					x: i * 800 / 10,
-					y: j * 600 / 10,
+					x: (i as i16) * 800 / 10,
+					y: (j as i16) * 600 / 10,
 					w: 800 / 10,
 					h: 600 / 10
 				}), rng.gen::<sdl::video::Color>());
@@ -36,6 +35,9 @@ pub fn main() {
 				match sdl::event::poll_event() {
 					sdl::event::QuitEvent => break 'main,
 					sdl::event::NoEvent => break 'event,
+					sdl::event::KeyEvent(k, _, _, _)
+					    if k == sdl::event::EscapeKey
+					        => break 'main,
 					_ => {}
 				}
 			}

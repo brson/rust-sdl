@@ -1,15 +1,11 @@
 use std::cell::Cell;
-//use std::task::PlatformThread;
 use std::task;
 
 
 pub type MainFunction = ~fn();
 
 pub fn start(main: MainFunction) {
-    let cell = Cell::new(main);
-    let mut task = task::task();
-    task.sched_mode(task::SingleThreaded);
-    task.spawn_with(cell, platform_specific::run_main)
+    platform_specific::run_main(Cell::new(main));
 }
 
 #[cfg(target_os="win32")]
