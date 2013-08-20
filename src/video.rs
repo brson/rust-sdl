@@ -86,8 +86,7 @@ pub mod ll {
          current_h: c_int,
     }
 
-    extern "C" {
-        pub fn SDL_CreateRGBSurface(flags: uint32_t,
+        externfn!(fn SDL_CreateRGBSurface(flags: uint32_t,
                                     width: c_int,
                                     height: c_int,
                                     depth: c_int,
@@ -95,8 +94,8 @@ pub mod ll {
                                     Gmask: uint32_t,
                                     Bmask: uint32_t,
                                     Amask: uint32_t)
-                                    -> *SDL_Surface;
-        pub fn SDL_CreateRGBSurfaceFrom(pixels: *c_void,
+                                    -> *SDL_Surface)
+        externfn!(fn SDL_CreateRGBSurfaceFrom(pixels: *c_void,
                                         width: c_int,
                                         height: c_int,
                                         depth: c_int,
@@ -105,76 +104,75 @@ pub mod ll {
                                         Gmask: uint32_t,
                                         Bmask: uint32_t,
                                         Amask: uint32_t)
-                                        -> *SDL_Surface;
-        pub fn SDL_FreeSurface(surface: *SDL_Surface);
-        pub fn SDL_MapRGB(format: *SDL_PixelFormat,
+                                        -> *SDL_Surface)
+        externfn!(fn SDL_FreeSurface(surface: *SDL_Surface))
+        externfn!(fn SDL_MapRGB(format: *SDL_PixelFormat,
                           r: uint8_t,
                           g: uint8_t,
                           b: uint8_t)
-                          -> uint32_t;
-        pub fn SDL_MapRGBA(format: *SDL_PixelFormat,
+                          -> uint32_t)
+        externfn!(fn SDL_MapRGBA(format: *SDL_PixelFormat,
                            r: uint8_t,
                            g: uint8_t,
                            b: uint8_t,
                            a: uint8_t)
-                           -> uint32_t;
-        pub fn SDL_GetRGB(pixel: uint32_t,
+                           -> uint32_t)
+        externfn!(fn SDL_GetRGB(pixel: uint32_t,
                           fmt: *SDL_PixelFormat,
                           r: *uint8_t,
                           g: *uint8_t,
-                          b: *uint8_t);
-        pub fn SDL_GetRGBA(pixel: uint32_t,
+                          b: *uint8_t))
+        externfn!(fn SDL_GetRGBA(pixel: uint32_t,
                            fmt: *SDL_PixelFormat,
                            r: *uint8_t,
                            g: *uint8_t,
                            b: *uint8_t,
-                           a: *uint8_t);
-        pub fn SDL_SetVideoMode(width: c_int, height: c_int, bpp: c_int, flags: uint32_t)
-                                -> *SDL_Surface;
-        pub fn SDL_VideoModeOK(width: c_int, height: c_int, bpp: c_int, flags: uint32_t) -> c_int;
-        pub fn SDL_GetVideoInfo() -> *SDL_VideoInfo;
-        pub fn SDL_GetVideoSurface() -> *SDL_Surface;
-        pub fn SDL_UpdateRect(screen: *SDL_Surface,
+                           a: *uint8_t))
+        externfn!(fn SDL_SetVideoMode(width: c_int, height: c_int, bpp: c_int, flags: uint32_t)
+                                -> *SDL_Surface)
+        externfn!(fn SDL_VideoModeOK(width: c_int, height: c_int, bpp: c_int, flags: uint32_t) -> c_int)
+        externfn!(fn SDL_GetVideoInfo() -> *SDL_VideoInfo)
+        externfn!(fn SDL_GetVideoSurface() -> *SDL_Surface)
+        externfn!(fn SDL_UpdateRect(screen: *SDL_Surface,
                               x: int32_t,
                               y: int32_t,
                               w: uint32_t,
-                              h: uint32_t);
-        pub fn SDL_UpdateRects(screen: *SDL_Surface, numrects: c_int, rects: *SDL_Rect);
-        pub fn SDL_SetColors(surface: *SDL_Surface,
+                              h: uint32_t))
+        externfn!(fn SDL_UpdateRects(screen: *SDL_Surface, numrects: c_int, rects: *SDL_Rect))
+        externfn!(fn SDL_SetColors(surface: *SDL_Surface,
                              colors: *SDL_Color,
                              firstcolor: c_int,
                              ncolors: c_int)
-                             -> c_int;
-        pub fn SDL_SetPalette(surface: *SDL_Surface,
+                             -> c_int)
+        externfn!(fn SDL_SetPalette(surface: *SDL_Surface,
                               flags: c_int,
                               colors: *SDL_Color,
                               firstcolor: c_int,
                               ncolors: c_int)
-                              -> c_int;
-        pub fn SDL_LockSurface(surface: *SDL_Surface) -> c_int;
-        pub fn SDL_UnlockSurface(surface: *SDL_Surface);
-        pub fn SDL_Flip(screen: *SDL_Surface) -> c_int;
-        pub fn SDL_ConvertSurface(src: *SDL_Surface, fmt: *SDL_PixelFormat, flags: uint32_t)
-                                  -> *SDL_Surface;
-        pub fn SDL_DisplayFormat(surface: *SDL_Surface) -> *SDL_Surface;
-        pub fn SDL_DisplayFormatAlpha(surface: *SDL_Surface) -> *SDL_Surface;
-        pub fn SDL_SetColorKey(surface: *SDL_Surface, flag: uint32_t, key: uint32_t) -> c_int;
-        pub fn SDL_SetAlpha(surface: *SDL_Surface, flag: uint32_t, alpha: uint8_t) -> c_int;
-        pub fn SDL_SetClipRect(surface: *SDL_Surface, rect: *SDL_Rect);
-        pub fn SDL_UpperBlit(src: *SDL_Surface,
+                              -> c_int)
+        externfn!(fn SDL_LockSurface(surface: *SDL_Surface) -> c_int)
+        externfn!(fn SDL_UnlockSurface(surface: *SDL_Surface))
+        externfn!(fn SDL_Flip(screen: *SDL_Surface) -> c_int)
+        externfn!(fn SDL_ConvertSurface(src: *SDL_Surface, fmt: *SDL_PixelFormat, flags: uint32_t)
+                                  -> *SDL_Surface)
+        externfn!(fn SDL_DisplayFormat(surface: *SDL_Surface) -> *SDL_Surface)
+        externfn!(fn SDL_DisplayFormatAlpha(surface: *SDL_Surface) -> *SDL_Surface)
+        externfn!(fn SDL_SetColorKey(surface: *SDL_Surface, flag: uint32_t, key: uint32_t) -> c_int)
+        externfn!(fn SDL_SetAlpha(surface: *SDL_Surface, flag: uint32_t, alpha: uint8_t) -> c_int)
+        externfn!(fn SDL_SetClipRect(surface: *SDL_Surface, rect: *SDL_Rect))
+        externfn!(fn SDL_UpperBlit(src: *SDL_Surface,
                              srcrect: *SDL_Rect,
                              dst: *SDL_Surface,
                              dstrect: *SDL_Rect)
-                             -> c_int;
-        pub fn SDL_FillRect(dst: *SDL_Surface, dstrect: *SDL_Rect, color: uint32_t) -> c_int;
-        pub fn SDL_SetGamma(r: c_float, g: c_float, b: c_float) -> c_int;
-        pub fn SDL_SetGammaRamp(r: *uint16_t, g: *uint16_t, b: *uint16_t) -> c_int;
-        pub fn SDL_GetGammaRamp(r: *uint16_t, g: *uint16_t, b: *uint16_t) -> c_int;
-        pub fn SDL_RWFromFile(file: *c_schar, mode: *c_schar) -> *SDL_RWops;
-        pub fn SDL_LoadBMP_RW(src: *SDL_RWops, freesrc: c_int) -> *SDL_Surface;
-        pub fn SDL_SaveBMP_RW(surface: *SDL_Surface, dst: *SDL_RWops, freedst: c_int) -> c_int;
-        pub fn SDL_GL_SwapBuffers();
-    }
+                             -> c_int)
+        externfn!(fn SDL_FillRect(dst: *SDL_Surface, dstrect: *SDL_Rect, color: uint32_t) -> c_int)
+        externfn!(fn SDL_SetGamma(r: c_float, g: c_float, b: c_float) -> c_int)
+        externfn!(fn SDL_SetGammaRamp(r: *uint16_t, g: *uint16_t, b: *uint16_t) -> c_int)
+        externfn!(fn SDL_GetGammaRamp(r: *uint16_t, g: *uint16_t, b: *uint16_t) -> c_int)
+        externfn!(fn SDL_RWFromFile(file: *c_schar, mode: *c_schar) -> *SDL_RWops)
+        externfn!(fn SDL_LoadBMP_RW(src: *SDL_RWops, freesrc: c_int) -> *SDL_Surface)
+        externfn!(fn SDL_SaveBMP_RW(surface: *SDL_Surface, dst: *SDL_RWops, freedst: c_int) -> c_int)
+        externfn!(fn SDL_GL_SwapBuffers())
 }
 
 #[deriving(Eq)]
