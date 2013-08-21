@@ -5,6 +5,24 @@ use std::ptr;
 use get_error;
 use video::Surface;
 
+// Setup linking for all targets.
+#[cfg(target_os="macos")]
+mod mac {
+    #[cfg(mac_framework)]
+    #[link_args="-framework SDL_image"]
+    extern {}
+
+    #[cfg(mac_dylib)]
+    #[link_args="-lSDL_image"]
+    extern {}
+}
+
+#[cfg(not(target_os="macos"))]
+mod others {
+    #[link_args="-lSDL_image"]
+    extern {}
+}
+
 pub mod ll {
     use video::ll::SDL_Surface;
 
@@ -17,12 +35,9 @@ pub mod ll {
     pub static IMG_INIT_TIF: IMG_InitFlags = 4;
     pub static IMG_INIT_WEBP: IMG_InitFlags = 8;
 
-    #[link_args = "-lSDL_image"]
-    extern {
-        pub fn IMG_Init(flags: c_int) -> c_int;
-        pub fn IMG_Quit();
-        pub fn IMG_Load(file: *c_schar) -> *SDL_Surface;
-    }
+    externfn!(fn IMG_Init(flags: c_int) -> c_int)
+    externfn!(fn IMG_Quit())
+    externfn!(fn IMG_Load(file: *c_schar) -> *SDL_Surface)
 }
 
 #[deriving(Eq)]
