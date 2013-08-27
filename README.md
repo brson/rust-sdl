@@ -24,7 +24,7 @@ If you don't want SDL_Mixer (if you aren't using sound) or SDL_Image (if you're 
 
 To compile the demo:
 
-> rustc -L$PWD/src demo/demo.rc
+> rustc -L$PWD demo/demo.rc
 
 
 Then run:
