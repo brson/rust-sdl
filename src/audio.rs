@@ -108,7 +108,7 @@ impl DesiredAudioSpec {
                 samples: samples,
                 padding: 0,
                 size: 0,
-                callback: native_callback,
+                callback: native_callback as *u8,
                 userdata: transmute(~callback),
             }
         }
