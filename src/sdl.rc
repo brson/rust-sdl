@@ -9,14 +9,11 @@
 
 pub use sdl::*;
 
-pub use start = start::start;
-
 pub mod audio;
 pub mod cd;
 pub mod event;
 pub mod joy;
 pub mod mouse;
-pub mod start;
 pub mod video;
 pub mod gl;
 pub mod wm;
@@ -28,4 +25,8 @@ pub mod img;
 pub mod mixer;
 
 pub mod sdl;
+
+#[link_args="-lSDLmain -framework Foundation -framework AppKit"]
+extern {
+}
 
