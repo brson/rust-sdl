@@ -212,8 +212,8 @@ pub fn allocate_channels(numchans: c_int) -> c_int {
 pub fn playing(channel: Option<c_int>) -> bool {
     unsafe {
         match channel {
-            Some(channel) => ll::Mix_Playing(channel) as bool,
-            None => ll::Mix_Playing(-1) as bool
+            Some(channel) => ll::Mix_Playing(channel) == 0,
+            None => ll::Mix_Playing(-1) == 0
         }
     }
 }
