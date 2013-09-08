@@ -1,6 +1,5 @@
 use std::cast::transmute;
 use std::libc::{c_int};
-use std::uint;
 
 use audio::{AudioFormat, Channels, Mono, Stereo};
 use video::ll::SDL_RWFromFile; // XXX refactoring
