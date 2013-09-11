@@ -34,7 +34,7 @@ libsdl.dummy: src/sdl.rc $(RUST_SRC) $(SDLXMAIN)
 	$(RUSTC) $(RUSTFLAGS) $< -o $@
 	touch $@
 
-demos: demo/demo.rc libsdl.dummy
+demos: demo/demo.rc demo/video.rs libsdl.dummy
 	$(RUSTC) -L . $< -o $@
 
 # Darwin-specific hack to change the name of `main` to `SDLX_main`
