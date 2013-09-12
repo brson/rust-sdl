@@ -1,6 +1,5 @@
 use std::rand::RngUtil;
 use std::rand;
-use std::rt;
 
 use sdl;
 
