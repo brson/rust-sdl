@@ -3,6 +3,7 @@ use std::rand;
 
 use sdl;
 
+#[main]
 pub fn main() {
     sdl::init([sdl::InitVideo]);
     sdl::wm::set_caption("rust-sdl demo - video", "rust-sdl");
