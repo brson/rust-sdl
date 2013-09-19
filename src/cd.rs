@@ -129,7 +129,7 @@ impl CD {
 }
 
 impl Drop for CD {
-    fn drop(&self) {
+    fn drop(&mut self) {
         unsafe { ll::SDL_CDClose(self.raw); }
     }
 }

@@ -69,7 +69,7 @@ impl Cursor {
 }
 
 impl Drop for Cursor {
-    fn drop(&self) {
+    fn drop(&mut self) {
         unsafe {
         	if self.owned {
         		ll::SDL_FreeCursor(self.raw);

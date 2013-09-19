@@ -179,7 +179,7 @@ fn wrap_surface(raw: *ll::SDL_Surface, owned: bool) -> ~Surface {
 }
 
 impl Drop for Surface {
-    fn drop(&self) {
+    fn drop(&mut self) {
         unsafe {
             if self.owned {
                 ll::SDL_FreeSurface(self.raw);

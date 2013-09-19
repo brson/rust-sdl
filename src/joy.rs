@@ -112,7 +112,7 @@ impl Joystick {
 }
 
 impl Drop for Joystick {
-    fn drop(&self) {
+    fn drop(&mut self) {
         unsafe { ll::SDL_JoystickClose(self.raw); }
     }
 }

@@ -87,7 +87,7 @@ unsafe fn check_if_not_playing(ll_chunk_addr: *ll::Mix_Chunk) {
 }
 
 impl Drop for Chunk {
-    fn drop(&self) {
+    fn drop(&mut self) {
         unsafe {
             match self.data {
                 Borrowed(_) => (),
