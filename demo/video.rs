@@ -1,4 +1,4 @@
-use std::rand::RngUtil;
+use std::rand::Rng;
 use std::rand;
 
 use sdl;
