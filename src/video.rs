@@ -2,7 +2,7 @@ use std::cast;
 use std::libc::{c_int, c_float};
 use std::ptr;
 use std::rand;
-use std::rand::RngUtil;
+use std::rand::Rng;
 use std::vec;
 
 use Rect;
