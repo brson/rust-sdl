@@ -1,4 +1,3 @@
-use std::cast;
 use std::libc::c_int;
 use std::ptr;
 
@@ -65,11 +64,7 @@ pub fn init(flags: &[InitFlag]) -> ~[InitFlag] {
 }
 
 pub fn load(file: &Path) -> Result<~Surface, ~str> {
-    do file.to_str().as_imm_buf |buf, _len| {
-        let file = unsafe {
-            cast::transmute_copy(&buf)
-        };
-
+    do file.to_c_str().with_ref |file| {
         unsafe {
             let raw = ll::IMG_Load(file);
 

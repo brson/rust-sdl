@@ -125,9 +125,14 @@ impl Chunk {
     }
 
     pub fn from_wav(path: &Path) -> Result<~Chunk, ~str> {
-        let raw = unsafe {
-            ll::Mix_LoadWAV_RW(SDL_RWFromFile(path.to_c_str().unwrap(), "rb".to_c_str().unwrap()), 1)
-        };
+        let raw =
+            do path.to_c_str().with_ref |path| {
+                do "rb".to_c_str().with_ref |mode| {
+                    unsafe {
+                        ll::Mix_LoadWAV_RW(SDL_RWFromFile(path, mode), 1)
+                    }
+                }
+            };
 
         if raw.is_null() { Err(get_error()) }
         else { Ok(~Chunk { data: Allocated(raw) }) }
