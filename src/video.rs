@@ -695,7 +695,7 @@ impl Surface {
     }
 }
 
-pub fn set_gamma(r: float, g: float, b: float) -> bool {
+pub fn set_gamma(r: f32, g: f32, b: f32) -> bool {
     unsafe { ll::SDL_SetGamma(r as c_float, g as c_float,
                               b as c_float) != -1 }
 }
