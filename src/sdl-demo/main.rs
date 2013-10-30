@@ -1,7 +1,8 @@
+extern mod sdl;
+
 use std::rand::Rng;
 use std::rand;
 
-use sdl;
 
 #[main]
 pub fn main() {
@@ -12,7 +13,7 @@ pub fn main() {
     let screen = match sdl::video::set_video_mode(800, 600, 32, [sdl::video::HWSurface],
                                                                 [sdl::video::DoubleBuf]) {
         Ok(screen) => screen,
-        Err(err) => fail!(fmt!("failed to set video mode: %s", err))
+        Err(err) => fail!("failed to set video mode: {}", err)
     };
 
     // Note: You'll want to put this and the flip call inside the main loop
