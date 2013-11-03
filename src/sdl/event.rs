@@ -2,6 +2,7 @@ use std::cast;
 use std::libc::c_int;
 use std::str;
 use std::vec;
+use std::num::FromPrimitive;
 
 pub mod ll {
     use std::cast;
@@ -220,7 +221,7 @@ pub enum RepeatInterval {
     CustomRepeatInterval(int)
 }
 
-#[deriving(Eq)]
+#[deriving(Eq, FromPrimitive)]
 pub enum Key {
     UnknownKey = 0,
     BackspaceKey = 8,
@@ -458,13 +459,7 @@ pub enum Key {
 }
 
 fn wrap_key(i: ll::SDLKey) -> Option<Key> {
-    unsafe {
-        // Handle edge cases where there's no variant (they're ignored)
-        if (i < 8) || (i > 9 && i < 12) || (i > 13 && i < 19) || (i > 19 && i < 27) ||
-           (i > 27 && i < 32) || (i > 36 && i < 38) || (i > 64 && i < 91) || (i > 122 && i < 127) ||
-           (i > 127 && i < 160) || (i > 296 && i < 300) { None }
-        else { Some(cast::transmute(i as uint)) }
-    }
+    FromPrimitive::from_uint(i as uint)
 }
 
 #[deriving(Eq)]
@@ -527,24 +522,17 @@ fn wrap_hat_state(bitflags: u8) -> ~[HatState] {
     }.collect()
 }
 
-#[deriving(Eq)]
+#[deriving(Eq, FromPrimitive)]
 pub enum Mouse {
-    LeftMouse,
+    LeftMouse = 1,
     MiddleMouse,
     RightMouse,
     WheelUpMouse,
     WheelDownMouse
 }
 
-fn wrap_mouse(bitflags: u8) -> Mouse {
-    match bitflags {
-        1 => LeftMouse,
-        2 => MiddleMouse,
-        3 => RightMouse,
-        4 => WheelUpMouse,
-        5 => WheelDownMouse,
-        _ => fail!(~"unhandled mouse type")
-    }
+fn wrap_mouse(bitflags: u8) -> Option<Mouse> {
+    FromPrimitive::from_u8(bitflags)
 }
 
 #[deriving(Eq)]
@@ -602,12 +590,10 @@ fn wrap_event(raw: ll::SDL_Event) -> Event {
         let ty = if ty.is_null() { return NoEvent; }
                  else { *ty };
 
-        if ty < 0 || (ty > 13 && ty < 16) || (ty > 17 && ty < 24) || ty > 24 {
-            return NoEvent;
-        }
-
-        // FIXME: This is incredibly hacky and will probably break on 32-bit
-        let ty: EventType = cast::transmute(ty as uint);
+        let ty : EventType = match FromPrimitive::from_uint(ty as uint) {
+            Some(ty) => ty,
+            None => return NoEvent
+        };
 
         match ty {
             NoEventType => NoEvent,
@@ -640,12 +626,17 @@ fn wrap_event(raw: ll::SDL_Event) -> Event {
                                  motion.y, motion.xrel, motion.yrel)
             }
             MouseButtonDownEventType | MouseButtonUpEventType => {
-                let button = raw.button();
-                let button = if button.is_null() { return NoEvent; }
-                             else { *button };
+                let obutton = raw.button();
+                let obutton = if obutton.is_null() { return NoEvent; }
+                             else { *obutton };
 
-                MouseButtonEvent(wrap_mouse(button.button), button.state == 1,
-                                 button.x, button.y)
+                match wrap_mouse(obutton.button) {
+                    Some(button) => {
+                        MouseButtonEvent(button, obutton.state == 1,
+                                 obutton.x, obutton.y)
+                    }
+                    None => NoEvent
+                }
             }
             JoyAxisMotionEventType => {
                 let jaxis = raw.jaxis();
@@ -693,7 +684,7 @@ fn wrap_event(raw: ll::SDL_Event) -> Event {
     }
 }
 
-#[deriving(Eq)]
+#[deriving(Eq, FromPrimitive)]
 pub enum EventType {
     // TODO: TextInputEventType, TextEditingEventType
      NoEventType,
