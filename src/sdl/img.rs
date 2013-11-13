@@ -34,9 +34,11 @@ pub mod ll {
     pub static IMG_INIT_TIF: IMG_InitFlags = 4;
     pub static IMG_INIT_WEBP: IMG_InitFlags = 8;
 
-    externfn!(fn IMG_Init(flags: c_int) -> c_int)
-    externfn!(fn IMG_Quit())
-    externfn!(fn IMG_Load(file: *c_schar) -> *SDL_Surface)
+    extern {
+        pub fn IMG_Init(flags: c_int) -> c_int;
+        pub fn IMG_Quit();
+        pub fn IMG_Load(file: *c_schar) -> *SDL_Surface;
+    }
 }
 
 #[deriving(Eq)]

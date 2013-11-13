@@ -3,8 +3,10 @@ use std::libc::{c_int};
 pub mod ll {
     use std::libc::{c_int};
 
-    externfn!(fn SDL_GL_SetAttribute(attr: c_int, value: c_int) -> c_int)
-    externfn!(fn SDL_GL_SwapBuffers())
+    extern {
+        pub fn SDL_GL_SetAttribute(attr: c_int, value: c_int) -> c_int;
+        pub fn SDL_GL_SwapBuffers();
+    }
 }
 
 pub enum GLAttribute {
