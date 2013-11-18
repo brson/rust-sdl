@@ -11,7 +11,7 @@ mod mac {
     #[link_args="-framework SDL_image"]
     extern {}
 
-    #[cfg(mac_dylib)]
+    #[cfg(not(mac_framework))]
     #[link_args="-lSDL_image"]
     extern {}
 }
