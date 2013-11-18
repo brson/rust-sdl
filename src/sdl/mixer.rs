@@ -12,7 +12,7 @@ mod mac {
     #[link_args="-framework SDL_mixer"]
     extern {}
 
-    #[cfg(mac_dylib)]
+    #[cfg(not(mac_framework))]
     #[link_args="-lSDL_mixer"]
     extern {}
 }
