@@ -88,7 +88,7 @@ impl Channels {
     pub fn count(self) -> c_int          { match self { Mono => 1, Stereo => 2 } }
 }
 
-pub type AudioCallback = ~fn(&mut [u8]);
+pub type AudioCallback = fn(&mut [u8]);
 
 pub struct DesiredAudioSpec {
     freq: c_int,
