@@ -205,10 +205,10 @@ fn wrap_app_state(bitflags: u8) -> ~[AppState] {
         AppInputFocusState,
         AppActiveState];
 
-    do flags.iter().filter_map |&flag| {
+    flags.iter().filter_map(|&flag| {
         if bitflags & (flag as u8) != 0 { Some(flag) }
         else { None }
-    }.collect()
+    }).collect()
 }
 
 #[deriving(Eq)]
@@ -496,10 +496,10 @@ fn wrap_mod_state(bitflags: ll::SDLMod) -> ~[Mod] {
         ModeMod,
         ReservedMod];
 
-    do flags.iter().filter_map |&flag| {
+    flags.iter().filter_map(|&flag| {
         if bitflags & (flag as ll::SDLMod) != 0 { Some(flag) }
         else { None }
-    }.collect()
+    }).collect()
 }
 
 #[deriving(Eq)]
@@ -518,10 +518,10 @@ fn wrap_hat_state(bitflags: u8) -> ~[HatState] {
         DownHatState,
         LeftHatState];
 
-    do flags.iter().filter_map |&flag| {
+    flags.iter().filter_map(|&flag| {
         if bitflags & (flag as u8) != 0 { Some(flag) }
         else { None }
-    }.collect()
+    }).collect()
 }
 
 #[deriving(Eq, FromPrimitive)]
@@ -557,10 +557,10 @@ fn wrap_mouse_state(bitflags: u8) -> ~[MouseState] {
         X1MouseState,
         X2MouseState];
 
-    do flags.iter().filter_map |&flag| {
+    flags.iter().filter_map(|&flag| {
         if bitflags & (flag as u8) != 0 { Some(flag) }
         else { None }
-    }.collect()
+    }).collect()
 }
 
 #[deriving(Eq)]
@@ -759,14 +759,14 @@ pub fn get_key_state() -> ~[(Key, bool)] {
 
     unsafe {
         let buf = vec::raw::from_buf_raw(data, num as uint);
-        do buf.iter().filter_map |&state| {
+        buf.iter().filter_map(|&state| {
             i += 1;
 
             match wrap_key(i as ll::SDLKey) {
                 Some(key) => Some((key, state == 1)),
                 None => None
             }
-        }.collect()
+        }).collect()
     }
 }
 
@@ -776,9 +776,9 @@ pub fn get_mod_state() -> ~[Mod] {
 
 pub fn set_mod_state(states: &[Mod]) {
     unsafe {
-        ll::SDL_SetModState(do states.iter().fold(0u32) |states, &state| {
+        ll::SDL_SetModState(states.iter().fold(0u32, |states, &state| {
             states | state as ll::SDLMod
-        });
+        }));
     }
 }
 
