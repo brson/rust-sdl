@@ -200,9 +200,9 @@ fn wrap_palette(palette: *ll::SDL_Palette) -> Option<Palette> {
         true => None,
         _ => Some(Palette {
             colors: unsafe {
-                do vec::from_buf((*palette).colors, (*palette).ncolors as uint).map |color| {
+                vec::from_buf((*palette).colors, (*palette).ncolors as uint).map(|color| {
                     Color::from_struct(color)
-                }
+                })
             }
         })
     }
@@ -211,9 +211,9 @@ fn wrap_palette(palette: *ll::SDL_Palette) -> Option<Palette> {
 fn unwrap_palette(palette: &Palette) -> ll::SDL_Palette {
     ll::SDL_Palette {
         ncolors: palette.colors.len() as c_int,
-        colors: vec::raw::to_ptr(do palette.colors.map |color| {
+        colors: vec::raw::to_ptr(palette.colors.map(|color| {
             color.to_struct()
-        })
+        }))
     }
 }
 
@@ -369,12 +369,12 @@ pub enum VideoFlag {
 pub fn set_video_mode(w: int, h: int, bpp: int,
                       surface_flags: &[SurfaceFlag],
                       video_flags: &[VideoFlag]) -> Result<~Surface, ~str> {
-    let flags = do surface_flags.iter().fold(0u32) |flags, &flag| {
+    let flags = surface_flags.iter().fold(0u32, |flags, &flag| {
         flags | flag as u32
-    };
-    let flags = do video_flags.iter().fold(flags) |flags, &flag| {
+    });
+    let flags = video_flags.iter().fold(flags, |flags, &flag| {
         flags | flag as u32
-    };
+    });
 
     unsafe {
         let raw = ll::SDL_SetVideoMode(w as c_int, h as c_int,
@@ -388,12 +388,12 @@ pub fn set_video_mode(w: int, h: int, bpp: int,
 pub fn is_video_mode_ok(w: int, h: int, bpp: int,
                         surface_flags: &[SurfaceFlag],
                         video_flags: &[VideoFlag]) -> Option<int> {
-    let flags = do surface_flags.iter().fold(0u32) |flags, &flag| {
+    let flags = surface_flags.iter().fold(0u32, |flags, &flag| {
         flags | flag as u32
-    };
-    let flags = do video_flags.iter().fold(flags) |flags, &flag| {
+    });
+    let flags = video_flags.iter().fold(flags, |flags, &flag| {
         flags | flag as u32
-    };
+    });
 
     unsafe {
         let bpp = ll::SDL_VideoModeOK(w as c_int, h as c_int,
@@ -435,10 +435,10 @@ fn wrap_video_info_flags(bitflags: u32) -> ~[VideoInfoFlag] {
         BlitSWAlpha,
         BlitFill];
 
-    do flags.iter().filter_map |&flag| {
+    flags.iter().filter_map(|&flag| {
         if bitflags & (flag as u32) != 0 { Some(flag) }
         else { None }
-    }.collect()
+    }).collect()
 }
 
 pub fn get_video_info() -> ~VideoInfo {
@@ -483,14 +483,13 @@ impl Surface {
     }
 
     pub fn from_bmp(path: &Path) -> Result<~Surface, ~str> {
-        let raw =
-            do path.to_c_str().with_ref |path| {
-                do "rb".to_c_str().with_ref |mode| {
-                    unsafe {
-                        ll::SDL_LoadBMP_RW(ll::SDL_RWFromFile(path, mode), 1)
-                    }
-                }
-            };
+        let raw = path.to_c_str().with_ref(|path| {
+                "rb".to_c_str().with_ref(|mode| {
+                        unsafe {
+                            ll::SDL_LoadBMP_RW(ll::SDL_RWFromFile(path, mode), 1)
+                        }
+                    })
+            });
 
         if raw.is_null() { Err(get_error()) }
         else { Ok(wrap_surface(raw, true)) }
@@ -534,9 +533,9 @@ impl Surface {
     }
 
     pub fn set_colors(&self, colors: ~[Color]) -> bool {
-        let colors = do colors.map |color| {
+        let colors = colors.map(|color| {
             color.to_struct()
-        };
+        });
 
         unsafe { ll::SDL_SetColors(self.raw, vec::raw::to_ptr(colors), 0,
                                    colors.len() as c_int) == 1 }
@@ -544,12 +543,12 @@ impl Surface {
 
     pub fn set_palette(&self, palettes: &[PaletteType],
                    colors: ~[Color]) -> bool {
-        let colors = do colors.map |color| {
+        let colors = colors.map(|color| {
             color.to_struct()
-        };
-        let flags = do palettes.iter().fold(0 as c_int) |flags, &flag| {
+        });
+        let flags = palettes.iter().fold(0 as c_int, |flags, &flag| {
             flags | flag as c_int
-        };
+        });
 
         unsafe { ll::SDL_SetPalette(self.raw, flags,
                                     vec::raw::to_ptr(colors), 0,
@@ -561,7 +560,7 @@ impl Surface {
     }
 
     /// Locks a surface so that the pixels can be directly accessed safely.
-    pub fn with_lock<R>(&self, f: &fn(pixels: &mut [u8]) -> R) -> R {
+    pub fn with_lock<R>(&self, f: |&mut [u8]| -> R) -> R {
         unsafe {
             if ll::SDL_LockSurface(self.raw) != 0 { fail!(~"could not lock surface"); }
             let len = (*self.raw).pitch as uint * ((*self.raw).h as uint);
@@ -581,9 +580,9 @@ impl Surface {
     }
 
     pub fn convert(&self, fmt: &PixelFormat, flags: &[SurfaceFlag]) -> Result<~Surface, ~str> {
-        let flags = do flags.iter().fold(0u32) |flags, &flag| {
+        let flags = flags.iter().fold(0u32, |flags, &flag| {
             flags | flag as u32
-        };
+        });
 
         let rawfmt = unwrap_pixel_format(fmt);
 
@@ -609,19 +608,19 @@ impl Surface {
     }
 
     pub fn save_bmp(&self, path: &Path) -> bool {
-        do path.to_c_str().with_ref |path| {
-            do "wb".to_c_str().with_ref |mode| {
+        path.to_c_str().with_ref(|path| {
+            "wb".to_c_str().with_ref(|mode| {
                 unsafe {
                     ll::SDL_SaveBMP_RW(self.raw, ll::SDL_RWFromFile(path, mode), 1) == 0
                 }
-            }
-        }
+            })
+        })
     }
 
     pub fn set_alpha(&self, flags: &[SurfaceFlag], alpha: u8) -> bool {
-        let flags = do flags.iter().fold(0u32) |flags, &flag| {
+        let flags = flags.iter().fold(0u32, |flags, &flag| {
             flags | flag as u32
-        };
+        });
 
         unsafe {
             ll::SDL_SetAlpha(self.raw, flags, alpha) == 0
@@ -629,9 +628,9 @@ impl Surface {
     }
 
     pub fn set_color_key(&self, flags: &[SurfaceFlag], color: Color) -> bool {
-        let flags = do flags.iter().fold(0u32) |flags, &flag| {
+        let flags = flags.iter().fold(0u32, |flags, &flag| {
             flags | flag as u32
-        };
+        });
 
         unsafe {
             ll::SDL_SetColorKey(self.raw, flags,
