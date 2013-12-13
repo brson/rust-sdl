@@ -9,17 +9,17 @@ use get_error;
 #[cfg(target_os="macos")]
 mod mac {
     #[cfg(mac_framework)]
-    #[link_args="-framework SDL_mixer"]
+    #[link(name="framework SDL_mixer")]
     extern {}
 
     #[cfg(not(mac_framework))]
-    #[link_args="-lSDL_mixer"]
+    #[link(name="SDL_mixer")]
     extern {}
 }
 
 #[cfg(not(target_os="macos"))]
 mod others {
-    #[link_args="-lSDL_mixer"]
+    #[link(name="SDL_mixer")]
     extern {}
 }
 

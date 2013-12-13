@@ -8,17 +8,17 @@ use video::Surface;
 #[cfg(target_os="macos")]
 mod mac {
     #[cfg(mac_framework)]
-    #[link_args="-framework SDL_image"]
+    #[link(name="framework SDL_image")]
     extern {}
 
     #[cfg(not(mac_framework))]
-    #[link_args="-lSDL_image"]
+    #[link(name="SDL_image")]
     extern {}
 }
 
 #[cfg(not(target_os="macos"))]
 mod others {
-    #[link_args="-lSDL_image"]
+    #[link(name="SDL_image")]
     extern {}
 }
 
