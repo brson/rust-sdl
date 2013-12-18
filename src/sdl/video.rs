@@ -211,9 +211,7 @@ fn wrap_palette(palette: *ll::SDL_Palette) -> Option<Palette> {
 fn unwrap_palette(palette: &Palette) -> ll::SDL_Palette {
     ll::SDL_Palette {
         ncolors: palette.colors.len() as c_int,
-        colors: vec::raw::to_ptr(palette.colors.map(|color| {
-            color.to_struct()
-        }))
+        colors: palette.colors.map(|color| color.to_struct()).as_ptr()
     }
 }
 
@@ -528,7 +526,7 @@ impl Surface {
     pub fn update_rects(&self, rects: &[Rect]) {
         unsafe {
             ll::SDL_UpdateRects(self.raw, rects.len() as c_int,
-                                cast::transmute(vec::raw::to_ptr(rects)));
+                                cast::transmute(rects.as_ptr()));
         }
     }
 
@@ -537,7 +535,7 @@ impl Surface {
             color.to_struct()
         });
 
-        unsafe { ll::SDL_SetColors(self.raw, vec::raw::to_ptr(colors), 0,
+        unsafe { ll::SDL_SetColors(self.raw, colors.as_ptr(), 0,
                                    colors.len() as c_int) == 1 }
     }
 
@@ -551,7 +549,7 @@ impl Surface {
         });
 
         unsafe { ll::SDL_SetPalette(self.raw, flags,
-                                    vec::raw::to_ptr(colors), 0,
+                                    colors.as_ptr(), 0,
                                     colors.len() as c_int) == 1 }
     }
 
@@ -713,13 +711,13 @@ pub fn set_gamma(r: f32, g: f32, b: f32) -> bool {
 pub fn set_gamma_ramp(r: Option<[u16, ..256]>, g: Option<[u16, ..256]>,
                       b: Option<[u16, ..256]>) -> bool {
     unsafe { ll::SDL_SetGammaRamp(match r {
-        Some(r) => vec::raw::to_ptr(r),
+        Some(r) => r.as_ptr(),
         None => ptr::null()
     }, match g {
-        Some(g) => vec::raw::to_ptr(g),
+        Some(g) => g.as_ptr(),
         None => ptr::null()
     }, match b {
-        Some(b) => vec::raw::to_ptr(b),
+        Some(b) => b.as_ptr(),
         None => ptr::null()
     }) != -1 }
 }
@@ -729,9 +727,9 @@ pub fn get_gamma_ramp() -> ([u16, ..256], [u16, ..256], [u16, ..256]) {
     let g = [0u16, .. 256];
     let b = [0u16, .. 256];
 
-    unsafe { ll::SDL_GetGammaRamp(vec::raw::to_ptr(r),
-                                  vec::raw::to_ptr(g),
-                                  vec::raw::to_ptr(b)); }
+    unsafe { ll::SDL_GetGammaRamp(r.as_ptr(),
+                                  g.as_ptr(),
+                                  b.as_ptr()); }
 
     (r, g, b)
 }
