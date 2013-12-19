@@ -1,5 +1,4 @@
 use std::libc::c_int;
-use std::vec;
 
 use get_error;
 
@@ -60,7 +59,7 @@ impl Cursor {
 	pub fn new(data: &[u8], mask: &[u8], w: int, h: int, hot_x: int, hot_y: int)
         -> Result<~Cursor, ~str> {
 		unsafe {
-			let raw = ll::SDL_CreateCursor(vec::raw::to_ptr(data), vec::raw::to_ptr(mask),
+			let raw = ll::SDL_CreateCursor(data.as_ptr(), mask.as_ptr(),
 				                           w as c_int, h as c_int, hot_x as c_int,
 				                           hot_y as c_int);
 
