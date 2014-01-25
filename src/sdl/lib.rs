@@ -17,11 +17,5 @@ pub mod video;
 pub mod gl;
 pub mod wm;
 
-#[cfg(image)]
-pub mod img;
-
-#[cfg(mixer)]
-pub mod mixer;
-
 pub mod sdl;
 

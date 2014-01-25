@@ -6,6 +6,7 @@
 *.dSYM
 *.dll
 *.dummy
-demos
 build
-Makefile
+bin
+lib
+.rust

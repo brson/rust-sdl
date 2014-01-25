@@ -1,8 +1,17 @@
+#[crate_id="sdl_image#0.3.1"];
+#[comment = "SDL_image binding"];
+#[license = "MIT"];
+#[crate_type = "lib"];
+
+#[feature(link_args)];
+
+extern mod sdl = "sdl#0.3.1";
+
 use std::libc::c_int;
 use std::ptr;
 
-use get_error;
-use video::Surface;
+use sdl::get_error;
+use sdl::video::Surface;
 
 // Setup linking for all targets.
 #[cfg(target_os="macos")]
@@ -23,7 +32,7 @@ mod others {
 }
 
 pub mod ll {
-    use video::ll::SDL_Surface;
+    use sdl::video::ll::SDL_Surface;
 
     use std::libc::{c_int, c_uint, c_schar};
 
@@ -34,9 +43,11 @@ pub mod ll {
     pub static IMG_INIT_TIF: IMG_InitFlags = 4;
     pub static IMG_INIT_WEBP: IMG_InitFlags = 8;
 
-    externfn!(fn IMG_Init(flags: c_int) -> c_int)
-    externfn!(fn IMG_Quit())
-    externfn!(fn IMG_Load(file: *c_schar) -> *SDL_Surface)
+    extern "C" {
+        pub fn IMG_Init(flags: c_int) -> c_int;
+        pub fn IMG_Quit();
+        pub fn IMG_Load(file: *c_schar) -> *SDL_Surface;
+    }
 }
 
 #[deriving(Eq)]
@@ -48,7 +59,7 @@ pub enum InitFlag {
 
 pub fn init(flags: &[InitFlag]) -> ~[InitFlag] {
     let bitflags = unsafe {
-        ll::IMG_Init(flags.iter().fold(0i32)(|flags, &flag| {
+        ll::IMG_Init(flags.iter().fold(0i32, |flags, &flag| {
             flags | flag as c_int
         }))
     };
