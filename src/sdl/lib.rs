@@ -4,7 +4,6 @@
 #[crate_type = "lib"];
 
 #[feature(globs)];
-#[feature(link_args)];
 
 pub use sdl::*;
 

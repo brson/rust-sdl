@@ -3,8 +3,6 @@
 #[license = "MIT"];
 #[crate_type = "lib"];
 
-#[feature(link_args)];
-
 extern mod sdl = "sdl#0.3.1";
 
 use std::cast::transmute;
@@ -15,22 +13,14 @@ use sdl::video::ll::SDL_RWFromFile; // XXX refactoring
 use sdl::get_error;
 
 // Setup linking for all targets.
-#[cfg(target_os="macos")]
-mod mac {
-    #[cfg(mac_framework)]
-    #[link_args="-framework SDL_mixer"]
-    extern {}
+#[cfg(not(target_os = "macos"))]
+#[cfg(not(mac_framework))]
+#[link(name = "SDL_mixer")]
+extern {}
 
-    #[cfg(not(mac_framework))]
-    #[link_args="-lSDL_mixer"]
-    extern {}
-}
-
-#[cfg(not(target_os="macos"))]
-mod others {
-    #[link_args="-lSDL_mixer"]
-    extern {}
-}
+#[cfg(target_os = "macos", mac_framework)]
+#[link(name = "SDL_mixer", kind = "framework")]
+extern {}
 
 pub mod ll {
     use sdl::video::ll::SDL_RWops; // XXX refactoring
