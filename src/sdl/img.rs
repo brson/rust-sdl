@@ -48,23 +48,23 @@ pub enum InitFlag {
 
 pub fn init(flags: &[InitFlag]) -> ~[InitFlag] {
     let bitflags = unsafe {
-        ll::IMG_Init(do flags.iter().fold(0i32) |flags, &flag| {
+        ll::IMG_Init(flags.iter().fold(0i32)(|flags, &flag| {
             flags | flag as c_int
-        })
+        }))
     };
 
     let flags = [InitJPG,
         InitPNG,
         InitTIF];
 
-    do flags.iter().filter_map |&flag| {
+    flags.iter().filter_map(|&flag| {
         if bitflags & (flag as c_int) != 0 { Some(flag) }
         else { None }
-    }.collect()
+    }).collect()
 }
 
 pub fn load(file: &Path) -> Result<~Surface, ~str> {
-    do file.to_c_str().with_ref |file| {
+    file.to_c_str().with_ref(|file| {
         unsafe {
             let raw = ll::IMG_Load(file);
 
@@ -74,7 +74,7 @@ pub fn load(file: &Path) -> Result<~Surface, ~str> {
                 Ok(~Surface { raw: raw, owned: true })
             }
         }
-    }
+    })
 }
 
 pub fn quit() {
