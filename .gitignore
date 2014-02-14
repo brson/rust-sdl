@@ -1,11 +1,15 @@
 *~
 *#
 *.o
+*.a
 *.so
+*.rlib
 *.dylib
 *.dSYM
 *.dll
 *.dummy
-demos
+*.exe
 build
-Makefile
+bin
+lib
+.rust
