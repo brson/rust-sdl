@@ -18,9 +18,9 @@ Rust-SDL uses the MIT license.
 
 # Installation
 
-Clone this repo, run ```rustpkg install sdl`. To see an example of the code in use, `rustpkg install sdl-demo` .
+Clone this repo, run `rustc src/sdl/lib.rs`. To see an example of the code in use, `rustc -L. src/sdl-demo/main.rs`.
 
-SDL_mixer and SDL_image are available through separate packages, run `rustpkg install sdl_mixer` and `rustpkg install sdl_image` to build.
+SDL_mixer and SDL_image are available through separate packages, run `rustc -L. src/sdl_mixer/lib.rs` and `rustc -L. src/sdl_image/lib.rs` to build. They depend on the main SDL library.
 
 # When things go wrong
 Rust, and Rust-SDL, are both still heavily in development, and you may run into teething issues when using this. Before panicking, check that you're using the latest Master branch of Rust, check that you've updated Rust-SDL to the latest version, and run `make clean` and `./configure`. If that fails, please let us know on the issue tracker.
