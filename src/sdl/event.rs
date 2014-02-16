@@ -7,7 +7,6 @@ use std::num::FromPrimitive;
 pub mod ll {
     use std::cast;
     use std::libc::{c_void, c_int, c_uint, c_uchar, c_schar, uint8_t, uint16_t, int16_t};
-    use std::ptr;
 
     pub type SDLKey = c_uint;
     pub type SDLMod = c_uint;
@@ -121,59 +120,59 @@ pub mod ll {
 
     impl SDL_Event {
         pub fn _type(&self) -> *uint8_t {
-            unsafe { cast::transmute_copy(&ptr::to_unsafe_ptr(self)) }
+            unsafe { cast::transmute_copy(&self) }
         }
 
         pub fn active(&self) -> *SDL_ActiveEvent {
-            unsafe { cast::transmute_copy(&ptr::to_unsafe_ptr(self)) }
+            unsafe { cast::transmute_copy(&self) }
         }
 
         pub fn key(&self) -> *SDL_KeyboardEvent {
-            unsafe { cast::transmute_copy(&ptr::to_unsafe_ptr(self)) }
+            unsafe { cast::transmute_copy(&self) }
         }
 
         pub fn motion(&self) -> *SDL_MouseMotionEvent {
-            unsafe { cast::transmute_copy(&ptr::to_unsafe_ptr(self)) }
+            unsafe { cast::transmute_copy(&self) }
         }
 
         pub fn button(&self) -> *SDL_MouseButtonEvent {
-            unsafe { cast::transmute_copy(&ptr::to_unsafe_ptr(self)) }
+            unsafe { cast::transmute_copy(&self) }
         }
 
         pub fn jaxis(&self) -> *SDL_JoyAxisEvent {
-            unsafe { cast::transmute_copy(&ptr::to_unsafe_ptr(self)) }
+            unsafe { cast::transmute_copy(&self) }
         }
 
         pub fn jball(&self) -> *SDL_JoyBallEvent {
-            unsafe { cast::transmute_copy(&ptr::to_unsafe_ptr(self)) }
+            unsafe { cast::transmute_copy(&self) }
         }
 
         pub fn jhat(&self) -> *SDL_JoyHatEvent {
-            unsafe { cast::transmute_copy(&ptr::to_unsafe_ptr(self)) }
+            unsafe { cast::transmute_copy(&self) }
         }
 
         pub fn jbutton(&self) -> *SDL_JoyButtonEvent {
-            unsafe { cast::transmute_copy(&ptr::to_unsafe_ptr(self)) }
+            unsafe { cast::transmute_copy(&self) }
         }
 
         pub fn resize(&self) -> *SDL_ResizeEvent {
-            unsafe { cast::transmute_copy(&ptr::to_unsafe_ptr(self)) }
+            unsafe { cast::transmute_copy(&self) }
         }
 
         pub fn expose(&self) -> *SDL_ExposeEvent {
-            unsafe { cast::transmute_copy(&ptr::to_unsafe_ptr(self)) }
+            unsafe { cast::transmute_copy(&self) }
         }
 
         pub fn quit(&self) -> *SDL_QuitEvent {
-            unsafe { cast::transmute_copy(&ptr::to_unsafe_ptr(self)) }
+            unsafe { cast::transmute_copy(&self) }
         }
 
         pub fn user(&self) -> *SDL_UserEvent {
-            unsafe { cast::transmute_copy(&ptr::to_unsafe_ptr(self)) }
+            unsafe { cast::transmute_copy(&self) }
         }
 
         pub fn syswm(&self) -> *SDL_SysWMEvent {
-            unsafe { cast::transmute_copy(&ptr::to_unsafe_ptr(self)) }
+            unsafe { cast::transmute_copy(&self) }
         }
     }
 

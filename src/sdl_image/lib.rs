@@ -3,7 +3,7 @@
 #[license = "MIT"];
 #[crate_type = "lib"];
 
-extern mod sdl = "sdl#0.3.1";
+extern crate sdl = "sdl#0.3.1";
 
 use std::libc::c_int;
 use std::ptr;

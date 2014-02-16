@@ -38,7 +38,7 @@ pub mod ll {
     }
 }
 
-fn warp_mouse(x: u16, y: u16) {
+pub fn warp_mouse(x: u16, y: u16) {
 	unsafe { ll::SDL_WarpMouse(x, y); }
 }
 
