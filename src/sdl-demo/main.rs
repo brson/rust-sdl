@@ -1,4 +1,4 @@
-extern mod sdl;
+extern crate sdl;
 
 use std::rand::Rng;
 use std::rand;
