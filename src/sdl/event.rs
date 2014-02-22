@@ -5,6 +5,8 @@ use std::vec;
 use std::num::FromPrimitive;
 
 pub mod ll {
+    #[allow(non_camel_case_types)];
+
     use std::cast;
     use std::libc::{c_void, c_int, c_uint, c_uchar, c_schar, uint8_t, uint16_t, int16_t};
 

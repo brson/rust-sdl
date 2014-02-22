@@ -9,6 +9,8 @@ use Rect;
 use get_error;
 
 pub mod ll {
+    #[allow(non_camel_case_types)];
+
     use Rect;
 
     use std::libc::{c_void, c_uint, c_int, c_float, c_schar, c_uchar, uint8_t, uint16_t};

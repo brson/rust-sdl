@@ -23,6 +23,8 @@ extern {}
 extern {}
 
 pub mod ll {
+    #[allow(non_camel_case_types)];
+
     use sdl::video::ll::SDL_RWops; // XXX refactoring
 
     use std::libc::c_int;

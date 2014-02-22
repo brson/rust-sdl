@@ -5,6 +5,8 @@ use std::str;
 use video;
 
 pub mod ll {
+	#[allow(non_camel_case_types)];
+
 	use video::ll::SDL_Surface;
 
 	use std::libc::{c_schar, uint8_t, c_int};

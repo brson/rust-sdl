@@ -5,6 +5,8 @@ use std::str;
 use get_error;
 
 pub mod ll {
+	#[allow(non_camel_case_types)];
+
 	use std::libc::{c_void, c_int, c_schar, uint8_t, int16_t};
 
 	pub type SDL_Joystick = c_void;
