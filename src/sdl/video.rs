@@ -59,6 +59,7 @@ pub mod ll {
          colors: *SDL_Color,
     }
 
+    #[allow(uppercase_variables)]
     pub struct SDL_PixelFormat {
          palette: *SDL_Palette,
          BitsPerPixel: uint8_t,
