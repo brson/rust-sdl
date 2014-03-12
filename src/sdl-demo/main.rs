@@ -1,7 +1,7 @@
 extern crate sdl;
+extern crate rand;
 
-use std::rand::Rng;
-use std::rand;
+use rand::Rng;
 
 
 #[main]
