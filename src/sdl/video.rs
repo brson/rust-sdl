@@ -1,8 +1,7 @@
 use std::cast;
 use std::libc::{c_int, c_float};
 use std::ptr;
-use std::rand;
-use std::rand::Rng;
+use rand::Rng;
 use std::vec;
 
 use Rect;
@@ -294,8 +293,8 @@ pub enum Color {
     RGBA(u8, u8, u8, u8)
 }
 
-impl rand::Rand for Color {
-    fn rand<R: rand::Rng>(rng: &mut R) -> Color {
+impl ::rand::Rand for Color {
+    fn rand<R: ::rand::Rng>(rng: &mut R) -> Color {
         if rng.gen() { RGBA(rng.gen(), rng.gen(), rng.gen(), rng.gen()) }
         else { RGB(rng.gen(), rng.gen(), rng.gen()) }
     }

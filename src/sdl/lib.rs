@@ -5,6 +5,8 @@
 
 #[feature(globs)];
 
+extern crate rand;
+
 pub use sdl::*;
 
 pub mod audio;
