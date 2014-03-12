@@ -17,17 +17,13 @@ pub mod ll {
 
     pub type SDL_Rect = Rect;
 
-    struct SDL_RWops_Anon {
-        data: [c_uchar, ..24],
-    }
-
     pub struct SDL_RWops {
          seek: *uint8_t,
          read: *uint8_t,
          write: *uint8_t,
          close: *uint8_t,
          _type: uint32_t,
-         hidden: SDL_RWops_Anon
+         priv hidden: [c_uchar, ..24]
     }
 
     pub struct SDL_Surface {

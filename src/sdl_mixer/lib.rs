@@ -188,7 +188,7 @@ pub fn close() {
     }
 }
 
-struct Query {
+pub struct Query {
     frequency: c_int,
     format: AudioFormat,
     channels: Channels,
