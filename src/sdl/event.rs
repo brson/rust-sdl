@@ -201,7 +201,7 @@ pub enum AppState {
     AppActiveState = ll::SDL_APPACTIVE as int
 }
 
-fn wrap_app_state(bitflags: u8) -> ~[AppState] {
+fn wrap_app_state(bitflags: u8) -> Vec<AppState> {
     let flags = [AppMouseFocusState,
         AppInputFocusState,
         AppActiveState];
@@ -482,7 +482,7 @@ pub enum Mod {
      ReservedMod = 0x8000
 }
 
-fn wrap_mod_state(bitflags: ll::SDLMod) -> ~[Mod] {
+fn wrap_mod_state(bitflags: ll::SDLMod) -> Vec<Mod> {
     let flags = [NoMod,
         LShiftMod,
         RShiftMod,
@@ -512,7 +512,7 @@ pub enum HatState {
     LeftHatState
 }
 
-fn wrap_hat_state(bitflags: u8) -> ~[HatState] {
+fn wrap_hat_state(bitflags: u8) -> Vec<HatState> {
     let flags = [CenteredHatState,
         UpHatState,
         RightHatState,
@@ -549,7 +549,7 @@ pub enum MouseState {
     X2MouseState
 }
 
-fn wrap_mouse_state(bitflags: u8) -> ~[MouseState] {
+fn wrap_mouse_state(bitflags: u8) -> Vec<MouseState> {
     let flags = [LeftMouseState,
         MiddleMouseState,
         RightMouseState,
@@ -568,13 +568,13 @@ fn wrap_mouse_state(bitflags: u8) -> ~[MouseState] {
 pub enum Event {
     // TODO: TextInputEvent, TextEditingEvent
      NoEvent,
-     ActiveEvent(bool, ~[AppState]),
-     KeyEvent(Key, bool, ~[Mod], u16), // RFC: do you need the scancode?
-     MouseMotionEvent(~[MouseState], u16, u16, i16, i16),
+     ActiveEvent(bool, Vec<AppState>),
+     KeyEvent(Key, bool, Vec<Mod>, u16), // RFC: do you need the scancode?
+     MouseMotionEvent(Vec<MouseState>, u16, u16, i16, i16),
      MouseButtonEvent(Mouse, bool, u16, u16),
      JoyAxisEvent(int, int, i16),
      JoyBallEvent(int, int, i16, i16),
-     JoyHatEvent(int, int, ~[HatState]),
+     JoyHatEvent(int, int, Vec<HatState>),
      JoyButtonEvent(int, int, bool),
      QuitEvent,
     // TODO: SysWmEvent
@@ -753,25 +753,26 @@ pub fn get_event_state(ty: EventType) -> bool {
              == ll::SDL_ENABLE as u8 }
 }
 
-pub fn get_key_state() -> ~[(Key, bool)] {
+pub fn get_key_state() -> Vec<(Key, bool)> {
     let num = 0;
     let data = unsafe { ll::SDL_GetKeyState(&num) };
     let mut i = -1;
 
     unsafe {
-        let buf = slice::raw::from_buf_raw(data, num as uint);
-        buf.iter().filter_map(|&state| {
-            i += 1;
+        slice::raw::buf_as_slice(data, num as uint, |buf| {
+            buf.iter().filter_map(|&state| {
+                i += 1;
 
-            match wrap_key(i as ll::SDLKey) {
-                Some(key) => Some((key, state == 1)),
-                None => None
-            }
-        }).collect()
+                match wrap_key(i as ll::SDLKey) {
+                    Some(key) => Some((key, state == 1)),
+                    None => None
+                }
+            }).collect()
+        })
     }
 }
 
-pub fn get_mod_state() -> ~[Mod] {
+pub fn get_mod_state() -> Vec<Mod> {
     unsafe { wrap_mod_state(ll::SDL_GetModState()) }
 }
 
@@ -807,7 +808,7 @@ pub fn toggle_joystick_event_state() {
     set_joystick_event_state(!get_joystick_event_state());
 }
 
-pub fn get_app_state() -> ~[AppState] {
+pub fn get_app_state() -> Vec<AppState> {
     let bitflags = unsafe { ll::SDL_GetAppState() };
 
     wrap_app_state(bitflags)

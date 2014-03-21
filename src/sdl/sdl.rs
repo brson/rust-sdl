@@ -128,7 +128,7 @@ pub fn quit() {
     unsafe { ll::SDL_Quit(); }
 }
 
-pub fn was_inited(flags: &[InitFlag]) -> ~[InitFlag] {
+pub fn was_inited(flags: &[InitFlag]) -> Vec<InitFlag> {
     let flags = flags.iter().fold(0u32, |flags, &flag| {
         flags | flag as ll::SDL_InitFlag
     });

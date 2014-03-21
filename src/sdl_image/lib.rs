@@ -49,7 +49,7 @@ pub enum InitFlag {
     InitTIF = ll::IMG_INIT_TIF as int
 }
 
-pub fn init(flags: &[InitFlag]) -> ~[InitFlag] {
+pub fn init(flags: &[InitFlag]) -> Vec<InitFlag> {
     let bitflags = unsafe {
         ll::IMG_Init(flags.iter().fold(0i32, |flags, &flag| {
             flags | flag as c_int

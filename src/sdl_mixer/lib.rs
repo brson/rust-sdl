@@ -5,7 +5,6 @@
 
 extern crate sdl = "sdl#0.3.1";
 
-use std::cast::transmute;
 use std::libc::{c_int};
 
 use sdl::audio::{AudioFormat, Channels, Mono, Stereo};
@@ -64,7 +63,7 @@ enum ChunkData {
 }
 
 struct ChunkAndBuffer {
-    buffer: ~[u8],
+    buffer: Vec<u8>,
     ll_chunk: ll::Mix_Chunk
 }
 
@@ -107,23 +106,21 @@ impl Drop for Chunk {
 }
 
 impl Chunk {
-    pub fn new(buffer: ~[u8], volume: u8) -> ~Chunk {
-        unsafe {
-            let buffer_addr: *u8 = transmute(&buffer[0]);
-            let buffer_len = buffer.len() as u32;
-            ~Chunk {
-                data: OwnedBuffer(
-                    ChunkAndBuffer {
-                        buffer: buffer,
-                        ll_chunk: ll::Mix_Chunk {
-                            allocated: 0,
-                            abuf: buffer_addr,
-                            alen: buffer_len,
-                            volume: volume
-                        }
+    pub fn new(buffer: Vec<u8>, volume: u8) -> ~Chunk {
+        let buffer_addr: *u8 = buffer.as_ptr();
+        let buffer_len = buffer.len() as u32;
+        ~Chunk {
+            data: OwnedBuffer(
+                ChunkAndBuffer {
+                    buffer: buffer,
+                    ll_chunk: ll::Mix_Chunk {
+                        allocated: 0,
+                        abuf: buffer_addr,
+                        alen: buffer_len,
+                        volume: volume
                     }
-                )
-            }
+                }
+            )
         }
     }
 

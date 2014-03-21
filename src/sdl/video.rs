@@ -188,11 +188,18 @@ impl Drop for Surface {
     }
 }
 
-#[deriving(Eq)]
+#[allow(deprecated_owned_vector)]
 pub struct Palette {
     colors: ~[Color]
 }
 
+// XXX Rust bug #13054 prohibits the use of #[deriving]
+#[allow(deprecated_owned_vector)]
+impl Eq for Palette {
+    fn eq(&self, other: &Palette) -> bool { self.colors == other.colors }
+}
+
+#[allow(deprecated_owned_vector)]
 fn wrap_palette(palette: *ll::SDL_Palette) -> Option<Palette> {
     match palette.is_null() {
         true => None,
@@ -206,6 +213,7 @@ fn wrap_palette(palette: *ll::SDL_Palette) -> Option<Palette> {
     }
 }
 
+#[allow(deprecated_owned_vector)]
 fn unwrap_palette(palette: &Palette) -> ll::SDL_Palette {
     ll::SDL_Palette {
         ncolors: palette.colors.len() as c_int,
@@ -414,13 +422,13 @@ pub enum VideoInfoFlag {
 }
 
 pub struct VideoInfo {
-     flags: ~[VideoInfoFlag],
+     flags: Vec<VideoInfoFlag>,
      width: int,
      height: int,
      format: PixelFormat,
 }
 
-fn wrap_video_info_flags(bitflags: u32) -> ~[VideoInfoFlag] {
+fn wrap_video_info_flags(bitflags: u32) -> Vec<VideoInfoFlag> {
     let flags = [HWAvailable,
         WMAvailable,
         BlitHW,
@@ -528,7 +536,8 @@ impl Surface {
         }
     }
 
-    pub fn set_colors(&self, colors: ~[Color]) -> bool {
+    #[allow(deprecated_owned_vector)]
+    pub fn set_colors(&self, colors: &[Color]) -> bool {
         let colors = colors.map(|color| {
             color.to_struct()
         });
@@ -537,8 +546,9 @@ impl Surface {
                                    colors.len() as c_int) == 1 }
     }
 
+    #[allow(deprecated_owned_vector)]
     pub fn set_palette(&self, palettes: &[PaletteType],
-                   colors: ~[Color]) -> bool {
+                   colors: &[Color]) -> bool {
         let colors = colors.map(|color| {
             color.to_struct()
         });
