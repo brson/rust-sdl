@@ -1,7 +1,7 @@
 use std::cast;
 use std::libc::c_int;
 use std::str;
-use std::vec;
+use std::slice;
 use std::num::FromPrimitive;
 
 pub mod ll {
@@ -759,7 +759,7 @@ pub fn get_key_state() -> ~[(Key, bool)] {
     let mut i = -1;
 
     unsafe {
-        let buf = vec::raw::from_buf_raw(data, num as uint);
+        let buf = slice::raw::from_buf_raw(data, num as uint);
         buf.iter().filter_map(|&state| {
             i += 1;
 

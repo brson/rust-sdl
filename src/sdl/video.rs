@@ -2,7 +2,7 @@ use std::cast;
 use std::libc::{c_int, c_float};
 use std::ptr;
 use rand::Rng;
-use std::vec;
+use std::slice;
 
 use Rect;
 use get_error;
@@ -198,7 +198,7 @@ fn wrap_palette(palette: *ll::SDL_Palette) -> Option<Palette> {
         true => None,
         _ => Some(Palette {
             colors: unsafe {
-                vec::from_buf((*palette).colors, (*palette).ncolors as uint).map(|color| {
+                slice::from_buf((*palette).colors, (*palette).ncolors as uint).map(|color| {
                     Color::from_struct(color)
                 })
             }
