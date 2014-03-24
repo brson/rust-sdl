@@ -292,7 +292,7 @@ fn unwrap_pixel_format(fmt: &PixelFormat) -> ll::SDL_PixelFormat {
     }
 }
 
-#[deriving(Eq)]
+#[deriving(Eq, TotalEq)]
 pub enum Color {
     RGB(u8, u8, u8),
     RGBA(u8, u8, u8, u8)
@@ -348,7 +348,7 @@ impl Color {
     }
 }
 
-#[deriving(Eq)]
+#[deriving(Eq, TotalEq)]
 pub enum SurfaceFlag {
     SWSurface = 0x00000000,
     HWSurface = 0x00000001,
@@ -358,7 +358,7 @@ pub enum SurfaceFlag {
     RLEAccel = 0x00004000
 }
 
-#[deriving(Eq)]
+#[deriving(Eq, TotalEq)]
 pub enum VideoFlag {
     AnyFormat = 0x10000000,
     HWPalette = 0x20000000,
@@ -408,7 +408,7 @@ pub fn is_video_mode_ok(w: int, h: int, bpp: int,
     }
 }
 
-#[deriving(Eq)]
+#[deriving(Eq, TotalEq)]
 pub enum VideoInfoFlag {
     HWAvailable    = 0x00000001,
     WMAvailable    = 0x00000002,

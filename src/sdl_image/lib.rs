@@ -42,7 +42,7 @@ pub mod ll {
     }
 }
 
-#[deriving(Eq)]
+#[deriving(Eq, TotalEq)]
 pub enum InitFlag {
     InitJPG = ll::IMG_INIT_JPG as int,
     InitPNG = ll::IMG_INIT_PNG as int,

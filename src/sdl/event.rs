@@ -194,7 +194,7 @@ pub mod ll {
     }
 }
 
-#[deriving(Eq)]
+#[deriving(Eq, TotalEq)]
 pub enum AppState {
     AppMouseFocusState = ll::SDL_APPMOUSEFOCUS as int,
     AppInputFocusState = ll::SDL_APPINPUTFOCUS as int,
@@ -224,7 +224,7 @@ pub enum RepeatInterval {
     CustomRepeatInterval(int)
 }
 
-#[deriving(Eq, FromPrimitive)]
+#[deriving(Eq, TotalEq, FromPrimitive)]
 pub enum Key {
     UnknownKey = 0,
     BackspaceKey = 8,
@@ -465,7 +465,7 @@ fn wrap_key(i: ll::SDLKey) -> Option<Key> {
     FromPrimitive::from_uint(i as uint)
 }
 
-#[deriving(Eq)]
+#[deriving(Eq, TotalEq)]
 pub enum Mod {
      NoMod = 0x0000,
      LShiftMod = 0x0001,
@@ -503,7 +503,7 @@ fn wrap_mod_state(bitflags: ll::SDLMod) -> Vec<Mod> {
     }).collect()
 }
 
-#[deriving(Eq)]
+#[deriving(Eq, TotalEq)]
 pub enum HatState {
     CenteredHatState,
     UpHatState,
@@ -525,7 +525,7 @@ fn wrap_hat_state(bitflags: u8) -> Vec<HatState> {
     }).collect()
 }
 
-#[deriving(Eq, FromPrimitive)]
+#[deriving(Eq, TotalEq, FromPrimitive)]
 pub enum Mouse {
     LeftMouse = 1,
     MiddleMouse,
@@ -538,7 +538,7 @@ fn wrap_mouse(bitflags: u8) -> Option<Mouse> {
     FromPrimitive::from_u8(bitflags)
 }
 
-#[deriving(Eq)]
+#[deriving(Eq, TotalEq)]
 pub enum MouseState {
     LeftMouseState = 1,
     MiddleMouseState,
@@ -687,7 +687,7 @@ fn wrap_event(raw: ll::SDL_Event) -> Event {
     }
 }
 
-#[deriving(Eq, FromPrimitive)]
+#[deriving(Eq, TotalEq, FromPrimitive)]
 pub enum EventType {
     // TODO: TextInputEventType, TextEditingEventType
      NoEventType,

@@ -79,7 +79,7 @@ impl Rect {
     }
 }
 
-#[deriving(Eq)]
+#[deriving(Eq, TotalEq)]
 pub enum InitFlag {
      InitTimer = ll::SDL_INIT_TIMER as int,
      InitAudio = ll::SDL_INIT_AUDIO as int,
@@ -91,7 +91,7 @@ pub enum InitFlag {
      InitEverything = ll::SDL_INIT_EVERYTHING as int,
 }
 
-#[deriving(Eq)]
+#[deriving(Eq, TotalEq)]
 pub enum Error {
      NoMemError = ll::SDL_ENOMEM as int,
      ReadError = ll::SDL_EFREAD as int,

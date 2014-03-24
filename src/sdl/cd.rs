@@ -74,7 +74,7 @@ fn wrap_cd(raw: *ll::SDL_CD) -> ~CD {
 	~CD { raw: raw }
 }
 
-#[deriving(Eq)]
+#[deriving(Eq, TotalEq)]
 pub enum Status {
 	TrayEmptyStatus = ll::CD_TRAYEMPTY as int,
 	StoppedStatus = ll::CD_STOPPED as int,
