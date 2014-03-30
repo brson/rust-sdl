@@ -1,7 +1,7 @@
-#[crate_id="sdl_mixer#0.3.1"];
-#[comment = "SDL_mixer binding"];
-#[license = "MIT"];
-#[crate_type = "lib"];
+#![crate_id="sdl_mixer#0.3.1"]
+#![comment = "SDL_mixer binding"]
+#![license = "MIT"]
+#![crate_type = "lib"]
 
 extern crate sdl = "sdl#0.3.1";
 
@@ -22,7 +22,7 @@ extern {}
 extern {}
 
 pub mod ll {
-    #[allow(non_camel_case_types)];
+    #![allow(non_camel_case_types)]
 
     use sdl::video::ll::SDL_RWops; // XXX refactoring
 

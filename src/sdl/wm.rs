@@ -5,7 +5,7 @@ use std::str;
 use video;
 
 pub mod ll {
-	#[allow(non_camel_case_types)];
+	#![allow(non_camel_case_types)]
 
 	use video::ll::SDL_Surface;
 

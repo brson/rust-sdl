@@ -1,6 +1,7 @@
 use std::cast;
 use std::libc::{c_int, c_float};
 use std::ptr;
+use std::iter;
 use rand::Rng;
 use std::slice;
 
@@ -8,7 +9,7 @@ use Rect;
 use get_error;
 
 pub mod ll {
-    #[allow(non_camel_case_types)];
+    #![allow(non_camel_case_types)]
 
     use Rect;
 
@@ -188,36 +189,31 @@ impl Drop for Surface {
     }
 }
 
-#[allow(deprecated_owned_vector)]
+#[deriving(Eq)]
+#[allow(raw_pointer_deriving)]
 pub struct Palette {
-    colors: ~[Color]
+    raw: *ll::SDL_Palette
 }
 
-// XXX Rust bug #13054 prohibits the use of #[deriving]
-#[allow(deprecated_owned_vector)]
-impl Eq for Palette {
-    fn eq(&self, other: &Palette) -> bool { self.colors == other.colors }
-}
-
-#[allow(deprecated_owned_vector)]
 fn wrap_palette(palette: *ll::SDL_Palette) -> Option<Palette> {
-    match palette.is_null() {
-        true => None,
-        _ => Some(Palette {
-            colors: unsafe {
-                slice::from_buf((*palette).colors, (*palette).ncolors as uint).map(|color| {
-                    Color::from_struct(color)
-                })
-            }
-        })
+    if palette.is_null() {
+        None
+    } else {
+        Some(Palette { raw: palette })
     }
 }
 
-#[allow(deprecated_owned_vector)]
-fn unwrap_palette(palette: &Palette) -> ll::SDL_Palette {
-    ll::SDL_Palette {
-        ncolors: palette.colors.len() as c_int,
-        colors: palette.colors.map(|color| color.to_struct()).as_ptr()
+pub type PaletteColors<'a> =
+    iter::Map<'a, &'a ll::SDL_Color, Color, slice::Items<'a, ll::SDL_Color>>;
+
+impl Palette {
+    pub fn colors<'a>(&'a self) -> PaletteColors<'a> {
+        use std::{raw, cast};
+        let colors: &'a [ll::SDL_Color] = unsafe {
+            cast::transmute(raw::Slice { data: (*self.raw).colors,
+                                         len: (*self.raw).ncolors as uint })
+        };
+        colors.iter().map(|color| Color::from_struct(color))
     }
 }
 
@@ -265,13 +261,9 @@ fn wrap_pixel_format(raw: *ll::SDL_PixelFormat) -> PixelFormat {
 
 fn unwrap_pixel_format(fmt: &PixelFormat) -> ll::SDL_PixelFormat {
     ll::SDL_PixelFormat {
-        // FIXME: this will be freed at the end of this scope?
         palette: match fmt.palette {
             None => ptr::null(),
-            Some(_) => {
-                let workaround : *ll::SDL_Palette = &unwrap_palette(fmt.palette.get_ref());
-                workaround
-            }
+            Some(palette) => palette.raw
         },
         BitsPerPixel: fmt.bpp,
         BytesPerPixel: fmt.bpp / 8,
@@ -538,9 +530,9 @@ impl Surface {
 
     #[allow(deprecated_owned_vector)]
     pub fn set_colors(&self, colors: &[Color]) -> bool {
-        let colors = colors.map(|color| {
+        let colors: Vec<_> = colors.iter().map(|color| {
             color.to_struct()
-        });
+        }).collect();
 
         unsafe { ll::SDL_SetColors(self.raw, colors.as_ptr(), 0,
                                    colors.len() as c_int) == 1 }
@@ -549,9 +541,9 @@ impl Surface {
     #[allow(deprecated_owned_vector)]
     pub fn set_palette(&self, palettes: &[PaletteType],
                    colors: &[Color]) -> bool {
-        let colors = colors.map(|color| {
+        let colors: Vec<_> = colors.iter().map(|color| {
             color.to_struct()
-        });
+        }).collect();
         let flags = palettes.iter().fold(0 as c_int, |flags, &flag| {
             flags | flag as c_int
         });

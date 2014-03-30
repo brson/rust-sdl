@@ -1,9 +1,10 @@
-#[crate_id="sdl#0.3.1"];
-#[comment = "SDL bindings"];
-#[license = "MIT"];
-#[crate_type = "lib"];
+#![crate_id="sdl#0.3.1"]
+#![comment = "SDL bindings"]
+#![license = "MIT"]
+#![crate_type = "lib"]
 
-#[feature(globs)];
+#![feature(globs)]
+#![allow(raw_pointer_deriving)]
 
 extern crate rand;
 
