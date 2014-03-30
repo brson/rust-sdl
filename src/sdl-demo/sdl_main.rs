@@ -14,13 +14,13 @@
 //!       <SDL-include>/SDL is a directory holding headers like SDL.h
 //!   and <SDL-distribution> is, as above, the root of SDL 1.2 source download.
 
-#[no_main];
+#![no_main]
 
 extern crate native;
+extern crate rand;
 extern crate sdl;
 
-use std::rand::Rng;
-use std::rand;
+use rand::Rng;
 
 #[no_mangle]
 pub extern "C" fn SDL_main(argc: int, argv: **u8) {
@@ -31,7 +31,7 @@ pub fn real_main() {
     sdl::init([sdl::InitVideo]);
     sdl::wm::set_caption("rust-sdl demo - video", "rust-sdl");
 
-    let mut rng = rand::rng();
+    let mut rng = rand::task_rng();
     let screen = match sdl::video::set_video_mode(800, 600, 32, [sdl::video::HWSurface],
                                                                 [sdl::video::DoubleBuf]) {
         Ok(screen) => screen,
