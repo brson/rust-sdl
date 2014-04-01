@@ -23,101 +23,101 @@ pub mod ll {
     pub static SDL_APPACTIVE: c_int = 0x04;
 
     pub struct SDL_keysym {
-        scancode: uint8_t,
-        sym: SDLKey,
-        _mod: SDLMod,
-        unicode: uint16_t,
+        pub scancode: uint8_t,
+        pub sym: SDLKey,
+        pub _mod: SDLMod,
+        pub unicode: uint16_t,
     }
 
     pub struct SDL_Event {
-        data: [c_uchar, ..24],
+        pub data: [c_uchar, ..24],
     }
 
     pub struct SDL_ActiveEvent {
-        _type: uint8_t,
-        gain: uint8_t,
-        state: uint8_t,
+        pub _type: uint8_t,
+        pub gain: uint8_t,
+        pub state: uint8_t,
     }
 
     pub struct SDL_KeyboardEvent {
-        _type: uint8_t,
-        which: uint8_t,
-        state: uint8_t,
-        keysym: SDL_keysym,
+        pub _type: uint8_t,
+        pub which: uint8_t,
+        pub state: uint8_t,
+        pub keysym: SDL_keysym,
     }
 
     pub struct SDL_MouseMotionEvent {
-        _type: uint8_t,
-        which: uint8_t,
-        state: uint8_t,
-        x: uint16_t,
-        y: uint16_t,
-        xrel: int16_t,
-        yrel: int16_t,
+        pub _type: uint8_t,
+        pub which: uint8_t,
+        pub state: uint8_t,
+        pub x: uint16_t,
+        pub y: uint16_t,
+        pub xrel: int16_t,
+        pub yrel: int16_t,
     }
 
     pub struct SDL_MouseButtonEvent {
-        _type: uint8_t,
-        which: uint8_t,
-        button: uint8_t,
-        state: uint8_t,
-        x: uint16_t,
-        y: uint16_t,
+        pub _type: uint8_t,
+        pub which: uint8_t,
+        pub button: uint8_t,
+        pub state: uint8_t,
+        pub x: uint16_t,
+        pub y: uint16_t,
     }
 
     pub struct SDL_JoyAxisEvent {
-        _type: uint8_t,
-        which: uint8_t,
-        axis: uint8_t,
-        value: int16_t,
+        pub _type: uint8_t,
+        pub which: uint8_t,
+        pub axis: uint8_t,
+        pub value: int16_t,
     }
 
     pub struct SDL_JoyBallEvent {
-        _type: uint8_t,
-        which: uint8_t,
-        ball: uint8_t,
-        xrel: int16_t,
-        yrel: int16_t,
+        pub _type: uint8_t,
+        pub which: uint8_t,
+        pub ball: uint8_t,
+        pub xrel: int16_t,
+        pub yrel: int16_t,
     }
 
     pub struct SDL_JoyHatEvent {
-        _type: uint8_t,
-        which: uint8_t,
-        hat: uint8_t,
-        value: uint8_t,
+        pub _type: uint8_t,
+        pub which: uint8_t,
+        pub hat: uint8_t,
+        pub value: uint8_t,
     }
 
     pub struct SDL_JoyButtonEvent {
-        _type: uint8_t,
-        which: uint8_t,
-        button: uint8_t,
-        state: uint8_t,
+        pub _type: uint8_t,
+        pub which: uint8_t,
+        pub button: uint8_t,
+        pub state: uint8_t,
     }
 
     pub struct SDL_ResizeEvent {
-        _type: uint8_t,
-        w: c_int,
-        h: c_int,
+        pub _type: uint8_t,
+        pub w: c_int,
+        pub h: c_int,
     }
 
     pub struct SDL_ExposeEvent {
-        _type: uint8_t,
+        pub _type: uint8_t,
     }
 
     pub struct SDL_QuitEvent {
-        _type: uint8_t,
+        pub _type: uint8_t,
     }
 
     pub struct SDL_UserEvent {
-        _type: uint8_t,
-        code: c_int,
-        data1: *c_void,
-        data2: *c_void,
+        pub _type: uint8_t,
+        pub code: c_int,
+        pub data1: *c_void,
+        pub data2: *c_void,
     }
 
     pub struct SDL_SysWMEvent {
-        _type: uint8_t,
-        msg: *SDL_SysWMmsg,
+        pub _type: uint8_t,
+        pub msg: *SDL_SysWMmsg,
     }
 
     impl SDL_Event {

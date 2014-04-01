@@ -15,13 +15,13 @@ pub mod ll {
 
 	pub type WMcursor = c_void;
 	pub struct SDL_Cursor {
-	     area: Rect,
-	     hot_x: int16_t,
-	     hot_y: int16_t,
-	     data: *uint8_t,
-	     mask: *uint8_t,
-	     save: [*uint8_t, ..2],
-	     wm_cursor: *WMcursor,
+	     pub area: Rect,
+	     pub hot_x: int16_t,
+	     pub hot_y: int16_t,
+	     pub data: *uint8_t,
+	     pub mask: *uint8_t,
+	     pub save: [*uint8_t, ..2],
+	     pub wm_cursor: *WMcursor,
 	}
 
     extern "C" {
@@ -46,8 +46,8 @@ pub fn warp_mouse(x: u16, y: u16) {
 
 #[deriving(Eq)]
 pub struct Cursor {
-	raw: *ll::SDL_Cursor,
-	owned: bool
+	pub raw: *ll::SDL_Cursor,
+	pub owned: bool
 }
 
 fn wrap_cursor(raw: *ll::SDL_Cursor, owned: bool) -> ~Cursor {

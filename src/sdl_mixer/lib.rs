@@ -29,10 +29,10 @@ pub mod ll {
     use std::libc::c_int;
 
     pub struct Mix_Chunk {
-        allocated: c_int,
-        abuf: *u8,
-        alen: u32,
-        volume: u8,
+        pub allocated: c_int,
+        pub abuf: *u8,
+        pub alen: u32,
+        pub volume: u8,
     }
 
     extern "C" {
@@ -53,7 +53,7 @@ pub mod ll {
 }
 
 pub struct Chunk {
-    priv data: ChunkData
+    data: ChunkData
 }
 
 enum ChunkData {
@@ -63,8 +63,8 @@ enum ChunkData {
 }
 
 struct ChunkAndBuffer {
-    buffer: Vec<u8>,
-    ll_chunk: ll::Mix_Chunk
+    pub buffer: Vec<u8>,
+    pub ll_chunk: ll::Mix_Chunk
 }
 
 unsafe fn check_if_not_playing(ll_chunk_addr: *ll::Mix_Chunk) {
@@ -186,9 +186,9 @@ pub fn close() {
 }
 
 pub struct Query {
-    frequency: c_int,
-    format: AudioFormat,
-    channels: Channels,
+    pub frequency: c_int,
+    pub format: AudioFormat,
+    pub channels: Channels,
 }
 
 pub fn query() -> Option<Query> {

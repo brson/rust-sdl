@@ -54,7 +54,7 @@ pub fn update_joysticks() {
 
 #[deriving(Eq)]
 pub struct Joystick {
-	raw: *ll::SDL_Joystick
+	pub raw: *ll::SDL_Joystick
 }
 
 fn wrap_joystick(raw: *ll::SDL_Joystick) -> ~Joystick {

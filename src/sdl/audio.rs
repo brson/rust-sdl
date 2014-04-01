@@ -21,15 +21,15 @@ pub mod ll {
     pub static AUDIO_S16: uint16_t = AUDIO_S16LSB;
 
     pub struct SDL_AudioSpec {
-        freq: c_int,
-        format: u16,
-        channels: u8,
-        silence: u8,
-        samples: u16,
-        padding: u16,
-        size: u32,
-        callback: *u8,
-        userdata: *c_void,
+        pub freq: c_int,
+        pub format: u16,
+        pub channels: u8,
+        pub silence: u8,
+        pub samples: u16,
+        pub padding: u16,
+        pub size: u32,
+        pub callback: *u8,
+        pub userdata: *c_void,
     }
 
     extern "C" {
@@ -93,11 +93,11 @@ impl Channels {
 pub type AudioCallback = fn(&mut [u8]);
 
 pub struct DesiredAudioSpec {
-    freq: c_int,
-    format: AudioFormat,
-    channels: Channels,
-    samples: u16,
-    callback: AudioCallback,
+    pub freq: c_int,
+    pub format: AudioFormat,
+    pub channels: Channels,
+    pub samples: u16,
+    pub callback: AudioCallback,
 }
 
 impl DesiredAudioSpec {
@@ -120,12 +120,12 @@ impl DesiredAudioSpec {
 }
 
 pub struct ObtainedAudioSpec {
-    freq: c_int,
-    format: AudioFormat,
-    channels: Channels,
-    silence: u8,
-    samples: u16,
-    size: u32,
+    pub freq: c_int,
+    pub format: AudioFormat,
+    pub channels: Channels,
+    pub silence: u8,
+    pub samples: u16,
+    pub size: u32,
 }
 
 impl ObtainedAudioSpec {

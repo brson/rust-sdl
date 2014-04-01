@@ -18,20 +18,20 @@ pub mod ll {
 	pub static CD_ERROR: CDstatus = -1;
 
 	pub struct SDL_CDtrack {
-	    id: uint8_t,
-	    _type: uint8_t,
-	    unused: uint16_t,
-	    length: uint32_t,
-	    offset: uint32_t
+	    pub id: uint8_t,
+	    pub _type: uint8_t,
+	    pub unused: uint16_t,
+	    pub length: uint32_t,
+	    pub offset: uint32_t
 	}
 
 	pub struct SDL_CD {
-	    id: c_int,
-	    status: CDstatus,
-	    numtracks: c_int,
-	    cur_track: c_int,
-	    cur_frame: c_int,
-	    track: [SDL_CDtrack, ..100],
+	    pub id: c_int,
+	    pub status: CDstatus,
+	    pub numtracks: c_int,
+	    pub cur_track: c_int,
+	    pub cur_frame: c_int,
+	    pub track: [SDL_CDtrack, ..100],
 	}
 
     extern "C" {
@@ -67,7 +67,7 @@ pub fn get_drive_name(index: int) -> ~str {
 
 #[deriving(Eq)]
 pub struct CD {
-	raw: *ll::SDL_CD
+	pub raw: *ll::SDL_CD
 }
 
 fn wrap_cd(raw: *ll::SDL_CD) -> ~CD {

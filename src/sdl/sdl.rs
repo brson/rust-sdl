@@ -58,10 +58,10 @@ pub mod ll {
 
 #[deriving(Eq)]
 pub struct Rect {
-     x: i16,
-     y: i16,
-     w: u16,
-     h: u16
+    pub x: i16,
+    pub y: i16,
+    pub w: u16,
+    pub h: u16
 }
 
 pub fn Rect(x: i16, y: i16, w: u16, h: u16) -> Rect {
