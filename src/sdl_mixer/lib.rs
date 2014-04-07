@@ -3,9 +3,10 @@
 #![license = "MIT"]
 #![crate_type = "lib"]
 
+extern crate libc;
 extern crate sdl = "sdl#0.3.1";
 
-use std::libc::{c_int};
+use libc::{c_int};
 
 use sdl::audio::{AudioFormat, Channels, Mono, Stereo};
 use sdl::video::ll::SDL_RWFromFile; // XXX refactoring
@@ -26,7 +27,7 @@ pub mod ll {
 
     use sdl::video::ll::SDL_RWops; // XXX refactoring
 
-    use std::libc::c_int;
+    use libc::c_int;
 
     pub struct Mix_Chunk {
         pub allocated: c_int,

@@ -3,9 +3,10 @@
 #![license = "MIT"]
 #![crate_type = "lib"]
 
+extern crate libc;
 extern crate sdl = "sdl#0.3.1";
 
-use std::libc::c_int;
+use libc::c_int;
 use std::ptr;
 
 use sdl::get_error;
@@ -26,7 +27,7 @@ pub mod ll {
 
     use sdl::video::ll::SDL_Surface;
 
-    use std::libc::{c_int, c_uint, c_schar};
+    use libc::{c_int, c_uint, c_schar};
 
     pub type IMG_InitFlags = c_uint;
 

@@ -6,6 +6,7 @@
 #![feature(globs)]
 #![allow(raw_pointer_deriving)]
 
+extern crate libc;
 extern crate rand;
 
 pub use sdl::*;

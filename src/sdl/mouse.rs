@@ -1,11 +1,11 @@
-use std::libc::c_int;
+use libc::c_int;
 
 use get_error;
 
 pub mod ll {
 	#![allow(non_camel_case_types)]
 
-	use std::libc::{c_void, c_int, uint8_t, uint16_t, int16_t};
+	use libc::{c_void, c_int, uint8_t, uint16_t, int16_t};
 
 	use Rect;
 

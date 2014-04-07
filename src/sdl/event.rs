@@ -1,5 +1,5 @@
 use std::cast;
-use std::libc::c_int;
+use libc::c_int;
 use std::str;
 use std::slice;
 use std::num::FromPrimitive;
@@ -8,7 +8,7 @@ pub mod ll {
     #![allow(non_camel_case_types)]
 
     use std::cast;
-    use std::libc::{c_void, c_int, c_uint, c_uchar, c_schar, uint8_t, uint16_t, int16_t};
+    use libc::{c_void, c_int, c_uint, c_uchar, c_schar, uint8_t, uint16_t, int16_t};
 
     pub type SDLKey = c_uint;
     pub type SDLMod = c_uint;

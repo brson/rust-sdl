@@ -1,5 +1,5 @@
 use std::cast;
-use std::libc::c_int;
+use libc::c_int;
 use std::str;
 
 use get_error;
@@ -7,7 +7,7 @@ use get_error;
 pub mod ll {
 	#![allow(non_camel_case_types)]
 
-	use std::libc::{c_int, c_schar, uint8_t, uint16_t, uint32_t};
+	use libc::{c_int, c_schar, uint8_t, uint16_t, uint32_t};
 
 	pub type CDstatus = c_int;
 

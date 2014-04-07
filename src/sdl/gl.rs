@@ -1,9 +1,9 @@
-use std::libc::{c_int};
+use libc::{c_int};
 
 pub mod ll {
     #![allow(non_camel_case_types)]
 
-    use std::libc::{c_int};
+    use libc::{c_int};
 
     extern "C" {
         pub fn SDL_GL_SetAttribute(attr: c_int, value: c_int) -> c_int;
