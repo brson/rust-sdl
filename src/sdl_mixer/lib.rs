@@ -49,6 +49,10 @@ pub mod ll {
               -> c_int;
         pub fn Mix_GetChunk(channel: c_int) -> *Mix_Chunk;
         pub fn Mix_CloseAudio();
+        pub fn Mix_Volume(channel: c_int, volume: c_int) -> c_int;
+        pub fn Mix_ReserveChannels(num: c_int) -> c_int;
+        pub fn Mix_GroupChannel(which: c_int, tag: c_int) -> c_int;
+        pub fn Mix_GroupNewer(tag: c_int) -> c_int;
         pub fn Mix_HaltChannel(channel: c_int) -> c_int;
     }
 }
@@ -220,6 +224,49 @@ pub fn playing(channel: Option<c_int>) -> bool {
             Some(channel) => ll::Mix_Playing(channel) == 0,
             None => ll::Mix_Playing(-1) == 0
         }
+    }
+}
+
+pub fn num_playing(channel: Option<c_int>) -> c_int {
+    unsafe {
+        match channel {
+            Some(channel) => ll::Mix_Playing(channel),
+            None => ll::Mix_Playing(-1)
+        }
+    }
+}
+
+pub fn get_channel_volume(channel: Option<c_int>) -> c_int {
+    unsafe {
+        let ll_channel = channel.unwrap_or(-1);
+        ll::Mix_Volume(ll_channel, -1)
+    }
+}
+
+pub fn set_channel_volume(channel: Option<c_int>, volume: c_int) {
+    unsafe {
+        let ll_channel = channel.unwrap_or(-1);
+        ll::Mix_Volume(ll_channel, volume);
+    }
+}
+
+pub fn reserve_channels(num: c_int) -> c_int {
+    unsafe { ll::Mix_ReserveChannels(num) }
+}
+
+pub fn group_channel(which: Option<c_int>, tag: Option<c_int>) -> bool {
+    unsafe {
+        let ll_which = which.unwrap_or(-1);
+        let ll_tag = tag.unwrap_or(-1);
+        ll::Mix_GroupChannel(ll_which, ll_tag) != 0
+    }
+}
+
+pub fn newest_in_group(tag: Option<c_int>) -> Option<c_int> {
+    unsafe {
+        let ll_tag = tag.unwrap_or(-1);
+        let channel = ll::Mix_GroupNewer(ll_tag);
+        if channel == -1 {None} else {Some(channel)}
     }
 }
 
