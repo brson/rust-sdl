@@ -1,10 +1,10 @@
-#![crate_id="sdl_image#0.3.1"]
+#![crate_id="sdl_image#0.3.2"]
 #![comment = "SDL_image binding"]
 #![license = "MIT"]
 #![crate_type = "lib"]
 
 extern crate libc;
-extern crate sdl = "sdl#0.3.1";
+extern crate sdl = "sdl#0.3.2";
 
 use libc::c_int;
 use std::ptr;
