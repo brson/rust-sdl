@@ -7,7 +7,8 @@ use get_error;
 pub mod ll {
 	#![allow(non_camel_case_types)]
 
-	use libc::{c_int, c_schar, uint8_t, uint16_t, uint32_t};
+	use libc::{c_int, uint8_t, uint16_t, uint32_t};
+	use libc::types::os::arch::c95::c_schar;
 
 	pub type CDstatus = c_int;
 

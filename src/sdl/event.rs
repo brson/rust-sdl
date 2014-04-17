@@ -8,7 +8,8 @@ pub mod ll {
     #![allow(non_camel_case_types)]
 
     use std::cast;
-    use libc::{c_void, c_int, c_uint, c_uchar, c_schar, uint8_t, uint16_t, int16_t};
+    use libc::{c_void, c_int, c_uint, c_uchar, uint8_t, uint16_t, int16_t};
+    use libc::types::os::arch::c95::c_schar;
 
     pub type SDLKey = c_uint;
     pub type SDLMod = c_uint;

@@ -13,8 +13,9 @@ pub mod ll {
 
     use Rect;
 
-    use libc::{c_void, c_uint, c_int, c_float, c_schar, c_uchar, uint8_t, uint16_t};
+    use libc::{c_void, c_uint, c_int, c_float, c_uchar, uint8_t, uint16_t};
     use libc::{uint32_t, int32_t};
+    use libc::types::os::arch::c95::c_schar;
 
     pub type SDL_Rect = Rect;
 
