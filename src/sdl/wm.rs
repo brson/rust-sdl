@@ -9,7 +9,8 @@ pub mod ll {
 
 	use video::ll::SDL_Surface;
 
-	use libc::{c_schar, uint8_t, c_int};
+	use libc::{uint8_t, c_int};
+	use libc::types::os::arch::c95::c_schar;
 
 	pub type SDL_GrabMode = c_int;
 

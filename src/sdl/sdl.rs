@@ -22,7 +22,8 @@ mod others {
 pub mod ll {
     #![allow(non_camel_case_types)]
 
-    use libc::{c_int, c_uint, c_schar, uint32_t};
+    use libc::{c_int, c_uint, uint32_t};
+    use libc::types::os::arch::c95::c_schar;
 
     pub type SDL_errorcode = c_uint;
     pub static SDL_ENOMEM: SDL_errorcode = 0;
