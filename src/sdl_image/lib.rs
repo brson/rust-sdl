@@ -27,7 +27,8 @@ pub mod ll {
 
     use sdl::video::ll::SDL_Surface;
 
-    use libc::{c_int, c_uint, c_schar};
+    use libc::{c_int, c_uint};
+    use libc::types::os::arch::c95::c_schar;
 
     pub type IMG_InitFlags = c_uint;
 
