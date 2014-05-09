@@ -71,8 +71,8 @@ pub struct CD {
 	pub raw: *ll::SDL_CD
 }
 
-fn wrap_cd(raw: *ll::SDL_CD) -> ~CD {
-	~CD { raw: raw }
+fn wrap_cd(raw: *ll::SDL_CD) -> CD {
+	CD { raw: raw }
 }
 
 #[deriving(Eq, TotalEq)]
@@ -85,7 +85,7 @@ pub enum Status {
 }
 
 impl CD {
-    pub fn open(index: int) -> Result<~CD, ~str> {
+    pub fn open(index: int) -> Result<CD, ~str> {
 		unsafe {
 			let raw = ll::SDL_CDOpen(index as c_int);
 

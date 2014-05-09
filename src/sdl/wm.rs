@@ -53,7 +53,7 @@ pub fn get_caption() -> (~str, ~str) {
     }
 }
 
-pub fn set_icon(surface: ~video::Surface) {
+pub fn set_icon(surface: video::Surface) {
 	unsafe { ll::SDL_WM_SetIcon(surface.raw, ptr::null()); }
 }
 
@@ -61,7 +61,7 @@ pub fn iconify_window() {
 	unsafe { ll::SDL_WM_IconifyWindow(); }
 }
 
-pub fn toggle_fullscreen(surface: ~video::Surface) {
+pub fn toggle_fullscreen(surface: video::Surface) {
 	unsafe { ll::SDL_WM_ToggleFullScreen(surface.raw); }
 }
 

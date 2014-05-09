@@ -113,7 +113,7 @@ impl DesiredAudioSpec {
                 padding: 0,
                 size: 0,
                 callback: native_callback as *u8,
-                userdata: transmute(~callback),
+                userdata: transmute(box callback),
             }
         }
     }
@@ -143,7 +143,7 @@ impl ObtainedAudioSpec {
 
 extern fn native_callback(userdata: *c_void, stream: *mut u8, len: c_int) {
     unsafe {
-        let callback: ~AudioCallback = transmute(userdata);
+        let callback: Box<AudioCallback> = transmute(userdata);
         let buffer = transmute((stream, len as uint));
         (*callback)(buffer);
         forget(callback);   // Don't free the callback!

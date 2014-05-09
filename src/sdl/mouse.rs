@@ -50,8 +50,8 @@ pub struct Cursor {
 	pub owned: bool
 }
 
-fn wrap_cursor(raw: *ll::SDL_Cursor, owned: bool) -> ~Cursor {
-	~Cursor {
+fn wrap_cursor(raw: *ll::SDL_Cursor, owned: bool) -> Cursor {
+	Cursor {
 		raw: raw,
 		owned: owned
 	}
@@ -59,7 +59,7 @@ fn wrap_cursor(raw: *ll::SDL_Cursor, owned: bool) -> ~Cursor {
 
 impl Cursor {
 	pub fn new(data: &[u8], mask: &[u8], w: int, h: int, hot_x: int, hot_y: int)
-        -> Result<~Cursor, ~str> {
+        -> Result<Cursor, ~str> {
 		unsafe {
 			let raw = ll::SDL_CreateCursor(data.as_ptr(), mask.as_ptr(),
 				                           w as c_int, h as c_int, hot_x as c_int,
@@ -85,7 +85,7 @@ pub fn set_cursor(cursor: &Cursor) {
 	unsafe { ll::SDL_SetCursor(cursor.raw); }
 }
 
-pub fn get_cursor() -> ~Cursor {
+pub fn get_cursor() -> Cursor {
 	unsafe { wrap_cursor(ll::SDL_GetCursor(), false) }
 }
 

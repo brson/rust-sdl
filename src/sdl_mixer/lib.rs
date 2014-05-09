@@ -1,10 +1,10 @@
-#![crate_id="sdl_mixer#0.3.2"]
+#![crate_id="sdl_mixer#0.3.3"]
 #![comment = "SDL_mixer binding"]
 #![license = "MIT"]
 #![crate_type = "lib"]
 
 extern crate libc;
-extern crate sdl = "sdl#0.3.2";
+extern crate sdl = "sdl#0.3.3";
 
 use libc::{c_int};
 
@@ -111,10 +111,10 @@ impl Drop for Chunk {
 }
 
 impl Chunk {
-    pub fn new(buffer: Vec<u8>, volume: u8) -> ~Chunk {
+    pub fn new(buffer: Vec<u8>, volume: u8) -> Chunk {
         let buffer_addr: *u8 = buffer.as_ptr();
         let buffer_len = buffer.len() as u32;
-        ~Chunk {
+        Chunk {
             data: OwnedBuffer(
                 ChunkAndBuffer {
                     buffer: buffer,
@@ -129,7 +129,7 @@ impl Chunk {
         }
     }
 
-    pub fn from_wav(path: &Path) -> Result<~Chunk, ~str> {
+    pub fn from_wav(path: &Path) -> Result<Chunk, ~str> {
         let raw =
             path.to_c_str().with_ref(|path| {
                 "rb".to_c_str().with_ref(|mode| {
@@ -140,7 +140,7 @@ impl Chunk {
             });
 
         if raw.is_null() { Err(get_error()) }
-        else { Ok(~Chunk { data: Allocated(raw) }) }
+        else { Ok(Chunk { data: Allocated(raw) }) }
     }
 
     pub fn to_ll_chunk(&self) -> *ll::Mix_Chunk {

@@ -176,8 +176,8 @@ pub struct Surface {
     pub owned: bool
 }
 
-fn wrap_surface(raw: *ll::SDL_Surface, owned: bool) -> ~Surface {
-    ~Surface{ raw: raw, owned: owned }
+fn wrap_surface(raw: *ll::SDL_Surface, owned: bool) -> Surface {
+    Surface{ raw: raw, owned: owned }
 }
 
 impl Drop for Surface {
@@ -365,7 +365,7 @@ pub enum VideoFlag {
 
 pub fn set_video_mode(w: int, h: int, bpp: int,
                       surface_flags: &[SurfaceFlag],
-                      video_flags: &[VideoFlag]) -> Result<~Surface, ~str> {
+                      video_flags: &[VideoFlag]) -> Result<Surface, ~str> {
     let flags = surface_flags.iter().fold(0u32, |flags, &flag| {
         flags | flag as u32
     });
@@ -438,9 +438,9 @@ fn wrap_video_info_flags(bitflags: u32) -> Vec<VideoInfoFlag> {
     }).collect()
 }
 
-pub fn get_video_info() -> ~VideoInfo {
+pub fn get_video_info() -> VideoInfo {
     let raw = unsafe { ll::SDL_GetVideoInfo() };
-    ~VideoInfo {
+    VideoInfo {
         flags:  wrap_video_info_flags(unsafe { (*raw).flags } as u32),
         width:  unsafe { (*raw).current_w } as int,
         height: unsafe { (*raw).current_h } as int,
@@ -453,7 +453,7 @@ pub enum PaletteType {
     PhysicalPaletteType
 }
 
-pub fn get_video_surface() -> Result<~Surface, ~str> {
+pub fn get_video_surface() -> Result<Surface, ~str> {
     let raw = unsafe { ll::SDL_GetVideoSurface() };
 
     if raw.is_null() { Err(get_error()) }
@@ -464,7 +464,7 @@ pub fn get_video_surface() -> Result<~Surface, ~str> {
 
 impl Surface {
     pub fn new(surface_flags: &[SurfaceFlag], width: int, height: int, bpp: int,
-               rmask: u32, gmask: u32, bmask: u32, amask: u32) -> Result<~Surface, ~str> {
+               rmask: u32, gmask: u32, bmask: u32, amask: u32) -> Result<Surface, ~str> {
         let flags = surface_flags.iter().fold(0u32, |flags, flag| { flags | *flag as u32 });
 
         unsafe {
@@ -474,12 +474,12 @@ impl Surface {
             if raw == ptr::null() {
                 Err(get_error())
             } else {
-                Ok(~Surface { raw: raw, owned: true })
+                Ok(Surface { raw: raw, owned: true })
             }
         }
     }
 
-    pub fn from_bmp(path: &Path) -> Result<~Surface, ~str> {
+    pub fn from_bmp(path: &Path) -> Result<Surface, ~str> {
         let raw = path.to_c_str().with_ref(|path| {
                 "rb".to_c_str().with_ref(|mode| {
                         unsafe {
@@ -578,7 +578,7 @@ impl Surface {
         unsafe { ll::SDL_Flip(self.raw) == 0 }
     }
 
-    pub fn convert(&self, fmt: &PixelFormat, flags: &[SurfaceFlag]) -> Result<~Surface, ~str> {
+    pub fn convert(&self, fmt: &PixelFormat, flags: &[SurfaceFlag]) -> Result<Surface, ~str> {
         let flags = flags.iter().fold(0u32, |flags, &flag| {
             flags | flag as u32
         });
@@ -592,14 +592,14 @@ impl Surface {
         }
     }
 
-    pub fn display_format(&self) -> Result<~Surface, ~str> {
+    pub fn display_format(&self) -> Result<Surface, ~str> {
         let raw = unsafe { ll::SDL_DisplayFormat(self.raw) };
 
         if raw.is_null() { Err(get_error()) }
         else { Ok(wrap_surface(raw, true)) }
     }
 
-    pub fn display_format_alpha(&self) -> Result<~Surface, ~str> {
+    pub fn display_format_alpha(&self) -> Result<Surface, ~str> {
         let raw = unsafe { ll::SDL_DisplayFormatAlpha(self.raw) };
 
         if raw.is_null() { Err(get_error()) }

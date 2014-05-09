@@ -1,10 +1,10 @@
-#![crate_id="sdl_image#0.3.2"]
+#![crate_id="sdl_image#0.3.3"]
 #![comment = "SDL_image binding"]
 #![license = "MIT"]
 #![crate_type = "lib"]
 
 extern crate libc;
-extern crate sdl = "sdl#0.3.2";
+extern crate sdl = "sdl#0.3.3";
 
 use libc::c_int;
 use std::ptr;
@@ -68,7 +68,7 @@ pub fn init(flags: &[InitFlag]) -> Vec<InitFlag> {
     }).collect()
 }
 
-pub fn load(file: &Path) -> Result<~Surface, ~str> {
+pub fn load(file: &Path) -> Result<Surface, ~str> {
     file.to_c_str().with_ref(|file| {
         unsafe {
             let raw = ll::IMG_Load(file);
@@ -76,7 +76,7 @@ pub fn load(file: &Path) -> Result<~Surface, ~str> {
             if raw == ptr::null() {
                 Err(get_error())
             } else {
-                Ok(~Surface { raw: raw, owned: true })
+                Ok(Surface { raw: raw, owned: true })
             }
         }
     })

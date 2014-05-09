@@ -2,7 +2,7 @@ use std::cell::Cell;
 use std::task;
 
 
-pub type MainFunction = ~fn();
+pub type MainFunction = Box<fn()>;
 
 pub fn start(main: MainFunction) {
 }
