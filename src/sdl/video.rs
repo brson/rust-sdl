@@ -1,4 +1,4 @@
-use std::cast;
+use std::mem;
 use libc::{c_int, c_float};
 use std::ptr;
 use std::iter;
@@ -209,9 +209,9 @@ pub type PaletteColors<'a> =
 
 impl Palette {
     pub fn colors<'a>(&'a self) -> PaletteColors<'a> {
-        use std::{raw, cast};
+        use std::{raw, mem};
         let colors: &'a [ll::SDL_Color] = unsafe {
-            cast::transmute(raw::Slice { data: (*self.raw).colors,
+            mem::transmute(raw::Slice { data: (*self.raw).colors,
                                          len: (*self.raw).ncolors as uint })
         };
         colors.iter().map(|color| Color::from_struct(color))
@@ -525,7 +525,7 @@ impl Surface {
     pub fn update_rects(&self, rects: &[Rect]) {
         unsafe {
             ll::SDL_UpdateRects(self.raw, rects.len() as c_int,
-                                cast::transmute(rects.as_ptr()));
+                                mem::transmute(rects.as_ptr()));
         }
     }
 
@@ -563,7 +563,7 @@ impl Surface {
         unsafe {
             if ll::SDL_LockSurface(self.raw) != 0 { fail!("could not lock surface"); }
             let len = (*self.raw).pitch as uint * ((*self.raw).h as uint);
-            let pixels: &mut [u8] = cast::transmute(((*self.raw).pixels, len));
+            let pixels: &mut [u8] = mem::transmute(((*self.raw).pixels, len));
             let rv = f(pixels);
             ll::SDL_UnlockSurface(self.raw);
             rv
@@ -653,7 +653,7 @@ impl Surface {
 
         unsafe {
             ll::SDL_SetClipRect(self.raw,
-                                cast::transmute(&rect));
+                                mem::transmute(&rect));
         }
 
         rect
@@ -663,10 +663,10 @@ impl Surface {
                      dest_rect: Option<Rect>) -> bool {
         unsafe {
             ll::SDL_UpperBlit(src.raw, match src_rect {
-                Some(ref rect) => cast::transmute(rect),
+                Some(ref rect) => mem::transmute(rect),
                 None => ptr::null()
             }, self.raw, match dest_rect {
-                Some(ref rect) => cast::transmute(rect),
+                Some(ref rect) => mem::transmute(rect),
                 None => ptr::null()
             }) == 0
         }
@@ -690,7 +690,7 @@ impl Surface {
     pub fn fill_rect(&self, rect: Option<Rect>,
                      color: Color) -> bool {
         unsafe { ll::SDL_FillRect(self.raw, match rect {
-            Some(ref rect) => cast::transmute(rect),
+            Some(ref rect) => mem::transmute(rect),
             None => ptr::null()
         }, color.to_mapped((*self.raw).format)) == 0 }
     }
