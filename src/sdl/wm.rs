@@ -1,4 +1,4 @@
-use std::cast;
+use std::mem;
 use std::ptr;
 use std::str;
 
@@ -48,8 +48,8 @@ pub fn get_caption() -> (~str, ~str) {
 		ll::SDL_WM_GetCaption(&title_buf,
 			                  &icon_buf);
 
-        (str::raw::from_c_str(cast::transmute_copy(&title_buf)),
-         str::raw::from_c_str(cast::transmute_copy(&icon_buf)))
+        (str::raw::from_c_str(mem::transmute_copy(&title_buf)),
+         str::raw::from_c_str(mem::transmute_copy(&icon_buf)))
     }
 }
 

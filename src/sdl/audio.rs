@@ -2,7 +2,7 @@ use self::ll::{AUDIO_S16LSB, AUDIO_S16MSB, AUDIO_S8, AUDIO_U16LSB, AUDIO_U16MSB,
 use self::ll::{SDL_LockAudio, SDL_MixAudio, SDL_OpenAudio};
 use self::ll::{SDL_UnlockAudio};
 
-use std::cast::{forget, transmute};
+use std::mem::{forget, transmute};
 use libc::{c_int, c_void, uint16_t};
 use std::ptr::null;
 

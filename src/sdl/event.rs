@@ -1,4 +1,4 @@
-use std::cast;
+use std::mem;
 use libc::c_int;
 use std::str;
 use std::slice;
@@ -7,7 +7,7 @@ use std::num::FromPrimitive;
 pub mod ll {
     #![allow(non_camel_case_types)]
 
-    use std::cast;
+    use std::mem;
     use libc::{c_void, c_int, c_uint, c_uchar, uint8_t, uint16_t, int16_t};
     use libc::types::os::arch::c95::c_schar;
 
@@ -123,59 +123,59 @@ pub mod ll {
 
     impl SDL_Event {
         pub fn _type(&self) -> *uint8_t {
-            unsafe { cast::transmute_copy(&self) }
+            unsafe { mem::transmute_copy(&self) }
         }
 
         pub fn active(&self) -> *SDL_ActiveEvent {
-            unsafe { cast::transmute_copy(&self) }
+            unsafe { mem::transmute_copy(&self) }
         }
 
         pub fn key(&self) -> *SDL_KeyboardEvent {
-            unsafe { cast::transmute_copy(&self) }
+            unsafe { mem::transmute_copy(&self) }
         }
 
         pub fn motion(&self) -> *SDL_MouseMotionEvent {
-            unsafe { cast::transmute_copy(&self) }
+            unsafe { mem::transmute_copy(&self) }
         }
 
         pub fn button(&self) -> *SDL_MouseButtonEvent {
-            unsafe { cast::transmute_copy(&self) }
+            unsafe { mem::transmute_copy(&self) }
         }
 
         pub fn jaxis(&self) -> *SDL_JoyAxisEvent {
-            unsafe { cast::transmute_copy(&self) }
+            unsafe { mem::transmute_copy(&self) }
         }
 
         pub fn jball(&self) -> *SDL_JoyBallEvent {
-            unsafe { cast::transmute_copy(&self) }
+            unsafe { mem::transmute_copy(&self) }
         }
 
         pub fn jhat(&self) -> *SDL_JoyHatEvent {
-            unsafe { cast::transmute_copy(&self) }
+            unsafe { mem::transmute_copy(&self) }
         }
 
         pub fn jbutton(&self) -> *SDL_JoyButtonEvent {
-            unsafe { cast::transmute_copy(&self) }
+            unsafe { mem::transmute_copy(&self) }
         }
 
         pub fn resize(&self) -> *SDL_ResizeEvent {
-            unsafe { cast::transmute_copy(&self) }
+            unsafe { mem::transmute_copy(&self) }
         }
 
         pub fn expose(&self) -> *SDL_ExposeEvent {
-            unsafe { cast::transmute_copy(&self) }
+            unsafe { mem::transmute_copy(&self) }
         }
 
         pub fn quit(&self) -> *SDL_QuitEvent {
-            unsafe { cast::transmute_copy(&self) }
+            unsafe { mem::transmute_copy(&self) }
         }
 
         pub fn user(&self) -> *SDL_UserEvent {
-            unsafe { cast::transmute_copy(&self) }
+            unsafe { mem::transmute_copy(&self) }
         }
 
         pub fn syswm(&self) -> *SDL_SysWMEvent {
-            unsafe { cast::transmute_copy(&self) }
+            unsafe { mem::transmute_copy(&self) }
         }
     }
 
@@ -789,7 +789,7 @@ pub fn get_key_name(key: Key) -> ~str {
     unsafe {
         let cstr = ll::SDL_GetKeyName(key as ll::SDLKey);
 
-        str::raw::from_c_str(cast::transmute_copy(&cstr))
+        str::raw::from_c_str(mem::transmute_copy(&cstr))
     }
 }
 

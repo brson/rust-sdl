@@ -1,4 +1,4 @@
-use std::cast;
+use std::mem;
 use libc::c_int;
 use std::str;
 
@@ -41,7 +41,7 @@ pub fn get_joystick_name(index: int) -> ~str {
 	unsafe {
 		let cstr = ll::SDL_JoystickName(index as c_int);
 
-		str::raw::from_c_str(cast::transmute_copy(&cstr))
+		str::raw::from_c_str(mem::transmute_copy(&cstr))
 	}
 }
 
