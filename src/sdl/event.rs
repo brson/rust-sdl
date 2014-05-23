@@ -785,7 +785,7 @@ pub fn set_mod_state(states: &[Mod]) {
     }
 }
 
-pub fn get_key_name(key: Key) -> ~str {
+pub fn get_key_name(key: Key) -> StrBuf {
     unsafe {
         let cstr = ll::SDL_GetKeyName(key as ll::SDLKey);
 

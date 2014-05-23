@@ -58,7 +58,7 @@ pub fn get_num_drives() -> int {
 	unsafe { ll::SDL_CDNumDrives() as int }
 }
 
-pub fn get_drive_name(index: int) -> ~str {
+pub fn get_drive_name(index: int) -> StrBuf {
 	unsafe {
 		let cstr = ll::SDL_CDName(index as c_int);
 
@@ -85,7 +85,7 @@ pub enum Status {
 }
 
 impl CD {
-    pub fn open(index: int) -> Result<CD, ~str> {
+    pub fn open(index: int) -> Result<CD, StrBuf> {
 		unsafe {
 			let raw = ll::SDL_CDOpen(index as c_int);
 
