@@ -68,7 +68,7 @@ pub fn init(flags: &[InitFlag]) -> Vec<InitFlag> {
     }).collect()
 }
 
-pub fn load(file: &Path) -> Result<Surface, ~str> {
+pub fn load(file: &Path) -> Result<Surface, StrBuf> {
     file.to_c_str().with_ref(|file| {
         unsafe {
             let raw = ll::IMG_Load(file);
