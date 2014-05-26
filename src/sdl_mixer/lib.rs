@@ -129,7 +129,7 @@ impl Chunk {
         }
     }
 
-    pub fn from_wav(path: &Path) -> Result<Chunk, StrBuf> {
+    pub fn from_wav(path: &Path) -> Result<Chunk, String> {
         let raw =
             path.to_c_str().with_ref(|path| {
                 "rb".to_c_str().with_ref(|mode| {

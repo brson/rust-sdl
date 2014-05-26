@@ -150,7 +150,7 @@ pub fn was_inited(flags: &[InitFlag]) -> Vec<InitFlag> {
     }).collect()
 }
 
-pub fn get_error() -> StrBuf {
+pub fn get_error() -> String {
     unsafe {
         let cstr = ll::SDL_GetError();
 

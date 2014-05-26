@@ -37,7 +37,7 @@ pub fn get_num_joysticks() -> int {
 	unsafe { ll::SDL_NumJoysticks() as int }
 }
 
-pub fn get_joystick_name(index: int) -> StrBuf {
+pub fn get_joystick_name(index: int) -> String {
 	unsafe {
 		let cstr = ll::SDL_JoystickName(index as c_int);
 
@@ -63,7 +63,7 @@ fn wrap_joystick(raw: *ll::SDL_Joystick) -> Joystick {
 }
 
 impl Joystick {
-	pub fn open(index: int) -> Result<Joystick, StrBuf> {
+	pub fn open(index: int) -> Result<Joystick, String> {
 		unsafe {
 			let raw = ll::SDL_JoystickOpen(index as c_int);
 

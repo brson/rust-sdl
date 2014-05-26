@@ -40,7 +40,7 @@ pub fn set_caption(title: &str, icon: &str) {
 	unsafe { ll::SDL_WM_SetCaption(title.to_c_str().unwrap(), icon.to_c_str().unwrap()); }
 }
 
-pub fn get_caption() -> (StrBuf, StrBuf) {
+pub fn get_caption() -> (String, String) {
 	let title_buf = ptr::null();
 	let icon_buf = ptr::null();
 
