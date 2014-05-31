@@ -1,7 +1,6 @@
 extern crate sdl;
-extern crate rand;
 
-use rand::Rng;
+use std::rand::Rng;
 
 
 #[main]
@@ -9,7 +8,7 @@ pub fn main() {
     sdl::init([sdl::InitVideo]);
     sdl::wm::set_caption("rust-sdl demo - video", "rust-sdl");
 
-    let mut rng = rand::task_rng();
+    let mut rng = std::rand::task_rng();
     let screen = match sdl::video::set_video_mode(800, 600, 32, [sdl::video::HWSurface],
                                                                 [sdl::video::DoubleBuf]) {
         Ok(screen) => screen,

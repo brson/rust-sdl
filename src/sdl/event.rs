@@ -195,7 +195,7 @@ pub mod ll {
     }
 }
 
-#[deriving(Eq, TotalEq)]
+#[deriving(PartialEq, Eq)]
 pub enum AppState {
     AppMouseFocusState = ll::SDL_APPMOUSEFOCUS as int,
     AppInputFocusState = ll::SDL_APPINPUTFOCUS as int,
@@ -213,19 +213,19 @@ fn wrap_app_state(bitflags: u8) -> Vec<AppState> {
     }).collect()
 }
 
-#[deriving(Eq)]
+#[deriving(PartialEq)]
 pub enum RepeatDelay {
     DefaultRepeatDelay,
     CustomRepeatDelay(int)
 }
 
-#[deriving(Eq)]
+#[deriving(PartialEq)]
 pub enum RepeatInterval {
     DefaultRepeatInterval,
     CustomRepeatInterval(int)
 }
 
-#[deriving(Eq, TotalEq, FromPrimitive)]
+#[deriving(PartialEq, Eq, FromPrimitive)]
 pub enum Key {
     UnknownKey = 0,
     BackspaceKey = 8,
@@ -466,7 +466,7 @@ fn wrap_key(i: ll::SDLKey) -> Option<Key> {
     FromPrimitive::from_uint(i as uint)
 }
 
-#[deriving(Eq, TotalEq)]
+#[deriving(PartialEq, Eq)]
 pub enum Mod {
      NoMod = 0x0000,
      LShiftMod = 0x0001,
@@ -504,7 +504,7 @@ fn wrap_mod_state(bitflags: ll::SDLMod) -> Vec<Mod> {
     }).collect()
 }
 
-#[deriving(Eq, TotalEq)]
+#[deriving(PartialEq, Eq)]
 pub enum HatState {
     CenteredHatState,
     UpHatState,
@@ -526,7 +526,7 @@ fn wrap_hat_state(bitflags: u8) -> Vec<HatState> {
     }).collect()
 }
 
-#[deriving(Eq, TotalEq, FromPrimitive)]
+#[deriving(PartialEq, Eq, FromPrimitive)]
 pub enum Mouse {
     LeftMouse = 1,
     MiddleMouse,
@@ -539,7 +539,7 @@ fn wrap_mouse(bitflags: u8) -> Option<Mouse> {
     FromPrimitive::from_u8(bitflags)
 }
 
-#[deriving(Eq, TotalEq)]
+#[deriving(PartialEq, Eq)]
 pub enum MouseState {
     LeftMouseState = 1,
     MiddleMouseState,
@@ -565,7 +565,7 @@ fn wrap_mouse_state(bitflags: u8) -> Vec<MouseState> {
     }).collect()
 }
 
-#[deriving(Eq)]
+#[deriving(PartialEq)]
 pub enum Event {
     // TODO: TextInputEvent, TextEditingEvent
      NoEvent,
@@ -688,7 +688,7 @@ fn wrap_event(raw: ll::SDL_Event) -> Event {
     }
 }
 
-#[deriving(Eq, TotalEq, FromPrimitive)]
+#[deriving(PartialEq, Eq, FromPrimitive)]
 pub enum EventType {
     // TODO: TextInputEventType, TextEditingEventType
      NoEventType,

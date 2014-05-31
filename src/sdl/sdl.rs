@@ -57,7 +57,7 @@ pub mod ll {
     }
 }
 
-#[deriving(Eq)]
+#[deriving(PartialEq)]
 pub struct Rect {
     pub x: i16,
     pub y: i16,
@@ -65,6 +65,7 @@ pub struct Rect {
     pub h: u16
 }
 
+#[allow(non_snake_case_functions)]
 pub fn Rect(x: i16, y: i16, w: u16, h: u16) -> Rect {
     Rect { x: x, y: y, w: w, h: h }
 }
@@ -80,7 +81,7 @@ impl Rect {
     }
 }
 
-#[deriving(Eq, TotalEq)]
+#[deriving(PartialEq, Eq)]
 pub enum InitFlag {
      InitTimer = ll::SDL_INIT_TIMER as int,
      InitAudio = ll::SDL_INIT_AUDIO as int,
@@ -92,7 +93,7 @@ pub enum InitFlag {
      InitEverything = ll::SDL_INIT_EVERYTHING as int,
 }
 
-#[deriving(Eq, TotalEq)]
+#[deriving(PartialEq, Eq)]
 pub enum Error {
      NoMemError = ll::SDL_ENOMEM as int,
      ReadError = ll::SDL_EFREAD as int,

@@ -170,7 +170,7 @@ pub mod ll {
     }
 }
 
-#[deriving(Eq)]
+#[deriving(PartialEq)]
 pub struct Surface {
     pub raw: *ll::SDL_Surface,
     pub owned: bool
@@ -190,7 +190,7 @@ impl Drop for Surface {
     }
 }
 
-#[deriving(Eq)]
+#[deriving(PartialEq)]
 #[allow(raw_pointer_deriving)]
 pub struct Palette {
     pub raw: *ll::SDL_Palette
@@ -218,7 +218,7 @@ impl Palette {
     }
 }
 
-#[deriving(Eq)]
+#[deriving(PartialEq)]
 pub struct PixelFormat {
     pub palette: Option<Palette>,
     pub bpp: u8,
@@ -285,7 +285,7 @@ fn unwrap_pixel_format(fmt: &PixelFormat) -> ll::SDL_PixelFormat {
     }
 }
 
-#[deriving(Eq, TotalEq)]
+#[deriving(PartialEq, Eq)]
 pub enum Color {
     RGB(u8, u8, u8),
     RGBA(u8, u8, u8, u8)
@@ -341,7 +341,7 @@ impl Color {
     }
 }
 
-#[deriving(Eq, TotalEq)]
+#[deriving(PartialEq, Eq)]
 pub enum SurfaceFlag {
     SWSurface = 0x00000000,
     HWSurface = 0x00000001,
@@ -351,7 +351,7 @@ pub enum SurfaceFlag {
     RLEAccel = 0x00004000
 }
 
-#[deriving(Eq, TotalEq)]
+#[deriving(PartialEq, Eq)]
 pub enum VideoFlag {
     AnyFormat = 0x10000000u,
     HWPalette = 0x20000000u,
@@ -401,7 +401,7 @@ pub fn is_video_mode_ok(w: int, h: int, bpp: int,
     }
 }
 
-#[deriving(Eq, TotalEq)]
+#[deriving(PartialEq, Eq)]
 pub enum VideoInfoFlag {
     HWAvailable    = 0x00000001,
     WMAvailable    = 0x00000002,

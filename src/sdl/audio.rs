@@ -79,7 +79,7 @@ impl AudioFormat {
     }
 }
 
-#[deriving(Eq, TotalEq)]
+#[deriving(PartialEq, Eq)]
 pub enum Channels {
     Mono,
     Stereo,

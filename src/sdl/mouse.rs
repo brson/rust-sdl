@@ -44,7 +44,7 @@ pub fn warp_mouse(x: u16, y: u16) {
 	unsafe { ll::SDL_WarpMouse(x, y); }
 }
 
-#[deriving(Eq)]
+#[deriving(PartialEq)]
 pub struct Cursor {
 	pub raw: *ll::SDL_Cursor,
 	pub owned: bool

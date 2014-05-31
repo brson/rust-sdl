@@ -29,7 +29,7 @@ pub mod ll {
     }
 }
 
-#[deriving(Eq, TotalEq)]
+#[deriving(PartialEq, Eq)]
 pub enum GrabMode {
 	 GrabQuery = ll::SDL_GRAB_QUERY as int,
 	 GrabOff = ll::SDL_GRAB_OFF as int,

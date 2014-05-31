@@ -66,7 +66,7 @@ pub fn get_drive_name(index: int) -> String {
 	}
 }
 
-#[deriving(Eq)]
+#[deriving(PartialEq)]
 pub struct CD {
 	pub raw: *ll::SDL_CD
 }
@@ -75,7 +75,7 @@ fn wrap_cd(raw: *ll::SDL_CD) -> CD {
 	CD { raw: raw }
 }
 
-#[deriving(Eq, TotalEq)]
+#[deriving(PartialEq, Eq)]
 pub enum Status {
 	TrayEmptyStatus = ll::CD_TRAYEMPTY as int,
 	StoppedStatus = ll::CD_STOPPED as int,
