@@ -25,7 +25,7 @@ pub mod ll {
         pub write: *uint8_t,
         pub close: *uint8_t,
         pub _type: uint32_t,
-        hidden: [c_uchar, ..24]
+        _hidden: [c_uchar, ..24]
     }
 
     pub struct SDL_Surface {
@@ -529,7 +529,6 @@ impl Surface {
         }
     }
 
-    #[allow(deprecated_owned_vector)]
     pub fn set_colors(&self, colors: &[Color]) -> bool {
         let colors: Vec<_> = colors.iter().map(|color| {
             color.to_struct()
@@ -539,7 +538,6 @@ impl Surface {
                                    colors.len() as c_int) == 1 }
     }
 
-    #[allow(deprecated_owned_vector)]
     pub fn set_palette(&self, palettes: &[PaletteType],
                    colors: &[Color]) -> bool {
         let colors: Vec<_> = colors.iter().map(|color| {
