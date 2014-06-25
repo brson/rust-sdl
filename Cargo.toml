@@ -1,0 +1,9 @@
+[package]
+
+name = "sdl"
+version = "0.8.0"
+authors = [ "brson" ]
+
+[[lib]]
+name = "sdl"
+path = "src/sdl/lib.rs"
