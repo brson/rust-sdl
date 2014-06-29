@@ -13,3 +13,4 @@ build
 bin
 lib
 .rust
+target
