@@ -1,4 +1,4 @@
-#![crate_id="sdl#0.3.3"]
+#![crate_id="sdl#0.3.4"]
 #![comment = "SDL bindings"]
 #![license = "MIT"]
 #![crate_type = "lib"]

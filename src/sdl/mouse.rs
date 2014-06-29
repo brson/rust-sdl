@@ -18,24 +18,24 @@ pub mod ll {
 	     pub area: Rect,
 	     pub hot_x: int16_t,
 	     pub hot_y: int16_t,
-	     pub data: *const uint8_t,
-	     pub mask: *const uint8_t,
-	     pub save: [*const uint8_t, ..2],
-	     pub wm_cursor: *const WMcursor,
+	     pub data: *mut uint8_t,
+	     pub mask: *mut uint8_t,
+	     pub save: [*mut uint8_t, ..2],
+	     pub wm_cursor: *mut WMcursor,
 	}
 
     extern "C" {
         pub fn SDL_ShowCursor(toggle: c_int) -> c_int;
-        pub fn SDL_CreateCursor(data: *const uint8_t,
-                                      mask: *const uint8_t,
-                                      w: c_int,
-                                      h: c_int,
-                                      hot_x: c_int,
-                                      hot_y: c_int)
-                    -> *const SDL_Cursor;
-        pub fn SDL_SetCursor(cursor: *const SDL_Cursor);
-        pub fn SDL_GetCursor() -> *const SDL_Cursor;
-        pub fn SDL_FreeCursor(cursor: *const SDL_Cursor);
+        pub fn SDL_CreateCursor(data: *mut uint8_t,
+                                mask: *mut uint8_t,
+                                w: c_int,
+                                h: c_int,
+                                hot_x: c_int,
+                                hot_y: c_int)
+                    -> *mut SDL_Cursor;
+        pub fn SDL_SetCursor(cursor: *mut SDL_Cursor);
+        pub fn SDL_GetCursor() -> *mut SDL_Cursor;
+        pub fn SDL_FreeCursor(cursor: *mut SDL_Cursor);
         pub fn SDL_WarpMouse(x: uint16_t, y: uint16_t);
     }
 }
@@ -46,11 +46,11 @@ pub fn warp_mouse(x: u16, y: u16) {
 
 #[deriving(PartialEq)]
 pub struct Cursor {
-	pub raw: *const ll::SDL_Cursor,
+	pub raw: *mut ll::SDL_Cursor,
 	pub owned: bool
 }
 
-fn wrap_cursor(raw: *const ll::SDL_Cursor, owned: bool) -> Cursor {
+fn wrap_cursor(raw: *mut ll::SDL_Cursor, owned: bool) -> Cursor {
 	Cursor {
 		raw: raw,
 		owned: owned
@@ -59,9 +59,11 @@ fn wrap_cursor(raw: *const ll::SDL_Cursor, owned: bool) -> Cursor {
 
 impl Cursor {
 	pub fn new(data: &[u8], mask: &[u8], w: int, h: int, hot_x: int, hot_y: int)
-        -> Result<Cursor, String> {
+            -> Result<Cursor, String> {
+        let mut data = Vec::from_slice(data);
+        let mut mask = Vec::from_slice(mask);
 		unsafe {
-			let raw = ll::SDL_CreateCursor(data.as_ptr(), mask.as_ptr(),
+			let raw = ll::SDL_CreateCursor(data.as_mut_ptr(), mask.as_mut_ptr(),
 				                           w as c_int, h as c_int, hot_x as c_int,
 				                           hot_y as c_int);
 

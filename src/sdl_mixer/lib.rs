@@ -1,10 +1,10 @@
-#![crate_id="sdl_mixer#0.3.3"]
+#![crate_id="sdl_mixer#0.3.4"]
 #![comment = "SDL_mixer binding"]
 #![license = "MIT"]
 #![crate_type = "lib"]
 
 extern crate libc;
-extern crate sdl = "sdl#0.3.3";
+extern crate sdl;
 
 use libc::{c_int};
 
@@ -31,7 +31,7 @@ pub mod ll {
 
     pub struct Mix_Chunk {
         pub allocated: c_int,
-        pub abuf: *const u8,
+        pub abuf: *mut u8,
         pub alen: u32,
         pub volume: u8,
     }
@@ -41,13 +41,13 @@ pub mod ll {
               -> c_int;
         pub fn Mix_QuerySpec(frequency: *mut c_int, format: *mut u16, channels: *mut c_int)
               -> c_int;
-        pub fn Mix_LoadWAV_RW(src: *const SDL_RWops, freesrc: c_int) -> *const Mix_Chunk;
-        pub fn Mix_FreeChunk(chunk: *const Mix_Chunk);
+        pub fn Mix_LoadWAV_RW(src: *mut SDL_RWops, freesrc: c_int) -> *mut Mix_Chunk;
+        pub fn Mix_FreeChunk(chunk: *mut Mix_Chunk);
         pub fn Mix_AllocateChannels(numchans: c_int) -> c_int;
         pub fn Mix_Playing(channel: c_int) -> c_int;
-        pub fn Mix_PlayChannelTimed(channel: c_int, chunk: *const Mix_Chunk, loops: c_int, ticks: c_int)
+        pub fn Mix_PlayChannelTimed(channel: c_int, chunk: *mut Mix_Chunk, loops: c_int, ticks: c_int)
               -> c_int;
-        pub fn Mix_GetChunk(channel: c_int) -> *const Mix_Chunk;
+        pub fn Mix_GetChunk(channel: c_int) -> *mut Mix_Chunk;
         pub fn Mix_CloseAudio();
         pub fn Mix_Volume(channel: c_int, volume: c_int) -> c_int;
         pub fn Mix_ReserveChannels(num: c_int) -> c_int;
@@ -62,8 +62,8 @@ pub struct Chunk {
 }
 
 enum ChunkData {
-    Borrowed(*const ll::Mix_Chunk),
-    Allocated(*const ll::Mix_Chunk),
+    Borrowed(*mut ll::Mix_Chunk),
+    Allocated(*mut ll::Mix_Chunk),
     OwnedBuffer(ChunkAndBuffer)
 }
 
@@ -72,7 +72,7 @@ struct ChunkAndBuffer {
     pub ll_chunk: ll::Mix_Chunk
 }
 
-unsafe fn check_if_not_playing(ll_chunk_addr: *const ll::Mix_Chunk) {
+unsafe fn check_if_not_playing(ll_chunk_addr: *mut ll::Mix_Chunk) {
     // Verify that the chunk is not currently playing.
     //
     // TODO: I can't prove to myself that this is not racy, although I believe it is not
@@ -102,8 +102,8 @@ impl Drop for Chunk {
                     check_if_not_playing(ll_chunk);
                     ll::Mix_FreeChunk(ll_chunk);
                 },
-                OwnedBuffer(ref chunk) => {
-                    check_if_not_playing(&chunk.ll_chunk);
+                OwnedBuffer(ref mut chunk) => {
+                    check_if_not_playing(&mut chunk.ll_chunk);
                 }
             }
         }
@@ -111,8 +111,8 @@ impl Drop for Chunk {
 }
 
 impl Chunk {
-    pub fn new(buffer: Vec<u8>, volume: u8) -> Chunk {
-        let buffer_addr: *const u8 = buffer.as_ptr();
+    pub fn new(mut buffer: Vec<u8>, volume: u8) -> Chunk {
+        let buffer_addr: *mut u8 = buffer.as_mut_ptr();
         let buffer_len = buffer.len() as u32;
         Chunk {
             data: OwnedBuffer(
@@ -145,10 +145,22 @@ impl Chunk {
 
     pub fn to_ll_chunk(&self) -> *const ll::Mix_Chunk {
         match self.data {
+            Borrowed(ll_chunk) => ll_chunk as *const _,
+            Allocated(ll_chunk) => ll_chunk as *const _,
+            OwnedBuffer(ref chunk) => {
+                let ll_chunk: *const ll::Mix_Chunk = &chunk.ll_chunk;
+                ll_chunk
+            }
+        }
+    }
+
+    pub fn to_mut_ll_chunk(&mut self) -> *mut ll::Mix_Chunk {
+        match self.data {
             Borrowed(ll_chunk) => ll_chunk,
             Allocated(ll_chunk) => ll_chunk,
-            OwnedBuffer(ref chunk) => {
-                let ll_chunk: *const ll::Mix_Chunk = &chunk.ll_chunk; ll_chunk
+            OwnedBuffer(ref mut chunk) => {
+                let ll_chunk: *mut ll::Mix_Chunk = &mut chunk.ll_chunk;
+                ll_chunk
             }
         }
     }
@@ -158,17 +170,17 @@ impl Chunk {
         unsafe { (*ll_chunk).volume }
     }
 
-    pub fn play_timed(&self, channel: Option<c_int>, loops: c_int, ticks: c_int) -> c_int {
+    pub fn play_timed(&mut self, channel: Option<c_int>, loops: c_int, ticks: c_int) -> c_int {
         unsafe {
             let ll_channel = match channel {
                 None => -1,
                 Some(channel) => channel,
             };
-            ll::Mix_PlayChannelTimed(ll_channel, self.to_ll_chunk(), loops, ticks)
+            ll::Mix_PlayChannelTimed(ll_channel, self.to_mut_ll_chunk(), loops, ticks)
         }
     }
 
-    pub fn play(&self, channel: Option<c_int>, loops: c_int) -> c_int {
+    pub fn play(&mut self, channel: Option<c_int>, loops: c_int) -> c_int {
         self.play_timed(channel, loops, -1)
     }
 }

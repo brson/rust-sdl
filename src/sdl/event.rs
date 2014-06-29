@@ -112,13 +112,13 @@ pub mod ll {
     pub struct SDL_UserEvent {
         pub _type: uint8_t,
         pub code: c_int,
-        pub data1: *const c_void,
-        pub data2: *const c_void,
+        pub data1: *mut c_void,
+        pub data2: *mut c_void,
     }
 
     pub struct SDL_SysWMEvent {
         pub _type: uint8_t,
-        pub msg: *const SDL_SysWMmsg,
+        pub msg: *mut SDL_SysWMmsg,
     }
 
     impl SDL_Event {
@@ -180,12 +180,12 @@ pub mod ll {
     }
 
     extern "C" {
-        pub fn SDL_PollEvent(event: *const SDL_Event) -> c_int;
-        pub fn SDL_WaitEvent(event: *const SDL_Event) -> c_int;
+        pub fn SDL_PollEvent(event: *mut SDL_Event) -> c_int;
+        pub fn SDL_WaitEvent(event: *mut SDL_Event) -> c_int;
         pub fn SDL_EventState(_type: uint8_t, state: c_int) -> uint8_t;
-        pub fn SDL_GetKeyState(numkeys: *const c_int) -> *const uint8_t;
+        pub fn SDL_GetKeyState(numkeys: *mut c_int) -> *mut uint8_t;
         pub fn SDL_GetModState() -> SDLMod;
-        pub fn SDL_GetKeyName(key: SDLKey) -> *const c_schar;
+        pub fn SDL_GetKeyName(key: SDLKey) -> *mut c_schar;
         pub fn SDL_JoystickEventState(state: c_int) -> c_int;
         pub fn SDL_GetAppState() -> uint8_t;
         pub fn SDL_EnableUNICODE(enable: c_int) -> c_int;
@@ -722,8 +722,8 @@ pub fn pump_events() {
 // TODO: peep_events (a tricky one but doable)
 
 pub fn wait_event() -> Event {
-    let raw = null_event();
-    let success = unsafe { ll::SDL_WaitEvent(&raw)
+    let mut raw = null_event();
+    let success = unsafe { ll::SDL_WaitEvent(&mut raw)
                             == 1 as c_int };
 
     if success { wrap_event(raw) }
@@ -733,8 +733,8 @@ pub fn wait_event() -> Event {
 pub fn poll_event() -> Event {
     pump_events();
 
-    let raw = null_event();
-    let have = unsafe { ll::SDL_PollEvent(&raw) };
+    let mut raw = null_event();
+    let have = unsafe { ll::SDL_PollEvent(&mut raw) };
 
     if have != 1 {
         return NoEvent;
@@ -755,12 +755,12 @@ pub fn get_event_state(ty: EventType) -> bool {
 }
 
 pub fn get_key_state() -> Vec<(Key, bool)> {
-    let num = 0;
-    let data = unsafe { ll::SDL_GetKeyState(&num) };
+    let mut num = 0;
+    let data = unsafe { ll::SDL_GetKeyState(&mut num) };
     let mut i = -1;
 
     unsafe {
-        slice::raw::buf_as_slice(data, num as uint, |buf| {
+        slice::raw::buf_as_slice(data as *const u8, num as uint, |buf| {
             buf.iter().filter_map(|&state| {
                 i += 1;
 

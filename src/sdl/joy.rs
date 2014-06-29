@@ -15,21 +15,21 @@ pub mod ll {
     extern "C" {
         pub fn SDL_NumJoysticks() -> c_int;
         pub fn SDL_JoystickName(i: c_int) -> *const c_schar;
-        pub fn SDL_JoystickOpen(i: c_int) -> *const SDL_Joystick;
+        pub fn SDL_JoystickOpen(i: c_int) -> *mut SDL_Joystick;
         pub fn SDL_JoystickOpened(i: c_int) -> c_int;
-        pub fn SDL_JoystickIndex(joystick: *const SDL_Joystick) -> c_int;
-        pub fn SDL_JoystickNumAxes(joystick: *const SDL_Joystick) -> c_int;
-        pub fn SDL_JoystickNumBalls(joystick: *const SDL_Joystick) -> c_int;
-        pub fn SDL_JoystickNumHats(joystick: *const SDL_Joystick) -> c_int;
-        pub fn SDL_JoystickNumButtons(joystick: *const SDL_Joystick) -> c_int;
+        pub fn SDL_JoystickIndex(joystick: *mut SDL_Joystick) -> c_int;
+        pub fn SDL_JoystickNumAxes(joystick: *mut SDL_Joystick) -> c_int;
+        pub fn SDL_JoystickNumBalls(joystick: *mut SDL_Joystick) -> c_int;
+        pub fn SDL_JoystickNumHats(joystick: *mut SDL_Joystick) -> c_int;
+        pub fn SDL_JoystickNumButtons(joystick: *mut SDL_Joystick) -> c_int;
         pub fn SDL_JoystickUpdate();
         pub fn SDL_JoystickEventState(state: c_int) -> c_int;
-        pub fn SDL_JoystickGetAxis(joystick: *const SDL_Joystick, axis: c_int) -> int16_t;
-        pub fn SDL_JoystickGetHat(joystick: *const SDL_Joystick, hat: c_int) -> uint8_t;
-        pub fn SDL_JoystickGetBall(joystick: *const SDL_Joystick, ball: c_int, dx: *const c_int, dy: *const c_int)
+        pub fn SDL_JoystickGetAxis(joystick: *mut SDL_Joystick, axis: c_int) -> int16_t;
+        pub fn SDL_JoystickGetHat(joystick: *mut SDL_Joystick, hat: c_int) -> uint8_t;
+        pub fn SDL_JoystickGetBall(joystick: *mut SDL_Joystick, ball: c_int, dx: *mut c_int, dy: *mut c_int)
                         -> c_int;
-        pub fn SDL_JoystickGetButton(joystick: *const SDL_Joystick, button: c_int) -> uint8_t;
-        pub fn SDL_JoystickClose(joystick: *const SDL_Joystick);
+        pub fn SDL_JoystickGetButton(joystick: *mut SDL_Joystick, button: c_int) -> uint8_t;
+        pub fn SDL_JoystickClose(joystick: *mut SDL_Joystick);
     }
 }
 
@@ -55,10 +55,10 @@ pub fn update_joysticks() {
 
 #[deriving(PartialEq)]
 pub struct Joystick {
-	pub raw: *const ll::SDL_Joystick
+	pub raw: *mut ll::SDL_Joystick
 }
 
-fn wrap_joystick(raw: *const ll::SDL_Joystick) -> Joystick {
+fn wrap_joystick(raw: *mut ll::SDL_Joystick) -> Joystick {
 	Joystick { raw: raw }
 }
 
@@ -105,12 +105,12 @@ impl Joystick {
 	}
 
 	pub fn get_ball(&self, ball: int) -> (int, int) {
-		let dx = 0;
-		let dy = 0;
+		let mut dx = 0;
+		let mut dy = 0;
 
 		unsafe { ll::SDL_JoystickGetBall(self.raw, ball as c_int,
-			                             &dx,
-			                             &dy); }
+			                             &mut dx,
+			                             &mut dy); }
 
 		(dx as int, dy as int)
 	}

@@ -21,10 +21,10 @@ pub mod ll {
 
     extern "C" {
         pub fn SDL_WM_SetCaption(title: *const c_schar, icon: *const c_schar);
-        pub fn SDL_WM_GetCaption(title: *const *const c_schar, icon: *const *const c_schar);
-        pub fn SDL_WM_SetIcon(icon: *const SDL_Surface, mask: *const uint8_t);
+        pub fn SDL_WM_GetCaption(title: *mut *mut c_schar, icon: *mut *mut c_schar);
+        pub fn SDL_WM_SetIcon(icon: *mut SDL_Surface, mask: *mut uint8_t);
         pub fn SDL_WM_IconifyWindow() -> c_int;
-        pub fn SDL_WM_ToggleFullScreen(surface: *const SDL_Surface) -> c_int;
+        pub fn SDL_WM_ToggleFullScreen(surface: *mut SDL_Surface) -> c_int;
         pub fn SDL_WM_GrabInput(mode: SDL_GrabMode) -> SDL_GrabMode;
     }
 }
@@ -41,12 +41,12 @@ pub fn set_caption(title: &str, icon: &str) {
 }
 
 pub fn get_caption() -> (String, String) {
-	let title_buf = ptr::null();
-	let icon_buf = ptr::null();
+	let mut title_buf = ptr::mut_null();
+	let mut icon_buf = ptr::mut_null();
 
 	unsafe {
-		ll::SDL_WM_GetCaption(&title_buf,
-			                  &icon_buf);
+		ll::SDL_WM_GetCaption(&mut title_buf,
+			                  &mut icon_buf);
 
         (str::raw::from_c_str(mem::transmute_copy(&title_buf)),
          str::raw::from_c_str(mem::transmute_copy(&icon_buf)))
@@ -54,7 +54,7 @@ pub fn get_caption() -> (String, String) {
 }
 
 pub fn set_icon(surface: video::Surface) {
-	unsafe { ll::SDL_WM_SetIcon(surface.raw, ptr::null()); }
+	unsafe { ll::SDL_WM_SetIcon(surface.raw, ptr::mut_null()); }
 }
 
 pub fn iconify_window() {

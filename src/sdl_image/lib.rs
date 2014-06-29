@@ -1,13 +1,12 @@
-#![crate_id="sdl_image#0.3.3"]
+#![crate_id="sdl_image#0.3.4"]
 #![comment = "SDL_image binding"]
 #![license = "MIT"]
 #![crate_type = "lib"]
 
 extern crate libc;
-extern crate sdl = "sdl#0.3.3";
+extern crate sdl;
 
 use libc::c_int;
-use std::ptr;
 
 use sdl::get_error;
 use sdl::video::Surface;
@@ -40,7 +39,7 @@ pub mod ll {
     extern "C" {
         pub fn IMG_Init(flags: c_int) -> c_int;
         pub fn IMG_Quit();
-        pub fn IMG_Load(file: *const c_schar) -> *const SDL_Surface;
+        pub fn IMG_Load(file: *const c_schar) -> *mut SDL_Surface;
     }
 }
 
@@ -73,7 +72,7 @@ pub fn load(file: &Path) -> Result<Surface, String> {
         unsafe {
             let raw = ll::IMG_Load(file);
 
-            if raw == ptr::null() {
+            if raw.is_null() {
                 Err(get_error())
             } else {
                 Ok(Surface { raw: raw, owned: true })
