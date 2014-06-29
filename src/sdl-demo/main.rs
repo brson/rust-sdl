@@ -17,8 +17,8 @@ pub fn main() {
 
     // Note: You'll want to put this and the flip call inside the main loop
     // but we don't as to not startle epileptics
-    for i in range(0, 10) {
-        for j in range(0, 10) {
+    for i in range(0u, 10) {
+        for j in range(0u, 10) {
             screen.fill_rect(Some(sdl::Rect {
                 x: (i as i16) * 800 / 10,
                 y: (j as i16) * 600 / 10,
