@@ -18,24 +18,24 @@ pub mod ll {
 	     pub area: Rect,
 	     pub hot_x: int16_t,
 	     pub hot_y: int16_t,
-	     pub data: *uint8_t,
-	     pub mask: *uint8_t,
-	     pub save: [*uint8_t, ..2],
-	     pub wm_cursor: *WMcursor,
+	     pub data: *const uint8_t,
+	     pub mask: *const uint8_t,
+	     pub save: [*const uint8_t, ..2],
+	     pub wm_cursor: *const WMcursor,
 	}
 
     extern "C" {
         pub fn SDL_ShowCursor(toggle: c_int) -> c_int;
-        pub fn SDL_CreateCursor(data: *uint8_t,
-                                      mask: *uint8_t,
+        pub fn SDL_CreateCursor(data: *const uint8_t,
+                                      mask: *const uint8_t,
                                       w: c_int,
                                       h: c_int,
                                       hot_x: c_int,
                                       hot_y: c_int)
-                    -> *SDL_Cursor;
-        pub fn SDL_SetCursor(cursor: *SDL_Cursor);
-        pub fn SDL_GetCursor() -> *SDL_Cursor;
-        pub fn SDL_FreeCursor(cursor: *SDL_Cursor);
+                    -> *const SDL_Cursor;
+        pub fn SDL_SetCursor(cursor: *const SDL_Cursor);
+        pub fn SDL_GetCursor() -> *const SDL_Cursor;
+        pub fn SDL_FreeCursor(cursor: *const SDL_Cursor);
         pub fn SDL_WarpMouse(x: uint16_t, y: uint16_t);
     }
 }
@@ -46,11 +46,11 @@ pub fn warp_mouse(x: u16, y: u16) {
 
 #[deriving(PartialEq)]
 pub struct Cursor {
-	pub raw: *ll::SDL_Cursor,
+	pub raw: *const ll::SDL_Cursor,
 	pub owned: bool
 }
 
-fn wrap_cursor(raw: *ll::SDL_Cursor, owned: bool) -> Cursor {
+fn wrap_cursor(raw: *const ll::SDL_Cursor, owned: bool) -> Cursor {
 	Cursor {
 		raw: raw,
 		owned: owned

@@ -37,20 +37,20 @@ pub mod ll {
 
     extern "C" {
         pub fn SDL_CDNumDrives() -> c_int;
-        pub fn SDL_CDName(drive: c_int) -> *c_schar;
-        pub fn SDL_CDOpen(drive: c_int) -> *SDL_CD;
-        pub fn SDL_CDStatus(cdrom: *SDL_CD) -> CDstatus;
-        pub fn SDL_CDClose(cdrom: *SDL_CD);
-        pub fn SDL_CDStop(cdrom: *SDL_CD) -> c_int;
-        pub fn SDL_CDEject(cdrom: *SDL_CD) -> c_int;
-        pub fn SDL_CDResume(cdrom: *SDL_CD) -> c_int;
-        pub fn SDL_CDPlay(cdrom: *SDL_CD, start: c_int, length: c_int) -> c_int;
-        pub fn SDL_CDPlayTracks(cdrom: *SDL_CD,
+        pub fn SDL_CDName(drive: c_int) -> *const c_schar;
+        pub fn SDL_CDOpen(drive: c_int) -> *const SDL_CD;
+        pub fn SDL_CDStatus(cdrom: *const SDL_CD) -> CDstatus;
+        pub fn SDL_CDClose(cdrom: *const SDL_CD);
+        pub fn SDL_CDStop(cdrom: *const SDL_CD) -> c_int;
+        pub fn SDL_CDEject(cdrom: *const SDL_CD) -> c_int;
+        pub fn SDL_CDResume(cdrom: *const SDL_CD) -> c_int;
+        pub fn SDL_CDPlay(cdrom: *const SDL_CD, start: c_int, length: c_int) -> c_int;
+        pub fn SDL_CDPlayTracks(cdrom: *const SDL_CD,
                                       start_track: c_int,
                                       start_frame: c_int,
                                       ntracks: c_int,
                                       nframes: c_int) -> c_int;
-        pub fn SDL_CDPause(cdrom: *SDL_CD) -> c_int;
+        pub fn SDL_CDPause(cdrom: *const SDL_CD) -> c_int;
     }
 }
 
@@ -68,10 +68,10 @@ pub fn get_drive_name(index: int) -> String {
 
 #[deriving(PartialEq)]
 pub struct CD {
-	pub raw: *ll::SDL_CD
+	pub raw: *const ll::SDL_CD
 }
 
-fn wrap_cd(raw: *ll::SDL_CD) -> CD {
+fn wrap_cd(raw: *const ll::SDL_CD) -> CD {
 	CD { raw: raw }
 }
 

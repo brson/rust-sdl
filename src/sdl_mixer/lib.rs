@@ -31,7 +31,7 @@ pub mod ll {
 
     pub struct Mix_Chunk {
         pub allocated: c_int,
-        pub abuf: *u8,
+        pub abuf: *const u8,
         pub alen: u32,
         pub volume: u8,
     }
@@ -41,13 +41,13 @@ pub mod ll {
               -> c_int;
         pub fn Mix_QuerySpec(frequency: *mut c_int, format: *mut u16, channels: *mut c_int)
               -> c_int;
-        pub fn Mix_LoadWAV_RW(src: *SDL_RWops, freesrc: c_int) -> *Mix_Chunk;
-        pub fn Mix_FreeChunk(chunk: *Mix_Chunk);
+        pub fn Mix_LoadWAV_RW(src: *const SDL_RWops, freesrc: c_int) -> *const Mix_Chunk;
+        pub fn Mix_FreeChunk(chunk: *const Mix_Chunk);
         pub fn Mix_AllocateChannels(numchans: c_int) -> c_int;
         pub fn Mix_Playing(channel: c_int) -> c_int;
-        pub fn Mix_PlayChannelTimed(channel: c_int, chunk: *Mix_Chunk, loops: c_int, ticks: c_int)
+        pub fn Mix_PlayChannelTimed(channel: c_int, chunk: *const Mix_Chunk, loops: c_int, ticks: c_int)
               -> c_int;
-        pub fn Mix_GetChunk(channel: c_int) -> *Mix_Chunk;
+        pub fn Mix_GetChunk(channel: c_int) -> *const Mix_Chunk;
         pub fn Mix_CloseAudio();
         pub fn Mix_Volume(channel: c_int, volume: c_int) -> c_int;
         pub fn Mix_ReserveChannels(num: c_int) -> c_int;
@@ -62,8 +62,8 @@ pub struct Chunk {
 }
 
 enum ChunkData {
-    Borrowed(*ll::Mix_Chunk),
-    Allocated(*ll::Mix_Chunk),
+    Borrowed(*const ll::Mix_Chunk),
+    Allocated(*const ll::Mix_Chunk),
     OwnedBuffer(ChunkAndBuffer)
 }
 
@@ -72,7 +72,7 @@ struct ChunkAndBuffer {
     pub ll_chunk: ll::Mix_Chunk
 }
 
-unsafe fn check_if_not_playing(ll_chunk_addr: *ll::Mix_Chunk) {
+unsafe fn check_if_not_playing(ll_chunk_addr: *const ll::Mix_Chunk) {
     // Verify that the chunk is not currently playing.
     //
     // TODO: I can't prove to myself that this is not racy, although I believe it is not
@@ -112,7 +112,7 @@ impl Drop for Chunk {
 
 impl Chunk {
     pub fn new(buffer: Vec<u8>, volume: u8) -> Chunk {
-        let buffer_addr: *u8 = buffer.as_ptr();
+        let buffer_addr: *const u8 = buffer.as_ptr();
         let buffer_len = buffer.len() as u32;
         Chunk {
             data: OwnedBuffer(
@@ -143,18 +143,18 @@ impl Chunk {
         else { Ok(Chunk { data: Allocated(raw) }) }
     }
 
-    pub fn to_ll_chunk(&self) -> *ll::Mix_Chunk {
+    pub fn to_ll_chunk(&self) -> *const ll::Mix_Chunk {
         match self.data {
             Borrowed(ll_chunk) => ll_chunk,
             Allocated(ll_chunk) => ll_chunk,
             OwnedBuffer(ref chunk) => {
-                let ll_chunk: *ll::Mix_Chunk = &chunk.ll_chunk; ll_chunk
+                let ll_chunk: *const ll::Mix_Chunk = &chunk.ll_chunk; ll_chunk
             }
         }
     }
 
     pub fn volume(&self) -> u8 {
-        let ll_chunk: *ll::Mix_Chunk = self.to_ll_chunk();
+        let ll_chunk: *const ll::Mix_Chunk = self.to_ll_chunk();
         unsafe { (*ll_chunk).volume }
     }
 

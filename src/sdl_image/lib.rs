@@ -40,7 +40,7 @@ pub mod ll {
     extern "C" {
         pub fn IMG_Init(flags: c_int) -> c_int;
         pub fn IMG_Quit();
-        pub fn IMG_Load(file: *c_schar) -> *SDL_Surface;
+        pub fn IMG_Load(file: *const c_schar) -> *const SDL_Surface;
     }
 }
 
