@@ -20,11 +20,11 @@ pub mod ll {
 	pub static SDL_GRAB_FULLSCREEN: SDL_GrabMode = 2;
 
     extern "C" {
-        pub fn SDL_WM_SetCaption(title: *c_schar, icon: *c_schar);
-        pub fn SDL_WM_GetCaption(title: **c_schar, icon: **c_schar);
-        pub fn SDL_WM_SetIcon(icon: *SDL_Surface, mask: *uint8_t);
+        pub fn SDL_WM_SetCaption(title: *const c_schar, icon: *const c_schar);
+        pub fn SDL_WM_GetCaption(title: *const *const c_schar, icon: *const *const c_schar);
+        pub fn SDL_WM_SetIcon(icon: *const SDL_Surface, mask: *const uint8_t);
         pub fn SDL_WM_IconifyWindow() -> c_int;
-        pub fn SDL_WM_ToggleFullScreen(surface: *SDL_Surface) -> c_int;
+        pub fn SDL_WM_ToggleFullScreen(surface: *const SDL_Surface) -> c_int;
         pub fn SDL_WM_GrabInput(mode: SDL_GrabMode) -> SDL_GrabMode;
     }
 }

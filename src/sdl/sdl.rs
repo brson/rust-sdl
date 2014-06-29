@@ -46,8 +46,8 @@ pub mod ll {
     extern "C" {
         pub fn SDL_ClearError();
         pub fn SDL_Error(code: SDL_errorcode);
-        pub fn SDL_SetError(fmt: *c_schar);
-        pub fn SDL_GetError() -> *c_schar;
+        pub fn SDL_SetError(fmt: *const c_schar);
+        pub fn SDL_GetError() -> *const c_schar;
         pub fn SDL_Quit();
         pub fn SDL_QuitSubSystem(flags: SDL_InitFlag);
         pub fn SDL_Init(flags: uint32_t) -> c_int;

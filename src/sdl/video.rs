@@ -20,27 +20,27 @@ pub mod ll {
     pub type SDL_Rect = Rect;
 
     pub struct SDL_RWops {
-        pub seek: *uint8_t,
-        pub read: *uint8_t,
-        pub write: *uint8_t,
-        pub close: *uint8_t,
+        pub seek: *const uint8_t,
+        pub read: *const uint8_t,
+        pub write: *const uint8_t,
+        pub close: *const uint8_t,
         pub _type: uint32_t,
         _hidden: [c_uchar, ..24]
     }
 
     pub struct SDL_Surface {
         pub flags: uint32_t,
-        pub format: *SDL_PixelFormat,
+        pub format: *const SDL_PixelFormat,
         pub w: c_int,
         pub h: c_int,
         pub pitch: uint16_t,
-        pub pixels: *c_void,
+        pub pixels: *const c_void,
         pub offset: c_int,
-        pub hwdata: *c_void,
+        pub hwdata: *const c_void,
         pub clip_rect: SDL_Rect,
         pub unused1: uint32_t,
         pub locked: uint32_t,
-        pub map: *c_void,
+        pub map: *const c_void,
         pub format_version: c_uint,
         pub refcount: c_int
     }
@@ -54,12 +54,12 @@ pub mod ll {
 
     pub struct SDL_Palette {
         pub ncolors: c_int,
-        pub colors: *SDL_Color,
+        pub colors: *const SDL_Color,
     }
 
     #[allow(uppercase_variables)]
     pub struct SDL_PixelFormat {
-        pub palette: *SDL_Palette,
+        pub palette: *const SDL_Palette,
         pub BitsPerPixel: uint8_t,
         pub BytesPerPixel: uint8_t,
         pub Rloss: uint8_t,
@@ -81,7 +81,7 @@ pub mod ll {
     pub struct SDL_VideoInfo {
         pub flags: uint32_t,        // actually a set of packed fields
         pub video_mem: uint32_t,
-        pub vfmt: *SDL_PixelFormat,
+        pub vfmt: *const SDL_PixelFormat,
         pub current_w: c_int,
         pub current_h: c_int,
     }
@@ -94,8 +94,8 @@ pub mod ll {
                                           Rmask: uint32_t,
                                           Gmask: uint32_t,
                                           Bmask: uint32_t,
-                                          Amask: uint32_t) -> *SDL_Surface;
-        pub fn SDL_CreateRGBSurfaceFrom(pixels: *c_void,
+                                          Amask: uint32_t) -> *const SDL_Surface;
+        pub fn SDL_CreateRGBSurfaceFrom(pixels: *const c_void,
                                               width: c_int,
                                               height: c_int,
                                               depth: c_int,
@@ -103,80 +103,80 @@ pub mod ll {
                                               Rmask: uint32_t,
                                               Gmask: uint32_t,
                                               Bmask: uint32_t,
-                                              Amask: uint32_t) -> *SDL_Surface;
-        pub fn SDL_FreeSurface(surface: *SDL_Surface);
-        pub fn SDL_MapRGB(format: *SDL_PixelFormat,
+                                              Amask: uint32_t) -> *const SDL_Surface;
+        pub fn SDL_FreeSurface(surface: *const SDL_Surface);
+        pub fn SDL_MapRGB(format: *const SDL_PixelFormat,
                                 r: uint8_t,
                                 g: uint8_t,
                                 b: uint8_t) -> uint32_t;
-        pub fn SDL_MapRGBA(format: *SDL_PixelFormat,
+        pub fn SDL_MapRGBA(format: *const SDL_PixelFormat,
                                  r: uint8_t,
                                  g: uint8_t,
                                  b: uint8_t,
                                  a: uint8_t) -> uint32_t;
         pub fn SDL_GetRGB(pixel: uint32_t,
-                                fmt: *SDL_PixelFormat,
-                                r: *uint8_t,
-                                g: *uint8_t,
-                                b: *uint8_t);
+                                fmt: *const SDL_PixelFormat,
+                                r: *const uint8_t,
+                                g: *const uint8_t,
+                                b: *const uint8_t);
         pub fn SDL_GetRGBA(pixel: uint32_t,
-                                 fmt: *SDL_PixelFormat,
-                                 r: *uint8_t,
-                                 g: *uint8_t,
-                                 b: *uint8_t,
-                                 a: *uint8_t);
+                                 fmt: *const SDL_PixelFormat,
+                                 r: *const uint8_t,
+                                 g: *const uint8_t,
+                                 b: *const uint8_t,
+                                 a: *const uint8_t);
         pub fn SDL_SetVideoMode(width: c_int, height: c_int, bpp: c_int, flags: uint32_t)
-                        -> *SDL_Surface;
+                        -> *const SDL_Surface;
         pub fn SDL_VideoModeOK(width: c_int, height: c_int, bpp: c_int, flags: uint32_t) -> c_int;
-        pub fn SDL_GetVideoInfo() -> *SDL_VideoInfo;
-        pub fn SDL_GetVideoSurface() -> *SDL_Surface;
-        pub fn SDL_UpdateRect(screen: *SDL_Surface,
+        pub fn SDL_GetVideoInfo() -> *const SDL_VideoInfo;
+        pub fn SDL_GetVideoSurface() -> *const SDL_Surface;
+        pub fn SDL_UpdateRect(screen: *const SDL_Surface,
                                     x: int32_t,
                                     y: int32_t,
                                     w: uint32_t,
                                     h: uint32_t);
-        pub fn SDL_UpdateRects(screen: *SDL_Surface, numrects: c_int, rects: *SDL_Rect);
-        pub fn SDL_SetColors(surface: *SDL_Surface,
-                                   colors: *SDL_Color,
+        pub fn SDL_UpdateRects(screen: *const SDL_Surface, numrects: c_int, rects: *const SDL_Rect);
+        pub fn SDL_SetColors(surface: *const SDL_Surface,
+                                   colors: *const SDL_Color,
                                    firstcolor: c_int,
                                    ncolors: c_int) -> c_int;
-        pub fn SDL_SetPalette(surface: *SDL_Surface,
+        pub fn SDL_SetPalette(surface: *const SDL_Surface,
                                     flags: c_int,
-                                    colors: *SDL_Color,
+                                    colors: *const SDL_Color,
                                     firstcolor: c_int,
                                     ncolors: c_int) -> c_int;
-        pub fn SDL_LockSurface(surface: *SDL_Surface) -> c_int;
-        pub fn SDL_UnlockSurface(surface: *SDL_Surface);
-        pub fn SDL_Flip(screen: *SDL_Surface) -> c_int;
-        pub fn SDL_ConvertSurface(src: *SDL_Surface, fmt: *SDL_PixelFormat, flags: uint32_t)
-                        -> *SDL_Surface;
-        pub fn SDL_DisplayFormat(surface: *SDL_Surface) -> *SDL_Surface;
-        pub fn SDL_DisplayFormatAlpha(surface: *SDL_Surface) -> *SDL_Surface;
-        pub fn SDL_SetColorKey(surface: *SDL_Surface, flag: uint32_t, key: uint32_t) -> c_int;
-        pub fn SDL_SetAlpha(surface: *SDL_Surface, flag: uint32_t, alpha: uint8_t) -> c_int;
-        pub fn SDL_SetClipRect(surface: *SDL_Surface, rect: *SDL_Rect);
-        pub fn SDL_UpperBlit(src: *SDL_Surface,
-                                   srcrect: *SDL_Rect,
-                                   dst: *SDL_Surface,
-                                   dstrect: *SDL_Rect) -> c_int;
-        pub fn SDL_FillRect(dst: *SDL_Surface, dstrect: *SDL_Rect, color: uint32_t) -> c_int;
+        pub fn SDL_LockSurface(surface: *const SDL_Surface) -> c_int;
+        pub fn SDL_UnlockSurface(surface: *const SDL_Surface);
+        pub fn SDL_Flip(screen: *const SDL_Surface) -> c_int;
+        pub fn SDL_ConvertSurface(src: *const SDL_Surface, fmt: *const SDL_PixelFormat, flags: uint32_t)
+                        -> *const SDL_Surface;
+        pub fn SDL_DisplayFormat(surface: *const SDL_Surface) -> *const SDL_Surface;
+        pub fn SDL_DisplayFormatAlpha(surface: *const SDL_Surface) -> *const SDL_Surface;
+        pub fn SDL_SetColorKey(surface: *const SDL_Surface, flag: uint32_t, key: uint32_t) -> c_int;
+        pub fn SDL_SetAlpha(surface: *const SDL_Surface, flag: uint32_t, alpha: uint8_t) -> c_int;
+        pub fn SDL_SetClipRect(surface: *const SDL_Surface, rect: *const SDL_Rect);
+        pub fn SDL_UpperBlit(src: *const SDL_Surface,
+                                   srcrect: *const SDL_Rect,
+                                   dst: *const SDL_Surface,
+                                   dstrect: *const SDL_Rect) -> c_int;
+        pub fn SDL_FillRect(dst: *const SDL_Surface, dstrect: *const SDL_Rect, color: uint32_t) -> c_int;
         pub fn SDL_SetGamma(r: c_float, g: c_float, b: c_float) -> c_int;
-        pub fn SDL_SetGammaRamp(r: *uint16_t, g: *uint16_t, b: *uint16_t) -> c_int;
-        pub fn SDL_GetGammaRamp(r: *uint16_t, g: *uint16_t, b: *uint16_t) -> c_int;
-        pub fn SDL_RWFromFile(file: *c_schar, mode: *c_schar) -> *SDL_RWops;
-        pub fn SDL_LoadBMP_RW(src: *SDL_RWops, freesrc: c_int) -> *SDL_Surface;
-        pub fn SDL_SaveBMP_RW(surface: *SDL_Surface, dst: *SDL_RWops, freedst: c_int) -> c_int;
+        pub fn SDL_SetGammaRamp(r: *const uint16_t, g: *const uint16_t, b: *const uint16_t) -> c_int;
+        pub fn SDL_GetGammaRamp(r: *const uint16_t, g: *const uint16_t, b: *const uint16_t) -> c_int;
+        pub fn SDL_RWFromFile(file: *const c_schar, mode: *const c_schar) -> *const SDL_RWops;
+        pub fn SDL_LoadBMP_RW(src: *const SDL_RWops, freesrc: c_int) -> *const SDL_Surface;
+        pub fn SDL_SaveBMP_RW(surface: *const SDL_Surface, dst: *const SDL_RWops, freedst: c_int) -> c_int;
         pub fn SDL_GL_SwapBuffers();
     }
 }
 
 #[deriving(PartialEq)]
 pub struct Surface {
-    pub raw: *ll::SDL_Surface,
+    pub raw: *const ll::SDL_Surface,
     pub owned: bool
 }
 
-fn wrap_surface(raw: *ll::SDL_Surface, owned: bool) -> Surface {
+fn wrap_surface(raw: *const ll::SDL_Surface, owned: bool) -> Surface {
     Surface{ raw: raw, owned: owned }
 }
 
@@ -193,10 +193,10 @@ impl Drop for Surface {
 #[deriving(PartialEq)]
 #[allow(raw_pointer_deriving)]
 pub struct Palette {
-    pub raw: *ll::SDL_Palette
+    pub raw: *const ll::SDL_Palette
 }
 
-fn wrap_palette(palette: *ll::SDL_Palette) -> Option<Palette> {
+fn wrap_palette(palette: *const ll::SDL_Palette) -> Option<Palette> {
     if palette.is_null() {
         None
     } else {
@@ -238,7 +238,7 @@ pub struct PixelFormat {
     pub alpha: u8
 }
 
-fn wrap_pixel_format(raw: *ll::SDL_PixelFormat) -> PixelFormat {
+fn wrap_pixel_format(raw: *const ll::SDL_PixelFormat) -> PixelFormat {
     let fmt = & unsafe { *raw };
     PixelFormat {
         palette: wrap_palette(fmt.palette),
@@ -299,7 +299,7 @@ impl ::rand::Rand for Color {
 }
 
 impl Color {
-    pub fn from_mapped(bit: u32, fmt: *ll::SDL_PixelFormat) -> Color {
+    pub fn from_mapped(bit: u32, fmt: *const ll::SDL_PixelFormat) -> Color {
         let r = 0;
         let g = 0;
         let b = 0;
@@ -312,7 +312,7 @@ impl Color {
         RGBA(r, g, b, a)
     }
 
-    pub fn to_mapped(&self, fmt: *ll::SDL_PixelFormat) -> u32 {
+    pub fn to_mapped(&self, fmt: *const ll::SDL_PixelFormat) -> u32 {
         match *self {
             RGB(r, g, b) => unsafe { ll::SDL_MapRGB(fmt, r, g, b) },
             RGBA(r, g, b, a) => unsafe { ll::SDL_MapRGBA(fmt, r, g, b, a) }

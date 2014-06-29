@@ -28,14 +28,14 @@ pub mod ll {
         pub samples: u16,
         pub padding: u16,
         pub size: u32,
-        pub callback: *u8,
-        pub userdata: *c_void,
+        pub callback: *const u8,
+        pub userdata: *const c_void,
     }
 
     extern "C" {
         pub fn SDL_OpenAudio(desired: *mut SDL_AudioSpec, obtained: *mut SDL_AudioSpec) -> c_int;
         pub fn SDL_PauseAudio(pause_on: c_int);
-        pub fn SDL_MixAudio(dst: *mut u8, src: *u8, len: u32, volume: c_int);
+        pub fn SDL_MixAudio(dst: *mut u8, src: *const u8, len: u32, volume: c_int);
         pub fn SDL_LockAudio();
         pub fn SDL_UnlockAudio();
         pub fn SDL_CloseAudio();
@@ -112,7 +112,7 @@ impl DesiredAudioSpec {
                 samples: samples,
                 padding: 0,
                 size: 0,
-                callback: native_callback as *u8,
+                callback: native_callback as *const u8,
                 userdata: transmute(box callback),
             }
         }
@@ -141,7 +141,7 @@ impl ObtainedAudioSpec {
     }
 }
 
-extern fn native_callback(userdata: *c_void, stream: *mut u8, len: c_int) {
+extern fn native_callback(userdata: *const c_void, stream: *mut u8, len: c_int) {
     unsafe {
         let callback: Box<AudioCallback> = transmute(userdata);
         let buffer = transmute((stream, len as uint));
