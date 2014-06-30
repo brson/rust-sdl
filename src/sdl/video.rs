@@ -480,13 +480,11 @@ impl Surface {
     }
 
     pub fn from_bmp(path: &Path) -> Result<Surface, String> {
-        let raw = path.to_c_str().with_ref(|path| {
-                "rb".to_c_str().with_ref(|mode| {
-                        unsafe {
-                            ll::SDL_LoadBMP_RW(ll::SDL_RWFromFile(path, mode), 1)
-                        }
-                    })
-            });
+        let cpath = path.to_c_str().as_ptr();
+        let mode = "rb".to_c_str().as_ptr();
+        let raw = unsafe {
+            ll::SDL_LoadBMP_RW(ll::SDL_RWFromFile(cpath, mode), 1)
+        };
 
         if raw.is_null() { Err(get_error()) }
         else { Ok(wrap_surface(raw, true)) }
@@ -605,13 +603,11 @@ impl Surface {
     }
 
     pub fn save_bmp(&self, path: &Path) -> bool {
-        path.to_c_str().with_ref(|path| {
-            "wb".to_c_str().with_ref(|mode| {
-                unsafe {
-                    ll::SDL_SaveBMP_RW(self.raw, ll::SDL_RWFromFile(path, mode), 1) == 0
-                }
-            })
-        })
+        let cpath = path.to_c_str().as_ptr();
+        let mode = "wb".to_c_str().as_ptr();
+        unsafe {
+            ll::SDL_SaveBMP_RW(self.raw, ll::SDL_RWFromFile(cpath, mode), 1) == 0
+        }
     }
 
     pub fn set_alpha(&self, flags: &[SurfaceFlag], alpha: u8) -> bool {

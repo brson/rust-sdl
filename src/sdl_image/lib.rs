@@ -68,17 +68,16 @@ pub fn init(flags: &[InitFlag]) -> Vec<InitFlag> {
 }
 
 pub fn load(file: &Path) -> Result<Surface, String> {
-    file.to_c_str().with_ref(|file| {
-        unsafe {
-            let raw = ll::IMG_Load(file);
+    let cfile = file.to_c_str().as_ptr();
+    unsafe {
+        let raw = ll::IMG_Load(cfile);
 
-            if raw.is_null() {
-                Err(get_error())
-            } else {
-                Ok(Surface { raw: raw, owned: true })
-            }
+        if raw.is_null() {
+            Err(get_error())
+        } else {
+            Ok(Surface { raw: raw, owned: true })
         }
-    })
+    }
 }
 
 pub fn quit() {
