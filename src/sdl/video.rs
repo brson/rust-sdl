@@ -353,14 +353,14 @@ pub enum SurfaceFlag {
 
 #[deriving(PartialEq, Eq)]
 pub enum VideoFlag {
-    AnyFormat = 0x10000000u,
-    HWPalette = 0x20000000u,
-    DoubleBuf = 0x40000000u,
-    Fullscreen = 0x80000000u,
-    OpenGL = 0x00000002u,
-    OpenGLBlit = 0x0000000Au,
-    Resizable = 0x00000010u,
-    NoFrame = 0x00000020u
+    AnyFormat = 0x10000000,
+    HWPalette = 0x20000000,
+    DoubleBuf = 0x40000000,
+    Fullscreen = 0x80000000u as int, // 0x80000000 > INT_MAX on i686
+    OpenGL = 0x00000002,
+    OpenGLBlit = 0x0000000A,
+    Resizable = 0x00000010,
+    NoFrame = 0x00000020
 }
 
 pub fn set_video_mode(w: int, h: int, bpp: int,

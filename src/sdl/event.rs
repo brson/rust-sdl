@@ -757,7 +757,7 @@ pub fn get_event_state(ty: EventType) -> bool {
 pub fn get_key_state() -> Vec<(Key, bool)> {
     let mut num = 0;
     let data = unsafe { ll::SDL_GetKeyState(&mut num) };
-    let mut i = -1;
+    let mut i = -1i;
 
     unsafe {
         slice::raw::buf_as_slice(data as *const u8, num as uint, |buf| {
