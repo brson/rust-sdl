@@ -68,9 +68,9 @@ pub fn init(flags: &[InitFlag]) -> Vec<InitFlag> {
 }
 
 pub fn load(file: &Path) -> Result<Surface, String> {
-    let cfile = file.to_c_str().as_ptr();
+    let cfile = file.to_c_str();
     unsafe {
-        let raw = ll::IMG_Load(cfile);
+        let raw = ll::IMG_Load(cfile.as_ptr());
 
         if raw.is_null() {
             Err(get_error())

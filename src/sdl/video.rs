@@ -480,10 +480,10 @@ impl Surface {
     }
 
     pub fn from_bmp(path: &Path) -> Result<Surface, String> {
-        let cpath = path.to_c_str().as_ptr();
-        let mode = "rb".to_c_str().as_ptr();
+        let cpath = path.to_c_str();
+        let mode = "rb".to_c_str();
         let raw = unsafe {
-            ll::SDL_LoadBMP_RW(ll::SDL_RWFromFile(cpath, mode), 1)
+            ll::SDL_LoadBMP_RW(ll::SDL_RWFromFile(cpath.as_ptr(), mode.as_ptr()), 1)
         };
 
         if raw.is_null() { Err(get_error()) }
@@ -603,10 +603,10 @@ impl Surface {
     }
 
     pub fn save_bmp(&self, path: &Path) -> bool {
-        let cpath = path.to_c_str().as_ptr();
-        let mode = "wb".to_c_str().as_ptr();
+        let cpath = path.to_c_str();
+        let mode = "wb".to_c_str();
         unsafe {
-            ll::SDL_SaveBMP_RW(self.raw, ll::SDL_RWFromFile(cpath, mode), 1) == 0
+            ll::SDL_SaveBMP_RW(self.raw, ll::SDL_RWFromFile(cpath.as_ptr(), mode.as_ptr()), 1) == 0
         }
     }
 
