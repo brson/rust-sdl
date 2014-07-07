@@ -1,4 +1,4 @@
-#![crate_id="sdl_mixer#0.3.4"]
+#![crate_name = "sdl_mixer"]
 #![comment = "SDL_mixer binding"]
 #![license = "MIT"]
 #![crate_type = "lib"]
