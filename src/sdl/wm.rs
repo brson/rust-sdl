@@ -1,6 +1,6 @@
 use std::mem;
 use std::ptr;
-use std::str;
+use std::string;
 
 use video;
 
@@ -48,8 +48,8 @@ pub fn get_caption() -> (String, String) {
 		ll::SDL_WM_GetCaption(&mut title_buf,
 			                  &mut icon_buf);
 
-        (str::raw::from_c_str(mem::transmute_copy(&title_buf)),
-         str::raw::from_c_str(mem::transmute_copy(&icon_buf)))
+        (string::raw::from_buf(mem::transmute_copy(&title_buf)),
+         string::raw::from_buf(mem::transmute_copy(&icon_buf)))
     }
 }
 
