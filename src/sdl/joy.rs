@@ -1,6 +1,6 @@
 use std::mem;
 use libc::c_int;
-use std::str;
+use std::string;
 
 use get_error;
 
@@ -41,7 +41,7 @@ pub fn get_joystick_name(index: int) -> String {
 	unsafe {
 		let cstr = ll::SDL_JoystickName(index as c_int);
 
-		str::raw::from_c_str(mem::transmute_copy(&cstr))
+		string::raw::from_buf(mem::transmute_copy(&cstr))
 	}
 }
 

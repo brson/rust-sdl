@@ -1,6 +1,6 @@
 use std::mem;
 use libc::c_int;
-use std::str;
+use std::string;
 use std::slice;
 use std::num::FromPrimitive;
 
@@ -789,7 +789,7 @@ pub fn get_key_name(key: Key) -> String {
     unsafe {
         let cstr = ll::SDL_GetKeyName(key as ll::SDLKey);
 
-        str::raw::from_c_str(mem::transmute_copy(&cstr))
+        string::raw::from_buf(mem::transmute_copy(&cstr))
     }
 }
 
