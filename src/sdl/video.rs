@@ -190,6 +190,21 @@ impl Drop for Surface {
     }
 }
 
+impl Clone for Surface {
+    fn clone(&self) -> Surface {
+        if !self.owned {
+            Surface{ raw: self.raw, owned: false }
+        }
+        else {
+            let raw = unsafe { ll::SDL_ConvertSurface(self.raw, (*self.raw).format, (*self.raw).flags) };
+            if raw.is_null() { // this should never happen, since self.raw, format and flags are proven correct
+                fail!("couldn't clone surface: {}", get_error());
+            }
+            Surface{ raw: raw, owned: true }
+        }
+    }
+}
+
 #[deriving(PartialEq)]
 #[allow(raw_pointer_deriving)]
 pub struct Palette {
