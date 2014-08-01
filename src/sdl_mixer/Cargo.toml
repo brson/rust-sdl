@@ -1,0 +1,12 @@
+[package]
+
+name = "sdl_mixer"
+version = "0.3.4"
+authors = [ "brson" ]
+
+[[lib]]
+name = "sdl_mixer"
+path = "lib.rs"
+
+[dependencies.sdl]
+path = "../.."
