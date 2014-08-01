@@ -1,0 +1,12 @@
+[package]
+
+name = "sdl_image"
+version = "0.3.4"
+authors = [ "brson" ]
+
+[[lib]]
+name = "sdl_image"
+path = "lib.rs"
+
+[dependencies.sdl]
+path = "../.."
