@@ -225,7 +225,7 @@ pub enum RepeatInterval {
     CustomRepeatInterval(int)
 }
 
-#[deriving(PartialEq, Eq, FromPrimitive, PartialOrd, Ord)]
+#[deriving(PartialEq, Eq, FromPrimitive, PartialOrd, Ord, Clone)]
 pub enum Key {
     UnknownKey = 0,
     BackspaceKey = 8,
