@@ -4,6 +4,6 @@ name = "sdl"
 version = "0.3.4"
 authors = [ "brson" ]
 
-[[lib]]
+[lib]
 name = "sdl"
 path = "src/sdl/lib.rs"
