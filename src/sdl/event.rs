@@ -23,6 +23,7 @@ pub mod ll {
     pub static SDL_APPINPUTFOCUS: c_int = 0x02;
     pub static SDL_APPACTIVE: c_int = 0x04;
 
+    #[repr(C)]
     pub struct SDL_keysym {
         pub scancode: uint8_t,
         pub sym: SDLKey,
@@ -30,16 +31,19 @@ pub mod ll {
         pub unicode: uint16_t,
     }
 
+    #[repr(C)]
     pub struct SDL_Event {
         pub data: [c_uchar, ..24],
     }
 
+    #[repr(C)]
     pub struct SDL_ActiveEvent {
         pub _type: uint8_t,
         pub gain: uint8_t,
         pub state: uint8_t,
     }
 
+    #[repr(C)]
     pub struct SDL_KeyboardEvent {
         pub _type: uint8_t,
         pub which: uint8_t,
@@ -47,6 +51,7 @@ pub mod ll {
         pub keysym: SDL_keysym,
     }
 
+    #[repr(C)]
     pub struct SDL_MouseMotionEvent {
         pub _type: uint8_t,
         pub which: uint8_t,
@@ -57,6 +62,7 @@ pub mod ll {
         pub yrel: int16_t,
     }
 
+    #[repr(C)]
     pub struct SDL_MouseButtonEvent {
         pub _type: uint8_t,
         pub which: uint8_t,
@@ -66,6 +72,7 @@ pub mod ll {
         pub y: uint16_t,
     }
 
+    #[repr(C)]
     pub struct SDL_JoyAxisEvent {
         pub _type: uint8_t,
         pub which: uint8_t,
@@ -73,6 +80,7 @@ pub mod ll {
         pub value: int16_t,
     }
 
+    #[repr(C)]
     pub struct SDL_JoyBallEvent {
         pub _type: uint8_t,
         pub which: uint8_t,
@@ -81,6 +89,7 @@ pub mod ll {
         pub yrel: int16_t,
     }
 
+    #[repr(C)]
     pub struct SDL_JoyHatEvent {
         pub _type: uint8_t,
         pub which: uint8_t,
@@ -88,6 +97,7 @@ pub mod ll {
         pub value: uint8_t,
     }
 
+    #[repr(C)]
     pub struct SDL_JoyButtonEvent {
         pub _type: uint8_t,
         pub which: uint8_t,
@@ -95,20 +105,24 @@ pub mod ll {
         pub state: uint8_t,
     }
 
+    #[repr(C)]
     pub struct SDL_ResizeEvent {
         pub _type: uint8_t,
         pub w: c_int,
         pub h: c_int,
     }
 
+    #[repr(C)]
     pub struct SDL_ExposeEvent {
         pub _type: uint8_t,
     }
 
+    #[repr(C)]
     pub struct SDL_QuitEvent {
         pub _type: uint8_t,
     }
 
+    #[repr(C)]
     pub struct SDL_UserEvent {
         pub _type: uint8_t,
         pub code: c_int,
@@ -116,6 +130,7 @@ pub mod ll {
         pub data2: *mut c_void,
     }
 
+    #[repr(C)]
     pub struct SDL_SysWMEvent {
         pub _type: uint8_t,
         pub msg: *mut SDL_SysWMmsg,

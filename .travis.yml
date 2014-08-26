@@ -1,9 +1,18 @@
+language: rust
+os:
+  - linux
+  - osx
+env:
+  global:
+    - LD_LIBRARY_PATH: /usr/local/lib
 install:
-  - curl http://www.rust-lang.org/rustup.sh | sudo sh -
   - sudo apt-get update
   - sudo apt-get install libsdl1.2-dev libsdl-mixer1.2-dev libsdl-image1.2-dev
+before_script:
+  - rustc -v
+  - cargo -V
 script:
-  - rustc src/sdl/lib.rs
-  - rustc -L. src/sdl_mixer/lib.rs
-  - rustc -L. src/sdl_image/lib.rs
-  - rustc -L. src/sdl-demo/main.rs
+  - cargo build -v
+  - cd src/sdl_mixer && cargo build -v
+  - cd src/sdl_image && cargo build -v
+  - cd src/sdl-demo && cargo build -v

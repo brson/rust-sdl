@@ -14,6 +14,8 @@ pub mod ll {
 	pub static SDL_QUERY: c_int = -1;
 
 	pub type WMcursor = c_void;
+
+    #[repr(C)]
 	pub struct SDL_Cursor {
 	     pub area: Rect,
 	     pub hot_x: int16_t,

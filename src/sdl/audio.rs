@@ -20,6 +20,7 @@ pub mod ll {
     pub static AUDIO_U16: uint16_t = AUDIO_U16LSB;
     pub static AUDIO_S16: uint16_t = AUDIO_S16LSB;
 
+    #[repr(C)]
     pub struct SDL_AudioSpec {
         pub freq: c_int,
         pub format: u16,

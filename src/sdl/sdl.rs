@@ -58,6 +58,7 @@ pub mod ll {
 }
 
 #[deriving(PartialEq)]
+#[repr(C)]
 pub struct Rect {
     pub x: i16,
     pub y: i16,

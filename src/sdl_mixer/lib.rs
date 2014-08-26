@@ -29,6 +29,7 @@ pub mod ll {
 
     use libc::c_int;
 
+    #[repr(C)]
     pub struct Mix_Chunk {
         pub allocated: c_int,
         pub abuf: *mut u8,

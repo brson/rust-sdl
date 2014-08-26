@@ -18,6 +18,7 @@ pub mod ll {
 	pub static CD_PAUSED: CDstatus = 3;
 	pub static CD_ERROR: CDstatus = -1;
 
+    #[repr(C)]
 	pub struct SDL_CDtrack {
 	    pub id: uint8_t,
 	    pub _type: uint8_t,
@@ -26,6 +27,7 @@ pub mod ll {
 	    pub offset: uint32_t
 	}
 
+    #[repr(C)]
 	pub struct SDL_CD {
 	    pub id: c_int,
 	    pub status: CDstatus,

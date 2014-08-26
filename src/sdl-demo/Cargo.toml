@@ -1,12 +1,12 @@
 [package]
 
-name = "sdl_mixer"
+name = "sdl-demo"
 version = "0.3.4"
 authors = [ "brson" ]
 
-[lib]
-name = "sdl_mixer"
-path = "lib.rs"
+[[bin]]
+name = "sdl-demo"
+path = "main.rs"
 
 [dependencies.sdl]
 path = "../.."
