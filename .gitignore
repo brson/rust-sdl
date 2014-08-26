@@ -14,3 +14,4 @@ bin
 lib
 .rust
 target
+Cargo.lock

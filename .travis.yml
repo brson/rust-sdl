@@ -13,6 +13,6 @@ before_script:
   - cargo -V
 script:
   - cargo build -v
-  - cd src/sdl_mixer && cargo build -v
-  - cd src/sdl_image && cargo build -v
-  - cd src/sdl-demo && cargo build -v
+  - (cd src/sdl_mixer && cargo build -v)
+  - (cd src/sdl_image && cargo build -v)
+  - (cd src/sdl-demo && cargo build -v)
