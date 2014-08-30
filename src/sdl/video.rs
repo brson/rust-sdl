@@ -61,7 +61,7 @@ pub mod ll {
         pub colors: *mut SDL_Color,
     }
 
-    #[allow(uppercase_variables)]
+    #[allow(non_snake_case)]
     #[repr(C)]
     pub struct SDL_PixelFormat {
         pub palette: *mut SDL_Palette,

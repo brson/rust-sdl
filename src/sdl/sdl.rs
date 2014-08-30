@@ -66,7 +66,7 @@ pub struct Rect {
     pub h: u16
 }
 
-#[allow(non_snake_case_functions)]
+#[allow(non_snake_case)]
 pub fn Rect(x: i16, y: i16, w: u16, h: u16) -> Rect {
     Rect { x: x, y: y, w: w, h: h }
 }
