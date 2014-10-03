@@ -4,7 +4,7 @@ use self::ll::{SDL_UnlockAudio};
 
 use std::mem::{forget, transmute};
 use libc::{c_int, c_void, uint16_t};
-use std::ptr::mut_null;
+use std::ptr::null_mut;
 
 pub mod ll {
     #![allow(non_camel_case_types)]
@@ -162,8 +162,8 @@ pub fn open(desired: DesiredAudioSpec) -> Result<ObtainedAudioSpec,()> {
             samples: 0,
             padding: 0,
             size: 0,
-            callback: mut_null(),
-            userdata: mut_null(),
+            callback: null_mut(),
+            userdata: null_mut(),
         };
 
         if SDL_OpenAudio(&mut ll_desired, &mut ll_obtained) < 0 {

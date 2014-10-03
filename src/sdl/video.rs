@@ -269,7 +269,7 @@ fn wrap_pixel_format(raw: *mut ll::SDL_PixelFormat) -> PixelFormat {
 fn unwrap_pixel_format(fmt: &PixelFormat) -> ll::SDL_PixelFormat {
     ll::SDL_PixelFormat {
         palette: match fmt.palette {
-            None => ptr::mut_null(),
+            None => ptr::null_mut(),
             Some(palette) => palette.raw
         },
         BitsPerPixel: fmt.bpp,
@@ -664,10 +664,10 @@ impl Surface {
         unsafe {
             ll::SDL_UpperBlit(src.raw, match src_rect {
                 Some(ref rect) => mem::transmute(rect),
-                None => ptr::mut_null()
+                None => ptr::null_mut()
             }, self.raw, match dest_rect {
                 Some(ref rect) => mem::transmute(rect),
-                None => ptr::mut_null()
+                None => ptr::null_mut()
             }) == 0
         }
     }
@@ -691,7 +691,7 @@ impl Surface {
                      color: Color) -> bool {
         unsafe { ll::SDL_FillRect(self.raw, match rect {
             Some(ref rect) => mem::transmute(rect),
-            None => ptr::mut_null()
+            None => ptr::null_mut()
         }, color.to_mapped((*self.raw).format as *const _)) == 0 }
     }
 

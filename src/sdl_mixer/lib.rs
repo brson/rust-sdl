@@ -13,12 +13,11 @@ use sdl::video::ll::SDL_RWFromFile; // XXX refactoring
 use sdl::get_error;
 
 // Setup linking for all targets.
-#[cfg(not(target_os = "macos"))]
-#[cfg(not(mac_framework))]
+#[cfg(any(not(target_os = "macos"), not(mac_framework)))]
 #[link(name = "SDL_mixer")]
 extern {}
 
-#[cfg(target_os = "macos", mac_framework)]
+#[cfg(all(target_os = "macos", mac_framework))]
 #[link(name = "SDL_mixer", kind = "framework")]
 extern {}
 

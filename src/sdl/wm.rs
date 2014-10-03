@@ -41,8 +41,8 @@ pub fn set_caption(title: &str, icon: &str) {
 }
 
 pub fn get_caption() -> (String, String) {
-	let mut title_buf = ptr::mut_null();
-	let mut icon_buf = ptr::mut_null();
+	let mut title_buf = ptr::null_mut();
+	let mut icon_buf = ptr::null_mut();
 
 	unsafe {
 		ll::SDL_WM_GetCaption(&mut title_buf,
@@ -54,7 +54,7 @@ pub fn get_caption() -> (String, String) {
 }
 
 pub fn set_icon(surface: video::Surface) {
-	unsafe { ll::SDL_WM_SetIcon(surface.raw, ptr::mut_null()); }
+	unsafe { ll::SDL_WM_SetIcon(surface.raw, ptr::null_mut()); }
 }
 
 pub fn iconify_window() {

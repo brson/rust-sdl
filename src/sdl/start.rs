@@ -7,9 +7,7 @@ pub type MainFunction = Box<fn()>;
 pub fn start(main: MainFunction) {
 }
 
-#[cfg(target_os="win32")]
-#[cfg(target_os="linux")]
-#[cfg(target_os="freebsd")]
+#[cfg(any(target_os="win32", target_os="linux", target_os="freebsd")]
 mod platform_specific {
     use std::cell::Cell;
     use super::MainFunction;
