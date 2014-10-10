@@ -15,13 +15,13 @@ pub mod ll {
     pub type SDLMod = c_uint;
     pub type SDL_SysWMmsg = c_void;
 
-    pub static SDL_DISABLE: c_int = 0;
-    pub static SDL_ENABLE: c_int = 1;
-    pub static SDL_QUERY: c_int = -1;
+    pub const SDL_DISABLE: c_int = 0;
+    pub const SDL_ENABLE: c_int = 1;
+    pub const SDL_QUERY: c_int = -1;
 
-    pub static SDL_APPMOUSEFOCUS: c_int = 0x01;
-    pub static SDL_APPINPUTFOCUS: c_int = 0x02;
-    pub static SDL_APPACTIVE: c_int = 0x04;
+    pub const SDL_APPMOUSEFOCUS: c_int = 0x01;
+    pub const SDL_APPINPUTFOCUS: c_int = 0x02;
+    pub const SDL_APPACTIVE: c_int = 0x04;
 
     #[repr(C)]
     pub struct SDL_keysym {

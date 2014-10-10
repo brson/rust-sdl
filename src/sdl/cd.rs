@@ -12,11 +12,11 @@ pub mod ll {
 
 	pub type CDstatus = c_int;
 
-	pub static CD_TRAYEMPTY: CDstatus = 0;
-	pub static CD_STOPPED: CDstatus = 1;
-	pub static CD_PLAYING: CDstatus = 2;
-	pub static CD_PAUSED: CDstatus = 3;
-	pub static CD_ERROR: CDstatus = -1;
+	pub const CD_TRAYEMPTY: CDstatus = 0;
+	pub const CD_STOPPED: CDstatus = 1;
+	pub const CD_PLAYING: CDstatus = 2;
+	pub const CD_PAUSED: CDstatus = 3;
+	pub const CD_ERROR: CDstatus = -1;
 
     #[repr(C)]
 	pub struct SDL_CDtrack {

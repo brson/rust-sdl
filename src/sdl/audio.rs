@@ -11,14 +11,14 @@ pub mod ll {
 
     use libc::{c_int, c_void, uint16_t};
 
-    pub static AUDIO_U8: uint16_t = 0x0008;
-    pub static AUDIO_S8: uint16_t = 0x8008;
-    pub static AUDIO_U16LSB: uint16_t = 0x0010;
-    pub static AUDIO_S16LSB: uint16_t = 0x8010;
-    pub static AUDIO_U16MSB: uint16_t = 0x1010;
-    pub static AUDIO_S16MSB: uint16_t = 0x9010;
-    pub static AUDIO_U16: uint16_t = AUDIO_U16LSB;
-    pub static AUDIO_S16: uint16_t = AUDIO_S16LSB;
+    pub const AUDIO_U8: uint16_t = 0x0008;
+    pub const AUDIO_S8: uint16_t = 0x8008;
+    pub const AUDIO_U16LSB: uint16_t = 0x0010;
+    pub const AUDIO_S16LSB: uint16_t = 0x8010;
+    pub const AUDIO_U16MSB: uint16_t = 0x1010;
+    pub const AUDIO_S16MSB: uint16_t = 0x9010;
+    pub const AUDIO_U16: uint16_t = AUDIO_U16LSB;
+    pub const AUDIO_S16: uint16_t = AUDIO_S16LSB;
 
     #[repr(C)]
     pub struct SDL_AudioSpec {

@@ -14,10 +14,10 @@ pub mod ll {
 
 	pub type SDL_GrabMode = c_int;
 
-	pub static SDL_GRAB_QUERY: SDL_GrabMode = -1;
-	pub static SDL_GRAB_OFF: SDL_GrabMode = 0;
-	pub static SDL_GRAB_ON: SDL_GrabMode = 1;
-	pub static SDL_GRAB_FULLSCREEN: SDL_GrabMode = 2;
+	pub const SDL_GRAB_QUERY: SDL_GrabMode = -1;
+	pub const SDL_GRAB_OFF: SDL_GrabMode = 0;
+	pub const SDL_GRAB_ON: SDL_GrabMode = 1;
+	pub const SDL_GRAB_FULLSCREEN: SDL_GrabMode = 2;
 
     extern "C" {
         pub fn SDL_WM_SetCaption(title: *const c_schar, icon: *const c_schar);
