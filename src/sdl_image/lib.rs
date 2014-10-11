@@ -30,10 +30,10 @@ pub mod ll {
 
     pub type IMG_InitFlags = c_uint;
 
-    pub static IMG_INIT_JPG: IMG_InitFlags = 1;
-    pub static IMG_INIT_PNG: IMG_InitFlags = 2;
-    pub static IMG_INIT_TIF: IMG_InitFlags = 4;
-    pub static IMG_INIT_WEBP: IMG_InitFlags = 8;
+    pub const IMG_INIT_JPG: IMG_InitFlags = 1;
+    pub const IMG_INIT_PNG: IMG_InitFlags = 2;
+    pub const IMG_INIT_TIF: IMG_InitFlags = 4;
+    pub const IMG_INIT_WEBP: IMG_InitFlags = 8;
 
     extern "C" {
         pub fn IMG_Init(flags: c_int) -> c_int;
