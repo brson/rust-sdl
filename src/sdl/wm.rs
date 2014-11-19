@@ -31,9 +31,9 @@ pub mod ll {
 
 #[deriving(PartialEq, Eq)]
 pub enum GrabMode {
-	 GrabQuery = ll::SDL_GRAB_QUERY as int,
-	 GrabOff = ll::SDL_GRAB_OFF as int,
-	 GrabOn = ll::SDL_GRAB_ON as int
+	 Query = ll::SDL_GRAB_QUERY as int,
+	 Off = ll::SDL_GRAB_OFF as int,
+	 On = ll::SDL_GRAB_ON as int
 }
 
 pub fn set_caption(title: &str, icon: &str) {
@@ -71,16 +71,16 @@ pub fn grab_input(mode: GrabMode) {
 
 pub fn toggle_grab_input() {
 	unsafe {
-		if ll::SDL_WM_GrabInput(GrabQuery as i32) == GrabOn as i32 {
-			ll::SDL_WM_GrabInput(GrabOff as i32);
+		if ll::SDL_WM_GrabInput(GrabMode::Query as i32) == GrabMode::On as i32 {
+			ll::SDL_WM_GrabInput(GrabMode::Off as i32);
 		} else {
-			ll::SDL_WM_GrabInput(GrabOn as i32);
+			ll::SDL_WM_GrabInput(GrabMode::On as i32);
 		}
 	}
 }
 
 pub fn is_grabbing_input() -> bool {
-	unsafe { ll::SDL_WM_GrabInput(GrabQuery as i32) == GrabOn as i32 }
+	unsafe { ll::SDL_WM_GrabInput(GrabMode::Query as i32) == GrabMode::On as i32 }
 }
 
 // TODO: get_wm_info

@@ -8,6 +8,8 @@ use std::slice;
 use Rect;
 use get_error;
 
+pub use self::Color::{RGB, RGBA};
+
 pub mod ll {
     #![allow(non_camel_case_types)]
 
@@ -428,15 +430,15 @@ pub struct VideoInfo {
 }
 
 fn wrap_video_info_flags(bitflags: u32) -> Vec<VideoInfoFlag> {
-    let flags = [HWAvailable,
-        WMAvailable,
-        BlitHW,
-        BlitHWColorkey,
-        BlitHWAlpha,
-        BlitSW,
-        BlitSWColorkey,
-        BlitSWAlpha,
-        BlitFill];
+    let flags = [VideoInfoFlag::HWAvailable,
+        VideoInfoFlag::WMAvailable,
+        VideoInfoFlag::BlitHW,
+        VideoInfoFlag::BlitHWColorkey,
+        VideoInfoFlag::BlitHWAlpha,
+        VideoInfoFlag::BlitSW,
+        VideoInfoFlag::BlitSWColorkey,
+        VideoInfoFlag::BlitSWAlpha,
+        VideoInfoFlag::BlitFill];
 
     flags.iter().filter_map(|&flag| {
         if bitflags & (flag as u32) != 0 { Some(flag) }
@@ -455,8 +457,8 @@ pub fn get_video_info() -> VideoInfo {
 }
 
 pub enum PaletteType {
-    LogicalPaletteType = 1,
-    PhysicalPaletteType
+    Logical = 1,
+    Physical
 }
 
 pub fn get_video_surface() -> Result<Surface, String> {

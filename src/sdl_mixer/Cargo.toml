@@ -1,8 +1,10 @@
 [package]
-
 name = "sdl_mixer"
-version = "0.3.4"
-authors = [ "brson" ]
+version = "0.3.5"
+authors = [
+	"Brian Anderson <banderson@mozilla.com>",
+	"Kang Seonghoon <public+rust@mearie.org>"
+]
 
 [lib]
 name = "sdl_mixer"

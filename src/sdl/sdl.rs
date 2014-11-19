@@ -84,23 +84,23 @@ impl Rect {
 
 #[deriving(PartialEq, Eq)]
 pub enum InitFlag {
-     InitTimer = ll::SDL_INIT_TIMER as int,
-     InitAudio = ll::SDL_INIT_AUDIO as int,
-     InitVideo = ll::SDL_INIT_VIDEO as int,
-     InitCDRom = ll::SDL_INIT_CDROM as int,
-     InitJoystick = ll::SDL_INIT_JOYSTICK as int,
-     InitNoParachute = ll::SDL_INIT_NOPARACHUTE as int,
-     InitEventThread = ll::SDL_INIT_EVENTTHREAD as int,
-     InitEverything = ll::SDL_INIT_EVERYTHING as int,
+     Timer = ll::SDL_INIT_TIMER as int,
+     Audio = ll::SDL_INIT_AUDIO as int,
+     Video = ll::SDL_INIT_VIDEO as int,
+     CDRom = ll::SDL_INIT_CDROM as int,
+     Joystick = ll::SDL_INIT_JOYSTICK as int,
+     NoParachute = ll::SDL_INIT_NOPARACHUTE as int,
+     EventThread = ll::SDL_INIT_EVENTTHREAD as int,
+     Everything = ll::SDL_INIT_EVERYTHING as int,
 }
 
 #[deriving(PartialEq, Eq)]
 pub enum Error {
-     NoMemError = ll::SDL_ENOMEM as int,
-     ReadError = ll::SDL_EFREAD as int,
-     WriteError = ll::SDL_EFWRITE as int,
-     SeekError = ll::SDL_EFSEEK as int,
-     UnsupportedError = ll::SDL_UNSUPPORTED as int
+     NoMem = ll::SDL_ENOMEM as int,
+     Read = ll::SDL_EFREAD as int,
+     Write = ll::SDL_EFWRITE as int,
+     Seek = ll::SDL_EFSEEK as int,
+     Unsupported = ll::SDL_UNSUPPORTED as int
 }
 
 pub fn init(flags: &[InitFlag]) -> bool {
@@ -137,14 +137,14 @@ pub fn was_inited(flags: &[InitFlag]) -> Vec<InitFlag> {
     });
     let bitflags = unsafe { ll::SDL_WasInit(flags) };
 
-    let flags = [InitTimer,
-        InitAudio,
-        InitVideo,
-        InitCDRom,
-        InitJoystick,
-        InitNoParachute,
-        InitEventThread,
-        InitEverything];
+    let flags = [InitFlag::Timer,
+        InitFlag::Audio,
+        InitFlag::Video,
+        InitFlag::CDRom,
+        InitFlag::Joystick,
+        InitFlag::NoParachute,
+        InitFlag::EventThread,
+        InitFlag::Everything];
 
     flags.iter().filter_map(|&flag| {
         if bitflags & (flag as ll::SDL_InitFlag) != 0 { Some(flag) }

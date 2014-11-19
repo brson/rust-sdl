@@ -2,15 +2,19 @@ extern crate sdl;
 
 use std::rand::Rng;
 
+use sdl::video::{SurfaceFlag, VideoFlag};
+use sdl::event::{Event, Key};
+
 
 #[main]
 pub fn main() {
-    sdl::init([sdl::InitVideo]);
+    sdl::init([sdl::InitFlag::Video].as_slice());
     sdl::wm::set_caption("rust-sdl demo - video", "rust-sdl");
 
     let mut rng = std::rand::task_rng();
-    let screen = match sdl::video::set_video_mode(800, 600, 32, [sdl::video::HWSurface],
-                                                                [sdl::video::DoubleBuf]) {
+    let screen = match sdl::video::set_video_mode(800, 600, 32,
+                                                  [SurfaceFlag::HWSurface].as_slice(),
+                                                  [VideoFlag::DoubleBuf].as_slice()) {
         Ok(screen) => screen,
         Err(err) => panic!("failed to set video mode: {}", err)
     };
@@ -33,10 +37,10 @@ pub fn main() {
     'main : loop {
         'event : loop {
             match sdl::event::poll_event() {
-                sdl::event::QuitEvent => break 'main,
-                sdl::event::NoEvent => break 'event,
-                sdl::event::KeyEvent(k, _, _, _)
-                    if k == sdl::event::EscapeKey
+                Event::Quit => break 'main,
+                Event::None => break 'event,
+                Event::Key(k, _, _, _)
+                    if k == Key::Escape
                         => break 'main,
                 _ => {}
             }

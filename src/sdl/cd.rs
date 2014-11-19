@@ -79,11 +79,11 @@ fn wrap_cd(raw: *mut ll::SDL_CD) -> CD {
 
 #[deriving(PartialEq, Eq)]
 pub enum Status {
-	TrayEmptyStatus = ll::CD_TRAYEMPTY as int,
-	StoppedStatus = ll::CD_STOPPED as int,
-	PlayingStatus = ll::CD_PLAYING as int,
-	PausedStatus = ll::CD_PAUSED as int,
-	ErrorStatus = ll::CD_ERROR as int
+	TrayEmpty = ll::CD_TRAYEMPTY as int,
+	Stopped = ll::CD_STOPPED as int,
+	Playing = ll::CD_PLAYING as int,
+	Paused = ll::CD_PAUSED as int,
+	Error = ll::CD_ERROR as int
 }
 
 impl CD {
@@ -100,12 +100,12 @@ impl CD {
 		unsafe {
 			// FIXME: Rust doesn't like us matching using staticants here for some reason
 			match ll::SDL_CDStatus(self.raw) {
-				0 => TrayEmptyStatus,
-				1 => StoppedStatus,
-				2 => PlayingStatus,
-				3 => PausedStatus,
-				-1 => ErrorStatus,
-				_ => ErrorStatus
+				0 => Status::TrayEmpty,
+				1 => Status::Stopped,
+				2 => Status::Playing,
+				3 => Status::Paused,
+				-1 => Status::Error,
+				_ => Status::Error
 			}
 		}
 	}

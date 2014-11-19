@@ -44,9 +44,9 @@ pub mod ll {
 
 #[deriving(PartialEq, Eq)]
 pub enum InitFlag {
-    InitJPG = ll::IMG_INIT_JPG as int,
-    InitPNG = ll::IMG_INIT_PNG as int,
-    InitTIF = ll::IMG_INIT_TIF as int
+    JPG = ll::IMG_INIT_JPG as int,
+    PNG = ll::IMG_INIT_PNG as int,
+    TIF = ll::IMG_INIT_TIF as int
 }
 
 pub fn init(flags: &[InitFlag]) -> Vec<InitFlag> {
@@ -56,9 +56,9 @@ pub fn init(flags: &[InitFlag]) -> Vec<InitFlag> {
         }))
     };
 
-    let flags = [InitJPG,
-        InitPNG,
-        InitTIF];
+    let flags = [InitFlag::JPG,
+        InitFlag::PNG,
+        InitFlag::TIF];
 
     flags.iter().filter_map(|&flag| {
         if bitflags & (flag as c_int) != 0 { Some(flag) }

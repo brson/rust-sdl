@@ -97,12 +97,12 @@ impl Drop for Chunk {
     fn drop(&mut self) {
         unsafe {
             match self.data {
-                Borrowed(_) => (),
-                Allocated(ll_chunk) => {
+                ChunkData::Borrowed(_) => (),
+                ChunkData::Allocated(ll_chunk) => {
                     check_if_not_playing(ll_chunk);
                     ll::Mix_FreeChunk(ll_chunk);
                 },
-                OwnedBuffer(ref mut chunk) => {
+                ChunkData::OwnedBuffer(ref mut chunk) => {
                     check_if_not_playing(&mut chunk.ll_chunk);
                 }
             }
@@ -115,7 +115,7 @@ impl Chunk {
         let buffer_addr: *mut u8 = buffer.as_mut_ptr();
         let buffer_len = buffer.len() as u32;
         Chunk {
-            data: OwnedBuffer(
+            data: ChunkData::OwnedBuffer(
                 ChunkAndBuffer {
                     buffer: buffer,
                     ll_chunk: ll::Mix_Chunk {
@@ -137,14 +137,14 @@ impl Chunk {
         };
 
         if raw.is_null() { Err(get_error()) }
-        else { Ok(Chunk { data: Allocated(raw) }) }
+        else { Ok(Chunk { data: ChunkData::Allocated(raw) }) }
     }
 
     pub fn to_ll_chunk(&self) -> *const ll::Mix_Chunk {
         match self.data {
-            Borrowed(ll_chunk) => ll_chunk as *const _,
-            Allocated(ll_chunk) => ll_chunk as *const _,
-            OwnedBuffer(ref chunk) => {
+            ChunkData::Borrowed(ll_chunk) => ll_chunk as *const _,
+            ChunkData::Allocated(ll_chunk) => ll_chunk as *const _,
+            ChunkData::OwnedBuffer(ref chunk) => {
                 let ll_chunk: *const ll::Mix_Chunk = &chunk.ll_chunk;
                 ll_chunk
             }
@@ -153,9 +153,9 @@ impl Chunk {
 
     pub fn to_mut_ll_chunk(&mut self) -> *mut ll::Mix_Chunk {
         match self.data {
-            Borrowed(ll_chunk) => ll_chunk,
-            Allocated(ll_chunk) => ll_chunk,
-            OwnedBuffer(ref mut chunk) => {
+            ChunkData::Borrowed(ll_chunk) => ll_chunk,
+            ChunkData::Allocated(ll_chunk) => ll_chunk,
+            ChunkData::OwnedBuffer(ref mut chunk) => {
                 let ll_chunk: *mut ll::Mix_Chunk = &mut chunk.ll_chunk;
                 ll_chunk
             }

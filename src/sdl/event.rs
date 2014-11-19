@@ -212,15 +212,15 @@ pub mod ll {
 
 #[deriving(PartialEq, Eq)]
 pub enum AppState {
-    AppMouseFocusState = ll::SDL_APPMOUSEFOCUS as int,
-    AppInputFocusState = ll::SDL_APPINPUTFOCUS as int,
-    AppActiveState = ll::SDL_APPACTIVE as int
+    MouseFocus = ll::SDL_APPMOUSEFOCUS as int,
+    InputFocus = ll::SDL_APPINPUTFOCUS as int,
+    Active = ll::SDL_APPACTIVE as int
 }
 
 fn wrap_app_state(bitflags: u8) -> Vec<AppState> {
-    let flags = [AppMouseFocusState,
-        AppInputFocusState,
-        AppActiveState];
+    let flags = [AppState::MouseFocus,
+        AppState::InputFocus,
+        AppState::Active];
 
     flags.iter().filter_map(|&flag| {
         if bitflags & (flag as u8) != 0 { Some(flag) }
@@ -230,251 +230,251 @@ fn wrap_app_state(bitflags: u8) -> Vec<AppState> {
 
 #[deriving(PartialEq)]
 pub enum RepeatDelay {
-    DefaultRepeatDelay,
-    CustomRepeatDelay(int)
+    Default,
+    Custom(int)
 }
 
 #[deriving(PartialEq)]
 pub enum RepeatInterval {
-    DefaultRepeatInterval,
-    CustomRepeatInterval(int)
+    Default,
+    Custom(int)
 }
 
 #[deriving(PartialEq, Eq, FromPrimitive, PartialOrd, Ord)]
 pub enum Key {
-    UnknownKey = 0,
-    BackspaceKey = 8,
-    TabKey = 9,
-    ClearKey = 12,
-    ReturnKey = 13,
-    PauseKey = 19,
-    EscapeKey = 27,
-    SpaceKey = 32,
-    ExclaimKey = 33,
-    QuotedblKey = 34,
-    HashKey = 35,
-    DollarKey = 36,
-    AmpersandKey = 38,
-    QuoteKey = 39,
-    LeftParenKey = 40,
-    RightParenKey = 41,
-    AsteriskKey = 42,
-    PlusKey = 43,
-    CommaKey = 44,
-    MinusKey = 45,
-    PeriodKey = 46,
-    SlashKey = 47,
-    Num0Key = 48,
-    Num1Key = 49,
-    Num2Key = 50,
-    Num3Key = 51,
-    Num4Key = 52,
-    Num5Key = 53,
-    Num6Key = 54,
-    Num7Key = 55,
-    Num8Key = 56,
-    Num9Key = 57,
-    ColonKey = 58,
-    SemicolonKey = 59,
-    LessKey = 60,
-    EqualsKey = 61,
-    GreaterKey = 62,
-    QuestionKey = 63,
-    AtKey = 64,
-     LeftBracketKey = 91,
-     BackslashKey = 92,
-     RightBracketKey = 93,
-     CaretKey = 94,
-     UnderscoreKey = 95,
-     BackquoteKey = 96,
-     AKey = 97,
-     BKey = 98,
-     CKey = 99,
-     DKey = 100,
-     EKey = 101,
-     FKey = 102,
-     GKey = 103,
-     HKey = 104,
-     IKey = 105,
-     JKey = 106,
-     KKey = 107,
-     LKey = 108,
-     MKey = 109,
-     NKey = 110,
-     OKey = 111,
-     PKey = 112,
-     QKey = 113,
-     RKey = 114,
-     SKey = 115,
-     TKey = 116,
-     UKey = 117,
-     VKey = 118,
-     WKey = 119,
-     XKey = 120,
-     YKey = 121,
-     ZKey = 122,
-     DeleteKey = 127,
-     World0Key = 160,
-     World1Key = 161,
-     World2Key = 162,
-     World3Key = 163,
-     World4Key = 164,
-     World5Key = 165,
-     World6Key = 166,
-     World7Key = 167,
-     World8Key = 168,
-     World9Key = 169,
-     World10Key = 170,
-     World11Key = 171,
-     World12Key = 172,
-     World13Key = 173,
-     World14Key = 174,
-     World15Key = 175,
-     World16Key = 176,
-     World17Key = 177,
-     World18Key = 178,
-     World19Key = 179,
-     World20Key = 180,
-     World21Key = 181,
-     World22Key = 182,
-     World23Key = 183,
-     World24Key = 184,
-     World25Key = 185,
-     World26Key = 186,
-     World27Key = 187,
-     World28Key = 188,
-     World29Key = 189,
-     World30Key = 190,
-     World31Key = 191,
-     World32Key = 192,
-     World33Key = 193,
-     World34Key = 194,
-     World35Key = 195,
-     World36Key = 196,
-     World37Key = 197,
-     World38Key = 198,
-     World39Key = 199,
-     World40Key = 200,
-     World41Key = 201,
-     World42Key = 202,
-     World43Key = 203,
-     World44Key = 204,
-     World45Key = 205,
-     World46Key = 206,
-     World47Key = 207,
-     World48Key = 208,
-     World49Key = 209,
-     World50Key = 210,
-     World51Key = 211,
-     World52Key = 212,
-     World53Key = 213,
-     World54Key = 214,
-     World55Key = 215,
-     World56Key = 216,
-     World57Key = 217,
-     World58Key = 218,
-     World59Key = 219,
-     World60Key = 220,
-     World61Key = 221,
-     World62Key = 222,
-     World63Key = 223,
-     World64Key = 224,
-     World65Key = 225,
-     World66Key = 226,
-     World67Key = 227,
-     World68Key = 228,
-     World69Key = 229,
-     World70Key = 230,
-     World71Key = 231,
-     World72Key = 232,
-     World73Key = 233,
-     World74Key = 234,
-     World75Key = 235,
-     World76Key = 236,
-     World77Key = 237,
-     World78Key = 238,
-     World79Key = 239,
-     World80Key = 240,
-     World81Key = 241,
-     World82Key = 242,
-     World83Key = 243,
-     World84Key = 244,
-     World85Key = 245,
-     World86Key = 246,
-     World87Key = 247,
-     World88Key = 248,
-     World89Key = 249,
-     World90Key = 250,
-     World91Key = 251,
-     World92Key = 252,
-     World93Key = 253,
-     World94Key = 254,
-     World95Key = 255,
-     Kp0Key = 256,
-     Kp1Key = 257,
-     Kp2Key = 258,
-     Kp3Key = 259,
-     Kp4Key = 260,
-     Kp5Key = 261,
-     Kp6Key = 262,
-     Kp7Key = 263,
-     Kp8Key = 264,
-     Kp9Key = 265,
-     KpPeriodKey = 266,
-     KpDivideKey = 267,
-     KpMultiplyKey = 268,
-     KpMinusKey = 269,
-     KpPlusKey = 270,
-     KpEnterKey = 271,
-     KpEqualsKey = 272,
-     UpKey = 273,
-     DownKey = 274,
-     RightKey = 275,
-     LeftKey = 276,
-     InsertKey = 277,
-     HomeKey = 278,
-     EndKey = 279,
-     PageUpKey = 280,
-     PageDownKey = 281,
-     F1Key = 282,
-     F2Key = 283,
-     F3Key = 284,
-     F4Key = 285,
-     F5Key = 286,
-     F6Key = 287,
-     F7Key = 288,
-     F8Key = 289,
-     F9Key = 290,
-     F10Key = 291,
-     F11Key = 292,
-     F12Key = 293,
-     F13Key = 294,
-     F14Key = 295,
-     F15Key = 296,
-     NumLockKey = 300,
-     CapsLockKey = 301,
-     ScrolLockKey = 302,
-     RShiftKey = 303,
-     LShiftKey = 304,
-     RCtrlKey = 305,
-     LCtrlKey = 306,
-     RAltKey = 307,
-     LAltKey = 308,
-     RMetaKey = 309,
-     LMetaKey = 310,
-     LSuperKey = 311,
-     RSuperKey = 312,
-     ModeKey = 313,
-     ComposeKey = 314,
-     HelpKey = 315,
-     PrintKey = 316,
-     SysReqKey = 317,
-     BreakKey = 318,
-     MenuKey = 319,
-     PowerKey = 320,
-     EuroKey = 321,
-     UndoKey = 322,
-     LastKey
+    Unknown = 0,
+    Backspace = 8,
+    Tab = 9,
+    Clear = 12,
+    Return = 13,
+    Pause = 19,
+    Escape = 27,
+    Space = 32,
+    Exclaim = 33,
+    Quotedbl = 34,
+    Hash = 35,
+    Dollar = 36,
+    Ampersand = 38,
+    Quote = 39,
+    LeftParen = 40,
+    RightParen = 41,
+    Asterisk = 42,
+    Plus = 43,
+    Comma = 44,
+    Minus = 45,
+    Period = 46,
+    Slash = 47,
+    Num0 = 48,
+    Num1 = 49,
+    Num2 = 50,
+    Num3 = 51,
+    Num4 = 52,
+    Num5 = 53,
+    Num6 = 54,
+    Num7 = 55,
+    Num8 = 56,
+    Num9 = 57,
+    Colon = 58,
+    Semicolon = 59,
+    Less = 60,
+    Equals = 61,
+    Greater = 62,
+    Question = 63,
+    At = 64,
+     LeftBracket = 91,
+     Backslash = 92,
+     RightBracket = 93,
+     Caret = 94,
+     Underscore = 95,
+     Backquote = 96,
+     A = 97,
+     B = 98,
+     C = 99,
+     D = 100,
+     E = 101,
+     F = 102,
+     G = 103,
+     H = 104,
+     I = 105,
+     J = 106,
+     K = 107,
+     L = 108,
+     M = 109,
+     N = 110,
+     O = 111,
+     P = 112,
+     Q = 113,
+     R = 114,
+     S = 115,
+     T = 116,
+     U = 117,
+     V = 118,
+     W = 119,
+     X = 120,
+     Y = 121,
+     Z = 122,
+     Delete = 127,
+     World0 = 160,
+     World1 = 161,
+     World2 = 162,
+     World3 = 163,
+     World4 = 164,
+     World5 = 165,
+     World6 = 166,
+     World7 = 167,
+     World8 = 168,
+     World9 = 169,
+     World10 = 170,
+     World11 = 171,
+     World12 = 172,
+     World13 = 173,
+     World14 = 174,
+     World15 = 175,
+     World16 = 176,
+     World17 = 177,
+     World18 = 178,
+     World19 = 179,
+     World20 = 180,
+     World21 = 181,
+     World22 = 182,
+     World23 = 183,
+     World24 = 184,
+     World25 = 185,
+     World26 = 186,
+     World27 = 187,
+     World28 = 188,
+     World29 = 189,
+     World30 = 190,
+     World31 = 191,
+     World32 = 192,
+     World33 = 193,
+     World34 = 194,
+     World35 = 195,
+     World36 = 196,
+     World37 = 197,
+     World38 = 198,
+     World39 = 199,
+     World40 = 200,
+     World41 = 201,
+     World42 = 202,
+     World43 = 203,
+     World44 = 204,
+     World45 = 205,
+     World46 = 206,
+     World47 = 207,
+     World48 = 208,
+     World49 = 209,
+     World50 = 210,
+     World51 = 211,
+     World52 = 212,
+     World53 = 213,
+     World54 = 214,
+     World55 = 215,
+     World56 = 216,
+     World57 = 217,
+     World58 = 218,
+     World59 = 219,
+     World60 = 220,
+     World61 = 221,
+     World62 = 222,
+     World63 = 223,
+     World64 = 224,
+     World65 = 225,
+     World66 = 226,
+     World67 = 227,
+     World68 = 228,
+     World69 = 229,
+     World70 = 230,
+     World71 = 231,
+     World72 = 232,
+     World73 = 233,
+     World74 = 234,
+     World75 = 235,
+     World76 = 236,
+     World77 = 237,
+     World78 = 238,
+     World79 = 239,
+     World80 = 240,
+     World81 = 241,
+     World82 = 242,
+     World83 = 243,
+     World84 = 244,
+     World85 = 245,
+     World86 = 246,
+     World87 = 247,
+     World88 = 248,
+     World89 = 249,
+     World90 = 250,
+     World91 = 251,
+     World92 = 252,
+     World93 = 253,
+     World94 = 254,
+     World95 = 255,
+     Kp0 = 256,
+     Kp1 = 257,
+     Kp2 = 258,
+     Kp3 = 259,
+     Kp4 = 260,
+     Kp5 = 261,
+     Kp6 = 262,
+     Kp7 = 263,
+     Kp8 = 264,
+     Kp9 = 265,
+     KpPeriod = 266,
+     KpDivide = 267,
+     KpMultiply = 268,
+     KpMinus = 269,
+     KpPlus = 270,
+     KpEnter = 271,
+     KpEquals = 272,
+     Up = 273,
+     Down = 274,
+     Right = 275,
+     Left = 276,
+     Insert = 277,
+     Home = 278,
+     End = 279,
+     PageUp = 280,
+     PageDown = 281,
+     F1 = 282,
+     F2 = 283,
+     F3 = 284,
+     F4 = 285,
+     F5 = 286,
+     F6 = 287,
+     F7 = 288,
+     F8 = 289,
+     F9 = 290,
+     F10 = 291,
+     F11 = 292,
+     F12 = 293,
+     F13 = 294,
+     F14 = 295,
+     F15 = 296,
+     NumLock = 300,
+     CapsLock = 301,
+     ScrolLock = 302,
+     RShift = 303,
+     LShift = 304,
+     RCtrl = 305,
+     LCtrl = 306,
+     RAlt = 307,
+     LAlt = 308,
+     RMeta = 309,
+     LMeta = 310,
+     LSuper = 311,
+     RSuper = 312,
+     Mode = 313,
+     Compose = 314,
+     Help = 315,
+     Print = 316,
+     SysReq = 317,
+     Break = 318,
+     Menu = 319,
+     Power = 320,
+     Euro = 321,
+     Undo = 322,
+     Last
 }
 
 fn wrap_key(i: ll::SDLKey) -> Option<Key> {
@@ -483,35 +483,35 @@ fn wrap_key(i: ll::SDLKey) -> Option<Key> {
 
 #[deriving(PartialEq, Eq)]
 pub enum Mod {
-     NoMod = 0x0000,
-     LShiftMod = 0x0001,
-     RShiftMod = 0x0002,
-     LCtrlMod = 0x0040,
-     RCtrlMod = 0x0080,
-     LAltMod = 0x0100,
-     RAltMod = 0x0200,
-     LMetaMod = 0x0400,
-     RMetaMod = 0x0800,
-     NumMod = 0x1000,
-     CapsMod = 0x2000,
-     ModeMod = 0x4000,
-     ReservedMod = 0x8000
+     None = 0x0000,
+     LShift = 0x0001,
+     RShift = 0x0002,
+     LCtrl = 0x0040,
+     RCtrl = 0x0080,
+     LAlt = 0x0100,
+     RAlt = 0x0200,
+     LMeta = 0x0400,
+     RMeta = 0x0800,
+     Num = 0x1000,
+     Caps = 0x2000,
+     Mode = 0x4000,
+     Reserved = 0x8000
 }
 
 fn wrap_mod_state(bitflags: ll::SDLMod) -> Vec<Mod> {
-    let flags = [NoMod,
-        LShiftMod,
-        RShiftMod,
-        LCtrlMod,
-        RCtrlMod,
-        LAltMod,
-        RAltMod,
-        LMetaMod,
-        RMetaMod,
-        NumMod,
-        CapsMod,
-        ModeMod,
-        ReservedMod];
+    let flags = [Mod::None,
+        Mod::LShift,
+        Mod::RShift,
+        Mod::LCtrl,
+        Mod::RCtrl,
+        Mod::LAlt,
+        Mod::RAlt,
+        Mod::LMeta,
+        Mod::RMeta,
+        Mod::Num,
+        Mod::Caps,
+        Mod::Mode,
+        Mod::Reserved];
 
     flags.iter().filter_map(|&flag| {
         if bitflags & (flag as ll::SDLMod) != 0 { Some(flag) }
@@ -521,19 +521,19 @@ fn wrap_mod_state(bitflags: ll::SDLMod) -> Vec<Mod> {
 
 #[deriving(PartialEq, Eq)]
 pub enum HatState {
-    CenteredHatState,
-    UpHatState,
-    RightHatState,
-    DownHatState,
-    LeftHatState
+    Centered,
+    Up,
+    Right,
+    Down,
+    Left
 }
 
 fn wrap_hat_state(bitflags: u8) -> Vec<HatState> {
-    let flags = [CenteredHatState,
-        UpHatState,
-        RightHatState,
-        DownHatState,
-        LeftHatState];
+    let flags = [HatState::Centered,
+        HatState::Up,
+        HatState::Right,
+        HatState::Down,
+        HatState::Left];
 
     flags.iter().filter_map(|&flag| {
         if bitflags & (flag as u8) != 0 { Some(flag) }
@@ -543,11 +543,11 @@ fn wrap_hat_state(bitflags: u8) -> Vec<HatState> {
 
 #[deriving(PartialEq, Eq, FromPrimitive)]
 pub enum Mouse {
-    LeftMouse = 1,
-    MiddleMouse,
-    RightMouse,
-    WheelUpMouse,
-    WheelDownMouse
+    Left = 1,
+    Middle,
+    Right,
+    WheelUp,
+    WheelDown
 }
 
 fn wrap_mouse(bitflags: u8) -> Option<Mouse> {
@@ -556,23 +556,23 @@ fn wrap_mouse(bitflags: u8) -> Option<Mouse> {
 
 #[deriving(PartialEq, Eq)]
 pub enum MouseState {
-    LeftMouseState = 1,
-    MiddleMouseState,
-    RightMouseState,
-    WheelUpMouseState,
-    WheelDownMouseState,
-    X1MouseState,
-    X2MouseState
+    Left = 1,
+    Middle,
+    Right,
+    WheelUp,
+    WheelDown,
+    X1,
+    X2
 }
 
 fn wrap_mouse_state(bitflags: u8) -> Vec<MouseState> {
-    let flags = [LeftMouseState,
-        MiddleMouseState,
-        RightMouseState,
-        WheelUpMouseState,
-        WheelDownMouseState,
-        X1MouseState,
-        X2MouseState];
+    let flags = [MouseState::Left,
+        MouseState::Middle,
+        MouseState::Right,
+        MouseState::WheelUp,
+        MouseState::WheelDown,
+        MouseState::X1,
+        MouseState::X2];
 
     flags.iter().filter_map(|&flag| {
         if bitflags & (flag as u8) != 0 { Some(flag) }
@@ -582,21 +582,21 @@ fn wrap_mouse_state(bitflags: u8) -> Vec<MouseState> {
 
 #[deriving(PartialEq)]
 pub enum Event {
-    // TODO: TextInputEvent, TextEditingEvent
-     NoEvent,
-     ActiveEvent(bool, Vec<AppState>),
-     KeyEvent(Key, bool, Vec<Mod>, u16), // RFC: do you need the scancode?
-     MouseMotionEvent(Vec<MouseState>, u16, u16, i16, i16),
-     MouseButtonEvent(Mouse, bool, u16, u16),
-     JoyAxisEvent(int, int, i16),
-     JoyBallEvent(int, int, i16, i16),
-     JoyHatEvent(int, int, Vec<HatState>),
-     JoyButtonEvent(int, int, bool),
-     QuitEvent,
-    // TODO: SysWmEvent
-     ResizeEvent(int, int),
-     ExposeEvent,
-    // TODO: UserEvent
+    // TODO: TextInput, TextEditing
+     None,
+     Active(bool, Vec<AppState>),
+     Key(Key, bool, Vec<Mod>, u16), // RFC: do you need the scancode?
+     MouseMotion(Vec<MouseState>, u16, u16, i16, i16),
+     MouseButton(Mouse, bool, u16, u16),
+     JoyAxis(int, int, i16),
+     JoyBall(int, int, i16, i16),
+     JoyHat(int, int, Vec<HatState>),
+     JoyButton(int, int, bool),
+     Quit,
+    // TODO: SysWm
+     Resize(int, int),
+     Expose,
+    // TODO: User
 }
 
 fn null_event() -> ll::SDL_Event {
@@ -606,123 +606,123 @@ fn null_event() -> ll::SDL_Event {
 fn wrap_event(raw: ll::SDL_Event) -> Event {
     unsafe {
         let ty = raw._type();
-        let ty = if ty.is_null() { return NoEvent; }
+        let ty = if ty.is_null() { return Event::None; }
                  else { *ty };
 
         let ty : EventType = match FromPrimitive::from_uint(ty as uint) {
             Some(ty) => ty,
-            None => return NoEvent
+            None => return Event::None
         };
 
         match ty {
-            NoEventType => NoEvent,
-            ActiveEventType => {
+            EventType::None => Event::None,
+            EventType::Active => {
                 let active = raw.active();
-                let active = if active.is_null() { return NoEvent; }
+                let active = if active.is_null() { return Event::None; }
                              else { *active };
 
-                ActiveEvent(active.gain == 1, wrap_app_state(active.state))
+                Event::Active(active.gain == 1, wrap_app_state(active.state))
             }
-            KeyDownEventType | KeyUpEventType => {
+            EventType::KeyDown | EventType::KeyUp => {
                 let key = raw.key();
-                let (key, okey) = if key.is_null() { return NoEvent; }
+                let (key, okey) = if key.is_null() { return Event::None; }
                           else { ((*key).keysym, *key) };
 
                 match wrap_key(key.sym) {
                     Some(sym) => {
-                        KeyEvent(sym, okey.state == 1, wrap_mod_state(key._mod),
+                        Event::Key(sym, okey.state == 1, wrap_mod_state(key._mod),
                                  key.unicode)
                     }
-                    None => NoEvent
+                    None => Event::None
                 }
             }
-            MouseMotionEventType => {
+            EventType::MouseMotion => {
                 let motion = raw.motion();
-                let motion = if motion.is_null() { return NoEvent; }
+                let motion = if motion.is_null() { return Event::None; }
                              else { *motion };
 
-                MouseMotionEvent(wrap_mouse_state(motion.state), motion.x,
+                Event::MouseMotion(wrap_mouse_state(motion.state), motion.x,
                                  motion.y, motion.xrel, motion.yrel)
             }
-            MouseButtonDownEventType | MouseButtonUpEventType => {
+            EventType::MouseButtonDown | EventType::MouseButtonUp => {
                 let obutton = raw.button();
-                let obutton = if obutton.is_null() { return NoEvent; }
+                let obutton = if obutton.is_null() { return Event::None; }
                              else { *obutton };
 
                 match wrap_mouse(obutton.button) {
                     Some(button) => {
-                        MouseButtonEvent(button, obutton.state == 1,
+                        Event::MouseButton(button, obutton.state == 1,
                                  obutton.x, obutton.y)
                     }
-                    None => NoEvent
+                    None => Event::None
                 }
             }
-            JoyAxisMotionEventType => {
+            EventType::JoyAxisMotion => {
                 let jaxis = raw.jaxis();
-                let jaxis = if jaxis.is_null() { return NoEvent; }
+                let jaxis = if jaxis.is_null() { return Event::None; }
                             else { *jaxis };
 
-                JoyAxisEvent(jaxis.which as int, jaxis.axis as int,
+                Event::JoyAxis(jaxis.which as int, jaxis.axis as int,
                              jaxis.value)
             }
-            JoyBallMotionEventType => {
+            EventType::JoyBallMotion => {
                 let jball = raw.jball();
-                let jball = if jball.is_null() { return NoEvent; }
+                let jball = if jball.is_null() { return Event::None; }
                             else { *jball };
 
-                JoyBallEvent(jball.which as int, jball.ball as int,
+                Event::JoyBall(jball.which as int, jball.ball as int,
                              jball.xrel, jball.yrel)
             }
-            JoyHatMotionEventType => {
+            EventType::JoyHatMotion => {
                 let jhat = raw.jhat();
-                let jhat = if jhat.is_null() { return NoEvent; }
+                let jhat = if jhat.is_null() { return Event::None; }
                            else { *jhat };
 
-                JoyHatEvent(jhat.which as int, jhat.hat as int,
+                Event::JoyHat(jhat.which as int, jhat.hat as int,
                             wrap_hat_state(jhat.value))
             }
-            JoyButtonDownEventType | JoyButtonUpEventType => {
+            EventType::JoyButtonDown | EventType::JoyButtonUp => {
                 let jbutton = raw.jbutton();
-                let jbutton = if jbutton.is_null() { return NoEvent; }
+                let jbutton = if jbutton.is_null() { return Event::None; }
                               else { *jbutton };
 
-                JoyButtonEvent(jbutton.which as int, jbutton.button as int,
+                Event::JoyButton(jbutton.which as int, jbutton.button as int,
                                jbutton.state == 1u8)
             }
-            QuitEventType => QuitEvent,
-            ResizeEventType => {
+            EventType::Quit => Event::Quit,
+            EventType::Resize => {
                 let resize = raw.resize();
-                let resize = if resize.is_null() { return NoEvent; }
+                let resize = if resize.is_null() { return Event::None; }
                              else { *resize };
 
-                ResizeEvent(resize.w as int, resize.h as int)
+                Event::Resize(resize.w as int, resize.h as int)
             }
-            ExposeEventType => ExposeEvent,
-            _ => NoEvent
+            EventType::Expose => Event::Expose,
+            _ => Event::None
         }
     }
 }
 
 #[deriving(PartialEq, Eq, FromPrimitive)]
 pub enum EventType {
-    // TODO: TextInputEventType, TextEditingEventType
-     NoEventType,
-     ActiveEventType,
-     KeyDownEventType,
-     KeyUpEventType,
-     MouseMotionEventType,
-     MouseButtonDownEventType,
-     MouseButtonUpEventType,
-     JoyAxisMotionEventType,
-     JoyBallMotionEventType,
-     JoyHatMotionEventType,
-     JoyButtonDownEventType,
-     JoyButtonUpEventType,
-     QuitEventType,
-     SysWMEventType,
-     ResizeEventType = 16,
-     ExposeEventType,
-     UserEventType = 24
+    // TODO: TextInput, TextEditing
+     None,
+     Active,
+     KeyDown,
+     KeyUp,
+     MouseMotion,
+     MouseButtonDown,
+     MouseButtonUp,
+     JoyAxisMotion,
+     JoyBallMotion,
+     JoyHatMotion,
+     JoyButtonDown,
+     JoyButtonUp,
+     Quit,
+     SysWM,
+     Resize = 16,
+     Expose,
+     User = 24
 }
 
 impl EventType {
@@ -742,7 +742,7 @@ pub fn wait_event() -> Event {
                             == 1 as c_int };
 
     if success { wrap_event(raw) }
-    else { NoEvent }
+    else { Event::None }
 }
 
 pub fn poll_event() -> Event {
@@ -752,7 +752,7 @@ pub fn poll_event() -> Event {
     let have = unsafe { ll::SDL_PollEvent(&mut raw) };
 
     if have != 1 {
-        return NoEvent;
+        return Event::None;
     }
 
     wrap_event(raw)
@@ -840,12 +840,12 @@ pub fn is_unicode_enabled() -> bool {
 
 pub fn enable_key_repeat(delay: RepeatDelay, interval: RepeatInterval) -> bool {
     let delay = match delay {
-        DefaultRepeatDelay => 500,
-        CustomRepeatDelay(delay) => delay
+        RepeatDelay::Default => 500,
+        RepeatDelay::Custom(delay) => delay
     };
     let interval = match interval {
-        DefaultRepeatInterval => 30,
-        CustomRepeatInterval(interval) => interval
+        RepeatInterval::Default => 30,
+        RepeatInterval::Custom(interval) => interval
     };
 
     unsafe {

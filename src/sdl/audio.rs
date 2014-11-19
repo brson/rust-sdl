@@ -44,37 +44,37 @@ pub mod ll {
 }
 
 pub enum AudioFormat {
-    U8AudioFormat = AUDIO_U8 as int,
-    S8AudioFormat = AUDIO_S8 as int,
-    U16LsbAudioFormat = AUDIO_U16LSB as int,
-    S16LsbAudioFormat = AUDIO_S16LSB as int,
-    U16MsbAudioFormat = AUDIO_U16MSB as int,
-    S16MsbAudioFormat = AUDIO_S16MSB as int
+    U8 = AUDIO_U8 as int,
+    S8 = AUDIO_S8 as int,
+    U16Lsb = AUDIO_U16LSB as int,
+    S16Lsb = AUDIO_S16LSB as int,
+    U16Msb = AUDIO_U16MSB as int,
+    S16Msb = AUDIO_S16MSB as int
 }
 
-pub static U16_AUDIO_FORMAT: AudioFormat = U16LsbAudioFormat;
-pub static S16_AUDIO_FORMAT: AudioFormat = S16LsbAudioFormat;
+pub static U16_AUDIO_FORMAT: AudioFormat = AudioFormat::U16Lsb;
+pub static S16_AUDIO_FORMAT: AudioFormat = AudioFormat::S16Lsb;
 
 impl AudioFormat {
     pub fn to_ll_format(self) -> uint16_t {
         match self {
-            U8AudioFormat => AUDIO_U8,
-            S8AudioFormat => AUDIO_S8,
-            U16LsbAudioFormat => AUDIO_U16LSB,
-            S16LsbAudioFormat => AUDIO_S16LSB,
-            U16MsbAudioFormat => AUDIO_U16MSB,
-            S16MsbAudioFormat => AUDIO_S16MSB,
+            AudioFormat::U8 => AUDIO_U8,
+            AudioFormat::S8 => AUDIO_S8,
+            AudioFormat::U16Lsb => AUDIO_U16LSB,
+            AudioFormat::S16Lsb => AUDIO_S16LSB,
+            AudioFormat::U16Msb => AUDIO_U16MSB,
+            AudioFormat::S16Msb => AUDIO_S16MSB,
         }
     }
 
     pub fn from_ll_format(x: uint16_t) -> AudioFormat {
         match x {
-            AUDIO_U8 => U8AudioFormat,
-            AUDIO_S8 => S8AudioFormat,
-            AUDIO_U16LSB => U16LsbAudioFormat,
-            AUDIO_S16LSB => S16LsbAudioFormat,
-            AUDIO_U16MSB => U16MsbAudioFormat,
-            AUDIO_S16MSB => S16MsbAudioFormat,
+            AUDIO_U8 => AudioFormat::U8,
+            AUDIO_S8 => AudioFormat::S8,
+            AUDIO_U16LSB => AudioFormat::U16Lsb,
+            AUDIO_S16LSB => AudioFormat::S16Lsb,
+            AUDIO_U16MSB => AudioFormat::U16Msb,
+            AUDIO_S16MSB => AudioFormat::S16Msb,
             _ => panic!("unexpected format")
         }
     }
@@ -87,8 +87,8 @@ pub enum Channels {
 }
 
 impl Channels {
-    pub fn new(count: c_int) -> Channels { if count == 1 { Mono } else { Stereo } }
-    pub fn count(self) -> c_int          { match self { Mono => 1, Stereo => 2 } }
+    pub fn new(count: c_int) -> Channels { if count == 1 { Channels::Mono } else { Channels::Stereo } }
+    pub fn count(self) -> c_int          { match self { Channels::Mono => 1, Channels::Stereo => 2 } }
 }
 
 pub type AudioCallback = fn(&mut [u8]);
