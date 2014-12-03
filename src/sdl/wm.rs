@@ -1,6 +1,5 @@
 use std::mem;
 use std::ptr;
-use std::string;
 
 use video;
 
@@ -37,7 +36,7 @@ pub enum GrabMode {
 }
 
 pub fn set_caption(title: &str, icon: &str) {
-	unsafe { ll::SDL_WM_SetCaption(title.to_c_str().unwrap(), icon.to_c_str().unwrap()); }
+	unsafe { ll::SDL_WM_SetCaption(title.to_c_str().into_inner(), icon.to_c_str().into_inner()); }
 }
 
 pub fn get_caption() -> (String, String) {
@@ -48,8 +47,8 @@ pub fn get_caption() -> (String, String) {
 		ll::SDL_WM_GetCaption(&mut title_buf,
 			                  &mut icon_buf);
 
-        (string::raw::from_buf(mem::transmute_copy(&title_buf)),
-         string::raw::from_buf(mem::transmute_copy(&icon_buf)))
+        (String::from_raw_buf(mem::transmute_copy(&title_buf)),
+         String::from_raw_buf(mem::transmute_copy(&icon_buf)))
     }
 }
 

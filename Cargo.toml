@@ -1,10 +1,15 @@
 [package]
 name = "sdl"
-version = "0.3.5"
+version = "0.3.6"
 authors = [
 	"Brian Anderson <banderson@mozilla.com>",
 	"Kang Seonghoon <public+rust@mearie.org>"
 ]
+
+description = "SDL bindings"
+homepage = "https://github.com/brson/rust-sdl"
+repository = "https://github.com/brson/rust-sdl"
+license = "MIT"
 
 [lib]
 name = "sdl"

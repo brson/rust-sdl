@@ -1,8 +1,3 @@
-#![crate_name = "sdl_image"]
-#![comment = "SDL_image binding"]
-#![license = "MIT"]
-#![crate_type = "lib"]
-
 extern crate libc;
 extern crate sdl;
 

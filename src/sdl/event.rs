@@ -1,6 +1,5 @@
 use std::mem;
 use libc::c_int;
-use std::string;
 use std::slice;
 use std::num::FromPrimitive;
 
@@ -774,18 +773,16 @@ pub fn get_key_state() -> Vec<(Key, bool)> {
     let data = unsafe { ll::SDL_GetKeyState(&mut num) };
     let mut i = -1i;
 
-    unsafe {
-        slice::raw::buf_as_slice(data as *const u8, num as uint, |buf| {
-            buf.iter().filter_map(|&state| {
-                i += 1;
+    let buf = data as *const u8;
+    let buf = unsafe { slice::from_raw_buf(&buf, num as uint) };
+    buf.iter().filter_map(|&state| {
+        i += 1;
 
-                match wrap_key(i as ll::SDLKey) {
-                    Some(key) => Some((key, state == 1)),
-                    None => None
-                }
-            }).collect()
-        })
-    }
+        match wrap_key(i as ll::SDLKey) {
+            Some(key) => Some((key, state == 1)),
+            None => None
+        }
+    }).collect()
 }
 
 pub fn get_mod_state() -> Vec<Mod> {
@@ -804,7 +801,7 @@ pub fn get_key_name(key: Key) -> String {
     unsafe {
         let cstr = ll::SDL_GetKeyName(key as ll::SDLKey);
 
-        string::raw::from_buf(mem::transmute_copy(&cstr))
+        String::from_raw_buf(mem::transmute_copy(&cstr))
     }
 }
 

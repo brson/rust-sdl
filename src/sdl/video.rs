@@ -217,11 +217,10 @@ pub type PaletteColors<'a> =
 
 impl Palette {
     pub fn colors<'a>(&'a self) -> PaletteColors<'a> {
-        let colors: &'a [ll::SDL_Color] = unsafe {
-            slice::raw::buf_as_slice((*self.raw).colors as *const ll::SDL_Color,
-                                     (*self.raw).ncolors as uint,
-                                     |colors| mem::transmute(colors))
-        };
+        let colors = unsafe { (*self.raw).colors } as *const ll::SDL_Color;
+        let ncolors = unsafe { (*self.raw).ncolors } as uint;
+        let colors: &'a [ll::SDL_Color] =
+            unsafe { mem::transmute(slice::from_raw_buf(&colors, ncolors)) };
         colors.iter().map(|color| Color::from_struct(color))
     }
 }

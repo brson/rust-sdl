@@ -1,5 +1,4 @@
 use std::mem;
-use std::string;
 
 // Setup linking for all targets.
 #[cfg(target_os="macos")]
@@ -156,12 +155,12 @@ pub fn get_error() -> String {
     unsafe {
         let cstr = ll::SDL_GetError();
 
-        string::raw::from_buf(mem::transmute_copy(&cstr))
+        String::from_raw_buf(mem::transmute_copy(&cstr))
     }
 }
 
 pub fn set_error(err: &str) {
-    unsafe { ll::SDL_SetError(err.to_c_str().unwrap()); }
+    unsafe { ll::SDL_SetError(err.to_c_str().into_inner()); }
 }
 
 pub fn set_error_from_code(err: Error) {

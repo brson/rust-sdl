@@ -1,14 +1,9 @@
-#![crate_name = "sdl_mixer"]
-#![comment = "SDL_mixer binding"]
-#![license = "MIT"]
-#![crate_type = "lib"]
-
 extern crate libc;
 extern crate sdl;
 
 use libc::{c_int};
 
-use sdl::audio::{AudioFormat, Channels, Mono, Stereo};
+use sdl::audio::{AudioFormat, Channels};
 use sdl::video::ll::SDL_RWFromFile; // XXX refactoring
 use sdl::get_error;
 
@@ -216,7 +211,7 @@ pub fn query() -> Option<Query> {
         Some(Query {
             frequency: frequency,
             format: AudioFormat::from_ll_format(ll_format),
-            channels: if ll_channels == 1 { Mono } else { Stereo }
+            channels: if ll_channels == 1 { Channels::Mono } else { Channels::Stereo }
         })
     }
 }

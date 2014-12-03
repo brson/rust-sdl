@@ -1,8 +1,3 @@
-#![crate_name = "sdl"]
-#![comment = "SDL bindings"]
-#![license = "MIT"]
-#![crate_type = "lib"]
-
 #![feature(globs)]
 #![allow(raw_pointer_deriving)]
 
