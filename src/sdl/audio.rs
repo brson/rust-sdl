@@ -33,6 +33,8 @@ pub mod ll {
         pub userdata: *mut c_void,
     }
 
+    impl Copy for SDL_AudioSpec {}
+
     extern "C" {
         pub fn SDL_OpenAudio(desired: *mut SDL_AudioSpec, obtained: *mut SDL_AudioSpec) -> c_int;
         pub fn SDL_PauseAudio(pause_on: c_int);
@@ -51,6 +53,8 @@ pub enum AudioFormat {
     U16Msb = AUDIO_U16MSB as int,
     S16Msb = AUDIO_S16MSB as int
 }
+
+impl Copy for AudioFormat {}
 
 pub static U16_AUDIO_FORMAT: AudioFormat = AudioFormat::U16Lsb;
 pub static S16_AUDIO_FORMAT: AudioFormat = AudioFormat::S16Lsb;
@@ -86,6 +90,8 @@ pub enum Channels {
     Stereo,
 }
 
+impl Copy for Channels {}
+
 impl Channels {
     pub fn new(count: c_int) -> Channels { if count == 1 { Channels::Mono } else { Channels::Stereo } }
     pub fn count(self) -> c_int          { match self { Channels::Mono => 1, Channels::Stereo => 2 } }
@@ -100,6 +106,8 @@ pub struct DesiredAudioSpec {
     pub samples: u16,
     pub callback: AudioCallback,
 }
+
+impl Copy for DesiredAudioSpec {}
 
 impl DesiredAudioSpec {
     fn to_ll_spec(self) -> ll::SDL_AudioSpec {
@@ -128,6 +136,8 @@ pub struct ObtainedAudioSpec {
     pub samples: u16,
     pub size: u32,
 }
+
+impl Copy for ObtainedAudioSpec {}
 
 impl ObtainedAudioSpec {
     fn from_ll_spec(spec: &ll::SDL_AudioSpec) -> ObtainedAudioSpec {

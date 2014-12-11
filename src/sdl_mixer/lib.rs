@@ -31,6 +31,8 @@ pub mod ll {
         pub volume: u8,
     }
 
+    impl Copy for Mix_Chunk {}
+
     extern "C" {
         pub fn Mix_OpenAudio(frequency: c_int, format: u16, channels: c_int, chunksize: c_int)
               -> c_int;
@@ -199,6 +201,8 @@ pub struct Query {
     pub format: AudioFormat,
     pub channels: Channels,
 }
+
+impl Copy for Query {}
 
 pub fn query() -> Option<Query> {
     unsafe {

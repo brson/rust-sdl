@@ -35,6 +35,8 @@ pub enum GrabMode {
 	 On = ll::SDL_GRAB_ON as int
 }
 
+impl Copy for GrabMode {}
+
 pub fn set_caption(title: &str, icon: &str) {
 	unsafe { ll::SDL_WM_SetCaption(title.to_c_str().into_inner(), icon.to_c_str().into_inner()); }
 }

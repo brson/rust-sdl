@@ -26,6 +26,8 @@ pub mod ll {
 	     pub wm_cursor: *mut WMcursor,
 	}
 
+    impl Copy for SDL_Cursor {}
+
     extern "C" {
         pub fn SDL_ShowCursor(toggle: c_int) -> c_int;
         pub fn SDL_CreateCursor(data: *mut uint8_t,

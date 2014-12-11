@@ -30,10 +30,14 @@ pub mod ll {
         pub unicode: uint16_t,
     }
 
+    impl Copy for SDL_keysym {}
+
     #[repr(C)]
     pub struct SDL_Event {
         pub data: [c_uchar, ..24],
     }
+
+    impl Copy for SDL_Event {}
 
     #[repr(C)]
     pub struct SDL_ActiveEvent {
@@ -42,6 +46,8 @@ pub mod ll {
         pub state: uint8_t,
     }
 
+    impl Copy for SDL_ActiveEvent {}
+
     #[repr(C)]
     pub struct SDL_KeyboardEvent {
         pub _type: uint8_t,
@@ -49,6 +55,8 @@ pub mod ll {
         pub state: uint8_t,
         pub keysym: SDL_keysym,
     }
+
+    impl Copy for SDL_KeyboardEvent {}
 
     #[repr(C)]
     pub struct SDL_MouseMotionEvent {
@@ -61,6 +69,8 @@ pub mod ll {
         pub yrel: int16_t,
     }
 
+    impl Copy for SDL_MouseMotionEvent {}
+
     #[repr(C)]
     pub struct SDL_MouseButtonEvent {
         pub _type: uint8_t,
@@ -71,6 +81,8 @@ pub mod ll {
         pub y: uint16_t,
     }
 
+    impl Copy for SDL_MouseButtonEvent {}
+
     #[repr(C)]
     pub struct SDL_JoyAxisEvent {
         pub _type: uint8_t,
@@ -78,6 +90,8 @@ pub mod ll {
         pub axis: uint8_t,
         pub value: int16_t,
     }
+
+    impl Copy for SDL_JoyAxisEvent {}
 
     #[repr(C)]
     pub struct SDL_JoyBallEvent {
@@ -88,6 +102,8 @@ pub mod ll {
         pub yrel: int16_t,
     }
 
+    impl Copy for SDL_JoyBallEvent {}
+
     #[repr(C)]
     pub struct SDL_JoyHatEvent {
         pub _type: uint8_t,
@@ -95,6 +111,8 @@ pub mod ll {
         pub hat: uint8_t,
         pub value: uint8_t,
     }
+
+    impl Copy for SDL_JoyHatEvent {}
 
     #[repr(C)]
     pub struct SDL_JoyButtonEvent {
@@ -104,6 +122,8 @@ pub mod ll {
         pub state: uint8_t,
     }
 
+    impl Copy for SDL_JoyButtonEvent {}
+
     #[repr(C)]
     pub struct SDL_ResizeEvent {
         pub _type: uint8_t,
@@ -111,15 +131,21 @@ pub mod ll {
         pub h: c_int,
     }
 
+    impl Copy for SDL_ResizeEvent {}
+
     #[repr(C)]
     pub struct SDL_ExposeEvent {
         pub _type: uint8_t,
     }
 
+    impl Copy for SDL_ExposeEvent {}
+
     #[repr(C)]
     pub struct SDL_QuitEvent {
         pub _type: uint8_t,
     }
+
+    impl Copy for SDL_QuitEvent {}
 
     #[repr(C)]
     pub struct SDL_UserEvent {
@@ -129,11 +155,15 @@ pub mod ll {
         pub data2: *mut c_void,
     }
 
+    impl Copy for SDL_UserEvent {}
+
     #[repr(C)]
     pub struct SDL_SysWMEvent {
         pub _type: uint8_t,
         pub msg: *mut SDL_SysWMmsg,
     }
+
+    impl Copy for SDL_SysWMEvent {}
 
     impl SDL_Event {
         pub fn _type(&self) -> *const uint8_t {
@@ -216,6 +246,8 @@ pub enum AppState {
     Active = ll::SDL_APPACTIVE as int
 }
 
+impl Copy for AppState {}
+
 fn wrap_app_state(bitflags: u8) -> Vec<AppState> {
     let flags = [AppState::MouseFocus,
         AppState::InputFocus,
@@ -233,11 +265,15 @@ pub enum RepeatDelay {
     Custom(int)
 }
 
+impl Copy for RepeatDelay {}
+
 #[deriving(PartialEq)]
 pub enum RepeatInterval {
     Default,
     Custom(int)
 }
+
+impl Copy for RepeatInterval {}
 
 #[deriving(PartialEq, Eq, FromPrimitive, PartialOrd, Ord)]
 pub enum Key {
@@ -476,6 +512,8 @@ pub enum Key {
      Last
 }
 
+impl Copy for Key {}
+
 fn wrap_key(i: ll::SDLKey) -> Option<Key> {
     FromPrimitive::from_uint(i as uint)
 }
@@ -496,6 +534,8 @@ pub enum Mod {
      Mode = 0x4000,
      Reserved = 0x8000
 }
+
+impl Copy for Mod {}
 
 fn wrap_mod_state(bitflags: ll::SDLMod) -> Vec<Mod> {
     let flags = [Mod::None,
@@ -527,6 +567,8 @@ pub enum HatState {
     Left
 }
 
+impl Copy for HatState {}
+
 fn wrap_hat_state(bitflags: u8) -> Vec<HatState> {
     let flags = [HatState::Centered,
         HatState::Up,
@@ -549,6 +591,8 @@ pub enum Mouse {
     WheelDown
 }
 
+impl Copy for Mouse {}
+
 fn wrap_mouse(bitflags: u8) -> Option<Mouse> {
     FromPrimitive::from_u8(bitflags)
 }
@@ -563,6 +607,8 @@ pub enum MouseState {
     X1,
     X2
 }
+
+impl Copy for MouseState {}
 
 fn wrap_mouse_state(bitflags: u8) -> Vec<MouseState> {
     let flags = [MouseState::Left,
@@ -701,6 +747,8 @@ fn wrap_event(raw: ll::SDL_Event) -> Event {
         }
     }
 }
+
+impl Copy for EventType {}
 
 #[deriving(PartialEq, Eq, FromPrimitive)]
 pub enum EventType {

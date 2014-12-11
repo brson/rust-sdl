@@ -31,6 +31,8 @@ pub mod ll {
         _hidden: [c_uchar, ..24]
     }
 
+    impl Copy for SDL_RWops {}
+
     #[repr(C)]
     pub struct SDL_Surface {
         pub flags: uint32_t,
@@ -49,6 +51,8 @@ pub mod ll {
         pub refcount: c_int
     }
 
+    impl Copy for SDL_Surface {}
+
     #[repr(C)]
     pub struct SDL_Color {
         pub r: uint8_t,
@@ -57,11 +61,15 @@ pub mod ll {
         pub unused: uint8_t
     }
 
+    impl Copy for SDL_Color {}
+
     #[repr(C)]
     pub struct SDL_Palette {
         pub ncolors: c_int,
         pub colors: *mut SDL_Color,
     }
+
+    impl Copy for SDL_Palette {}
 
     #[allow(non_snake_case)]
     #[repr(C)]
@@ -85,6 +93,8 @@ pub mod ll {
         pub alpha: uint8_t,
     }
 
+    impl Copy for SDL_PixelFormat {}
+
     #[repr(C)]
     pub struct SDL_VideoInfo {
         pub flags: uint32_t,        // actually a set of packed fields
@@ -93,6 +103,8 @@ pub mod ll {
         pub current_w: c_int,
         pub current_h: c_int,
     }
+
+    impl Copy for SDL_VideoInfo {}
 
     extern "C" {
         pub fn SDL_CreateRGBSurface(flags: uint32_t,
@@ -204,6 +216,8 @@ pub struct Palette {
     pub raw: *mut ll::SDL_Palette
 }
 
+impl Copy for Palette {}
+
 fn wrap_palette(palette: *mut ll::SDL_Palette) -> Option<Palette> {
     if palette.is_null() {
         None
@@ -244,6 +258,8 @@ pub struct PixelFormat {
     pub color_key: u32,
     pub alpha: u8
 }
+
+impl Copy for PixelFormat {}
 
 fn wrap_pixel_format(raw: *mut ll::SDL_PixelFormat) -> PixelFormat {
     let fmt = & unsafe { *raw };
@@ -297,6 +313,8 @@ pub enum Color {
     RGB(u8, u8, u8),
     RGBA(u8, u8, u8, u8)
 }
+
+impl Copy for Color {}
 
 impl ::rand::Rand for Color {
     fn rand<R: ::rand::Rng>(rng: &mut R) -> Color {
@@ -358,6 +376,8 @@ pub enum SurfaceFlag {
     RLEAccel = 0x00004000
 }
 
+impl Copy for SurfaceFlag {}
+
 #[deriving(PartialEq, Eq)]
 pub enum VideoFlag {
     AnyFormat = 0x10000000,
@@ -369,6 +389,8 @@ pub enum VideoFlag {
     Resizable = 0x00000010,
     NoFrame = 0x00000020
 }
+
+impl Copy for VideoFlag {}
 
 pub fn set_video_mode(w: int, h: int, bpp: int,
                       surface_flags: &[SurfaceFlag],
@@ -421,6 +443,8 @@ pub enum VideoInfoFlag {
     BlitFill       = 0x00008000,
 }
 
+impl Copy for VideoInfoFlag {}
+
 pub struct VideoInfo {
     pub flags: Vec<VideoInfoFlag>,
     pub width: int,
@@ -459,6 +483,8 @@ pub enum PaletteType {
     Logical = 1,
     Physical
 }
+
+impl Copy for PaletteType {}
 
 pub fn get_video_surface() -> Result<Surface, String> {
     let raw = unsafe { ll::SDL_GetVideoSurface() };

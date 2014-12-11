@@ -31,6 +31,8 @@ pub enum GLAttribute {
     SwapControl
 }
 
+impl Copy for GLAttribute {}
+
 pub fn set_attribute(attr: GLAttribute, value: int) -> int {
     unsafe {
         ll::SDL_GL_SetAttribute(attr as c_int, value as c_int) as int
