@@ -65,6 +65,8 @@ pub struct Rect {
     pub h: u16
 }
 
+impl Copy for Rect {}
+
 #[allow(non_snake_case)]
 pub fn Rect(x: i16, y: i16, w: u16, h: u16) -> Rect {
     Rect { x: x, y: y, w: w, h: h }
@@ -93,6 +95,8 @@ pub enum InitFlag {
      Everything = ll::SDL_INIT_EVERYTHING as int,
 }
 
+impl Copy for InitFlag {}
+
 #[deriving(PartialEq, Eq)]
 pub enum Error {
      NoMem = ll::SDL_ENOMEM as int,
@@ -101,6 +105,8 @@ pub enum Error {
      Seek = ll::SDL_EFSEEK as int,
      Unsupported = ll::SDL_UNSUPPORTED as int
 }
+
+impl Copy for Error {}
 
 pub fn init(flags: &[InitFlag]) -> bool {
     unsafe {

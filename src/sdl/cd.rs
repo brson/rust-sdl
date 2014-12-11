@@ -26,6 +26,8 @@ pub mod ll {
 	    pub offset: uint32_t
 	}
 
+    impl Copy for SDL_CDtrack {}
+
     #[repr(C)]
 	pub struct SDL_CD {
 	    pub id: c_int,
@@ -35,6 +37,8 @@ pub mod ll {
 	    pub cur_frame: c_int,
 	    pub track: [SDL_CDtrack, ..100],
 	}
+
+    impl Copy for SDL_CD {}
 
     extern "C" {
         pub fn SDL_CDNumDrives() -> c_int;
@@ -84,6 +88,8 @@ pub enum Status {
 	Paused = ll::CD_PAUSED as int,
 	Error = ll::CD_ERROR as int
 }
+
+impl Copy for Status {}
 
 impl CD {
     pub fn open(index: int) -> Result<CD, String> {
