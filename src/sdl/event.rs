@@ -239,7 +239,7 @@ pub enum RepeatInterval {
     Custom(int)
 }
 
-#[deriving(PartialEq, Eq, FromPrimitive, PartialOrd, Ord)]
+#[deriving(PartialEq, Eq, FromPrimitive, PartialOrd, Ord, Clone)]
 pub enum Key {
     Unknown = 0,
     Backspace = 8,
