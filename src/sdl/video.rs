@@ -1,7 +1,6 @@
 use std::mem;
 use libc::{c_int, c_float};
 use std::ptr;
-use std::iter;
 use rand::Rng;
 use std::slice;
 
@@ -227,7 +226,7 @@ fn wrap_palette(palette: *mut ll::SDL_Palette) -> Option<Palette> {
 }
 
 pub type PaletteColors<'a> =
-    iter::Map<'a, &'a ll::SDL_Color, Color, slice::Items<'a, ll::SDL_Color>>;
+    slice::Items<'a, ll::SDL_Color>;
 
 impl Palette {
     pub fn colors<'a>(&'a self) -> PaletteColors<'a> {
@@ -235,7 +234,7 @@ impl Palette {
         let ncolors = unsafe { (*self.raw).ncolors } as uint;
         let colors: &'a [ll::SDL_Color] =
             unsafe { mem::transmute(slice::from_raw_buf(&colors, ncolors)) };
-        colors.iter().map(|color| Color::from_struct(color))
+        colors.iter()
     }
 }
 
