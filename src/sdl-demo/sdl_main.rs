@@ -20,8 +20,8 @@ use sdl::event::{Event, Key};
 
 #[no_mangle]
 #[allow(non_snake_case)]
-pub extern "C" fn SDL_main(argc: int, argv: *const *const u8) {
-    std::rt::start(argc, argv, real_main);
+pub extern "C" fn SDL_main() {
+    real_main()
 }
 
 pub fn real_main() {
