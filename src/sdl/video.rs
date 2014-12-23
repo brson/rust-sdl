@@ -226,7 +226,7 @@ fn wrap_palette(palette: *mut ll::SDL_Palette) -> Option<Palette> {
 }
 
 pub type PaletteColors<'a> =
-    slice::Items<'a, ll::SDL_Color>;
+    slice::Iter<'a, ll::SDL_Color>;
 
 impl Palette {
     pub fn colors<'a>(&'a self) -> PaletteColors<'a> {
