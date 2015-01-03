@@ -1,4 +1,5 @@
 use std::mem;
+use std::c_str::ToCStr;
 
 // Setup linking for all targets.
 #[cfg(target_os="macos")]

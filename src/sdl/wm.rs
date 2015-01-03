@@ -1,5 +1,6 @@
 use std::mem;
 use std::ptr;
+use std::c_str::ToCStr;
 
 use video;
 

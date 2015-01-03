@@ -3,6 +3,7 @@ use libc::{c_int, c_float};
 use std::ptr;
 use rand::Rng;
 use std::slice;
+use std::c_str::ToCStr;
 
 use Rect;
 use get_error;

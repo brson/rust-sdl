@@ -1,6 +1,7 @@
 extern crate libc;
 extern crate sdl;
 
+use std::c_str::ToCStr;
 use libc::{c_int};
 
 use sdl::audio::{AudioFormat, Channels};
