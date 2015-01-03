@@ -35,7 +35,7 @@ pub mod ll {
 	    pub numtracks: c_int,
 	    pub cur_track: c_int,
 	    pub cur_frame: c_int,
-	    pub track: [SDL_CDtrack, ..100],
+	    pub track: [SDL_CDtrack; 100],
 	}
 
     impl Copy for SDL_CD {}

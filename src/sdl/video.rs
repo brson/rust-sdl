@@ -27,7 +27,7 @@ pub mod ll {
         pub write: *mut uint8_t,
         pub close: *mut uint8_t,
         pub _type: uint32_t,
-        _hidden: [c_uchar, ..24]
+        _hidden: [c_uchar; 24]
     }
 
     impl Copy for SDL_RWops {}
@@ -735,8 +735,8 @@ pub fn set_gamma(r: f32, g: f32, b: f32) -> bool {
                               b as c_float) != -1 }
 }
 
-pub fn set_gamma_ramp(r: Option<[u16, ..256]>, g: Option<[u16, ..256]>,
-                      b: Option<[u16, ..256]>) -> bool {
+pub fn set_gamma_ramp(r: Option<[u16; 256]>, g: Option<[u16; 256]>,
+                      b: Option<[u16; 256]>) -> bool {
     unsafe { ll::SDL_SetGammaRamp(match r {
         Some(r) => r.as_ptr(),
         None => ptr::null()
@@ -749,10 +749,10 @@ pub fn set_gamma_ramp(r: Option<[u16, ..256]>, g: Option<[u16, ..256]>,
     }) != -1 }
 }
 
-pub fn get_gamma_ramp() -> ([u16, ..256], [u16, ..256], [u16, ..256]) {
-    let mut r = [0u16, .. 256];
-    let mut g = [0u16, .. 256];
-    let mut b = [0u16, .. 256];
+pub fn get_gamma_ramp() -> ([u16; 256], [u16; 256], [u16; 256]) {
+    let mut r = [0u16; 256];
+    let mut g = [0u16; 256];
+    let mut b = [0u16; 256];
 
     unsafe { ll::SDL_GetGammaRamp(r.as_mut_ptr(),
                                   g.as_mut_ptr(),

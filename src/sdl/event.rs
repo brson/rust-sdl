@@ -34,7 +34,7 @@ pub mod ll {
 
     #[repr(C)]
     pub struct SDL_Event {
-        pub data: [c_uchar, ..24],
+        pub data: [c_uchar; 24],
     }
 
     impl Copy for SDL_Event {}
@@ -645,7 +645,7 @@ pub enum Event {
 }
 
 fn null_event() -> ll::SDL_Event {
-    ll::SDL_Event { data: [0, .. 24] }
+    ll::SDL_Event { data: [0; 24] }
 }
 
 fn wrap_event(raw: ll::SDL_Event) -> Event {

@@ -22,7 +22,7 @@ pub mod ll {
 	     pub hot_y: int16_t,
 	     pub data: *mut uint8_t,
 	     pub mask: *mut uint8_t,
-	     pub save: [*mut uint8_t, ..2],
+	     pub save: [*mut uint8_t; 2],
 	     pub wm_cursor: *mut WMcursor,
 	}
 
