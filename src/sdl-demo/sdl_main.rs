@@ -28,7 +28,7 @@ pub fn real_main() {
     sdl::init([sdl::InitFlag::Video].as_slice());
     sdl::wm::set_caption("rust-sdl demo - video", "rust-sdl");
 
-    let mut rng = std::rand::task_rng();
+    let mut rng = std::rand::thread_rng();
     let screen = match sdl::video::set_video_mode(800, 600, 32,
                                                   [SurfaceFlag::HWSurface].as_slice(),
                                                   [VideoFlag::DoubleBuf].as_slice()) {
