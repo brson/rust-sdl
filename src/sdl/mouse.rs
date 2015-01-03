@@ -22,7 +22,7 @@ pub mod ll {
 	     pub hot_y: int16_t,
 	     pub data: *mut uint8_t,
 	     pub mask: *mut uint8_t,
-	     pub save: [*mut uint8_t, ..2],
+	     pub save: [*mut uint8_t; 2],
 	     pub wm_cursor: *mut WMcursor,
 	}
 
@@ -48,7 +48,7 @@ pub fn warp_mouse(x: u16, y: u16) {
 	unsafe { ll::SDL_WarpMouse(x, y); }
 }
 
-#[deriving(PartialEq)]
+#[derive(PartialEq)]
 pub struct Cursor {
 	pub raw: *mut ll::SDL_Cursor,
 	pub owned: bool

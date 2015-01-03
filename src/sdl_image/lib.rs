@@ -1,6 +1,7 @@
 extern crate libc;
 extern crate sdl;
 
+use std::c_str::ToCStr;
 use libc::c_int;
 
 use sdl::get_error;
@@ -37,7 +38,7 @@ pub mod ll {
     }
 }
 
-#[deriving(PartialEq, Eq)]
+#[derive(PartialEq, Eq)]
 pub enum InitFlag {
     JPG = ll::IMG_INIT_JPG as int,
     PNG = ll::IMG_INIT_PNG as int,

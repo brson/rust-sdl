@@ -1,5 +1,6 @@
 use std::mem;
 use std::ptr;
+use std::c_str::ToCStr;
 
 use video;
 
@@ -28,7 +29,7 @@ pub mod ll {
     }
 }
 
-#[deriving(PartialEq, Eq)]
+#[derive(PartialEq, Eq)]
 pub enum GrabMode {
 	 Query = ll::SDL_GRAB_QUERY as int,
 	 Off = ll::SDL_GRAB_OFF as int,

@@ -52,7 +52,7 @@ pub fn update_joysticks() {
 	unsafe { ll::SDL_JoystickUpdate(); }
 }
 
-#[deriving(PartialEq)]
+#[derive(PartialEq)]
 pub struct Joystick {
 	pub raw: *mut ll::SDL_Joystick
 }

@@ -35,7 +35,7 @@ pub mod ll {
 	    pub numtracks: c_int,
 	    pub cur_track: c_int,
 	    pub cur_frame: c_int,
-	    pub track: [SDL_CDtrack, ..100],
+	    pub track: [SDL_CDtrack; 100],
 	}
 
     impl Copy for SDL_CD {}
@@ -71,7 +71,7 @@ pub fn get_drive_name(index: int) -> String {
 	}
 }
 
-#[deriving(PartialEq)]
+#[derive(PartialEq)]
 pub struct CD {
 	pub raw: *mut ll::SDL_CD
 }
@@ -80,7 +80,7 @@ fn wrap_cd(raw: *mut ll::SDL_CD) -> CD {
 	CD { raw: raw }
 }
 
-#[deriving(PartialEq, Eq)]
+#[derive(PartialEq, Eq)]
 pub enum Status {
 	TrayEmpty = ll::CD_TRAYEMPTY as int,
 	Stopped = ll::CD_STOPPED as int,

@@ -1,4 +1,5 @@
 use std::mem;
+use std::c_str::ToCStr;
 
 // Setup linking for all targets.
 #[cfg(target_os="macos")]
@@ -56,7 +57,7 @@ pub mod ll {
     }
 }
 
-#[deriving(PartialEq)]
+#[derive(PartialEq)]
 #[repr(C)]
 pub struct Rect {
     pub x: i16,
@@ -83,7 +84,7 @@ impl Rect {
     }
 }
 
-#[deriving(PartialEq, Eq)]
+#[derive(PartialEq, Eq)]
 pub enum InitFlag {
      Timer = ll::SDL_INIT_TIMER as int,
      Audio = ll::SDL_INIT_AUDIO as int,
@@ -97,7 +98,7 @@ pub enum InitFlag {
 
 impl Copy for InitFlag {}
 
-#[deriving(PartialEq, Eq)]
+#[derive(PartialEq, Eq)]
 pub enum Error {
      NoMem = ll::SDL_ENOMEM as int,
      Read = ll::SDL_EFREAD as int,
