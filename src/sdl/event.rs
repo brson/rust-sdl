@@ -239,7 +239,7 @@ pub mod ll {
     }
 }
 
-#[deriving(PartialEq, Eq)]
+#[derive(PartialEq, Eq)]
 pub enum AppState {
     MouseFocus = ll::SDL_APPMOUSEFOCUS as int,
     InputFocus = ll::SDL_APPINPUTFOCUS as int,
@@ -259,7 +259,7 @@ fn wrap_app_state(bitflags: u8) -> Vec<AppState> {
     }).collect()
 }
 
-#[deriving(PartialEq)]
+#[derive(PartialEq)]
 pub enum RepeatDelay {
     Default,
     Custom(int)
@@ -267,7 +267,7 @@ pub enum RepeatDelay {
 
 impl Copy for RepeatDelay {}
 
-#[deriving(PartialEq)]
+#[derive(PartialEq)]
 pub enum RepeatInterval {
     Default,
     Custom(int)
@@ -275,7 +275,7 @@ pub enum RepeatInterval {
 
 impl Copy for RepeatInterval {}
 
-#[deriving(PartialEq, Eq, FromPrimitive, PartialOrd, Ord)]
+#[derive(PartialEq, Eq, FromPrimitive, PartialOrd, Ord)]
 pub enum Key {
     Unknown = 0,
     Backspace = 8,
@@ -518,7 +518,7 @@ fn wrap_key(i: ll::SDLKey) -> Option<Key> {
     FromPrimitive::from_uint(i as uint)
 }
 
-#[deriving(PartialEq, Eq)]
+#[derive(PartialEq, Eq)]
 pub enum Mod {
      None = 0x0000,
      LShift = 0x0001,
@@ -558,7 +558,7 @@ fn wrap_mod_state(bitflags: ll::SDLMod) -> Vec<Mod> {
     }).collect()
 }
 
-#[deriving(PartialEq, Eq)]
+#[derive(PartialEq, Eq)]
 pub enum HatState {
     Centered,
     Up,
@@ -582,7 +582,7 @@ fn wrap_hat_state(bitflags: u8) -> Vec<HatState> {
     }).collect()
 }
 
-#[deriving(PartialEq, Eq, FromPrimitive)]
+#[derive(PartialEq, Eq, FromPrimitive)]
 pub enum Mouse {
     Left = 1,
     Middle,
@@ -597,7 +597,7 @@ fn wrap_mouse(bitflags: u8) -> Option<Mouse> {
     FromPrimitive::from_u8(bitflags)
 }
 
-#[deriving(PartialEq, Eq)]
+#[derive(PartialEq, Eq)]
 pub enum MouseState {
     Left = 1,
     Middle,
@@ -625,7 +625,7 @@ fn wrap_mouse_state(bitflags: u8) -> Vec<MouseState> {
     }).collect()
 }
 
-#[deriving(PartialEq)]
+#[derive(PartialEq)]
 pub enum Event {
     // TODO: TextInput, TextEditing
      None,
@@ -750,7 +750,7 @@ fn wrap_event(raw: ll::SDL_Event) -> Event {
 
 impl Copy for EventType {}
 
-#[deriving(PartialEq, Eq, FromPrimitive)]
+#[derive(PartialEq, Eq, FromPrimitive)]
 pub enum EventType {
     // TODO: TextInput, TextEditing
      None,
