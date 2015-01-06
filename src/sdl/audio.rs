@@ -203,7 +203,7 @@ pub fn mix(dest: &mut [u8], src: &[u8], volume: c_int) {
     }
 }
 
-pub fn with_lock<R>(f: || -> R) -> R {
+pub fn with_lock<F: Fn() -> bool>(f: F) -> bool {
     unsafe {
         SDL_LockAudio();
         let result = f();

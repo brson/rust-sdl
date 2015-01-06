@@ -588,7 +588,7 @@ impl Surface {
     }
 
     /// Locks a surface so that the pixels can be directly accessed safely.
-    pub fn with_lock<R>(&self, f: |&mut [u8]| -> R) -> R {
+    pub fn with_lock<F: Fn(&mut [u8]) -> bool>(&self, f: F) -> bool {
         unsafe {
             if ll::SDL_LockSurface(self.raw) != 0 { panic!("could not lock surface"); }
             let len = (*self.raw).pitch as uint * ((*self.raw).h as uint);
