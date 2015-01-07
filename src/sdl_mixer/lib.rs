@@ -1,7 +1,7 @@
 extern crate libc;
 extern crate sdl;
 
-use std::c_str::ToCStr;
+use std::ffi::CString;
 use libc::{c_int};
 
 use sdl::audio::{AudioFormat, Channels};
@@ -128,8 +128,8 @@ impl Chunk {
     }
 
     pub fn from_wav(path: &Path) -> Result<Chunk, String> {
-        let cpath = path.to_c_str();
-        let mode = "rb".to_c_str();
+        let cpath = CString::from_slice(path.as_vec());
+        let mode = CString::from_slice("rb".as_bytes());
         let raw = unsafe {
             ll::Mix_LoadWAV_RW(SDL_RWFromFile(cpath.as_ptr(), mode.as_ptr()), 1)
         };

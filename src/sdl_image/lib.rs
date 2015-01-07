@@ -1,7 +1,7 @@
 extern crate libc;
 extern crate sdl;
 
-use std::c_str::ToCStr;
+use std::ffi::CString;
 use libc::c_int;
 
 use sdl::get_error;
@@ -65,7 +65,7 @@ pub fn init(flags: &[InitFlag]) -> Vec<InitFlag> {
 }
 
 pub fn load(file: &Path) -> Result<Surface, String> {
-    let cfile = file.to_c_str();
+    let cfile = CString::from_slice(file.as_vec());
     unsafe {
         let raw = ll::IMG_Load(cfile.as_ptr());
 
