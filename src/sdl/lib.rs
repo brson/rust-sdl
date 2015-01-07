@@ -1,5 +1,4 @@
-#![feature(globs)]
-#![allow(raw_pointer_deriving)]
+#![allow(raw_pointer_derive)]
 
 extern crate libc;
 extern crate rand;

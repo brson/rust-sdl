@@ -3,7 +3,7 @@ use libc::{c_int, c_float};
 use std::ptr;
 use rand::Rng;
 use std::slice;
-use std::c_str::ToCStr;
+use std::ffi::CString;
 
 use Rect;
 use get_error;
@@ -211,7 +211,7 @@ impl Drop for Surface {
 }
 
 #[derive(PartialEq)]
-#[allow(raw_pointer_deriving)]
+#[allow(raw_pointer_derive)]
 pub struct Palette {
     pub raw: *mut ll::SDL_Palette
 }
@@ -513,8 +513,8 @@ impl Surface {
     }
 
     pub fn from_bmp(path: &Path) -> Result<Surface, String> {
-        let cpath = path.to_c_str();
-        let mode = "rb".to_c_str();
+        let cpath = CString::from_slice(path.as_vec());
+        let mode = CString::from_slice("rb".as_bytes());
         let raw = unsafe {
             ll::SDL_LoadBMP_RW(ll::SDL_RWFromFile(cpath.as_ptr(), mode.as_ptr()), 1)
         };
@@ -636,8 +636,8 @@ impl Surface {
     }
 
     pub fn save_bmp(&self, path: &Path) -> bool {
-        let cpath = path.to_c_str();
-        let mode = "wb".to_c_str();
+        let cpath = CString::from_slice(path.as_vec());
+        let mode = CString::from_slice("wb".as_bytes());
         unsafe {
             ll::SDL_SaveBMP_RW(self.raw, ll::SDL_RWFromFile(cpath.as_ptr(), mode.as_ptr()), 1) == 0
         }

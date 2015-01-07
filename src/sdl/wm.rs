@@ -1,6 +1,8 @@
 use std::mem;
 use std::ptr;
-use std::c_str::ToCStr;
+use std::ffi;
+use std::str;
+use std::ffi::CString;
 
 use video;
 
@@ -39,7 +41,7 @@ pub enum GrabMode {
 impl Copy for GrabMode {}
 
 pub fn set_caption(title: &str, icon: &str) {
-	unsafe { ll::SDL_WM_SetCaption(title.to_c_str().into_inner(), icon.to_c_str().into_inner()); }
+	unsafe { ll::SDL_WM_SetCaption(CString::from_slice(title.as_bytes()).as_ptr(), CString::from_slice(icon.as_bytes()).as_ptr()); }
 }
 
 pub fn get_caption() -> (String, String) {
@@ -50,8 +52,8 @@ pub fn get_caption() -> (String, String) {
 		ll::SDL_WM_GetCaption(&mut title_buf,
 			                  &mut icon_buf);
 
-        (String::from_raw_buf(mem::transmute_copy(&title_buf)),
-         String::from_raw_buf(mem::transmute_copy(&icon_buf)))
+        (str::from_utf8(ffi::c_str_to_bytes(mem::transmute_copy(&title_buf))).to_string(),
+         str::from_utf8(ffi::c_str_to_bytes(mem::transmute_copy(&icon_buf))).to_string())
     }
 }
 
