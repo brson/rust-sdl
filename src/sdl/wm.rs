@@ -52,8 +52,8 @@ pub fn get_caption() -> (String, String) {
 		ll::SDL_WM_GetCaption(&mut title_buf,
 			                  &mut icon_buf);
 
-        (str::from_utf8(ffi::c_str_to_bytes(mem::transmute_copy(&title_buf))).to_string(),
-         str::from_utf8(ffi::c_str_to_bytes(mem::transmute_copy(&icon_buf))).to_string())
+        (str::from_utf8(ffi::c_str_to_bytes(mem::transmute_copy(&title_buf))).unwrap().to_string(),
+         str::from_utf8(ffi::c_str_to_bytes(mem::transmute_copy(&icon_buf))).unwrap().to_string())
     }
 }
 
