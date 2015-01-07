@@ -1,5 +1,7 @@
 use std::mem;
-use std::c_str::ToCStr;
+use std::ffi;
+use std::str;
+use std::ffi::CString;
 
 // Setup linking for all targets.
 #[cfg(target_os="macos")]
@@ -162,12 +164,12 @@ pub fn get_error() -> String {
     unsafe {
         let cstr = ll::SDL_GetError();
 
-        String::from_raw_buf(mem::transmute_copy(&cstr))
+        str::from_utf8(ffi::c_str_to_bytes(mem::transmute_copy(&cstr))).to_string()
     }
 }
 
 pub fn set_error(err: &str) {
-    unsafe { ll::SDL_SetError(err.to_c_str().into_inner()); }
+    unsafe { ll::SDL_SetError(CString::from_slice(err.as_bytes()).as_ptr()); }
 }
 
 pub fn set_error_from_code(err: Error) {

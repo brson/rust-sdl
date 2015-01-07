@@ -2,6 +2,8 @@ use std::mem;
 use libc::c_int;
 use std::slice;
 use std::num::FromPrimitive;
+use std::ffi;
+use std::str;
 
 pub mod ll {
     #![allow(non_camel_case_types)]
@@ -849,7 +851,7 @@ pub fn get_key_name(key: Key) -> String {
     unsafe {
         let cstr = ll::SDL_GetKeyName(key as ll::SDLKey);
 
-        String::from_raw_buf(mem::transmute_copy(&cstr))
+        str::from_utf8(ffi::c_str_to_bytes(mem::transmute_copy(&cstr))).to_string()
     }
 }
 
