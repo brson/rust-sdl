@@ -69,7 +69,7 @@ pub fn get_drive_name(index: int) -> String {
 	unsafe {
 		let cstr = ll::SDL_CDName(index as c_int);
 
-		str::from_utf8(ffi::c_str_to_bytes(mem::transmute_copy(&cstr))).to_string()
+		str::from_utf8(ffi::c_str_to_bytes(mem::transmute_copy(&cstr))).unwrap().to_string()
 	}
 }
 

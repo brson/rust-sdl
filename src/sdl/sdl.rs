@@ -164,7 +164,7 @@ pub fn get_error() -> String {
     unsafe {
         let cstr = ll::SDL_GetError();
 
-        str::from_utf8(ffi::c_str_to_bytes(mem::transmute_copy(&cstr))).to_string()
+        str::from_utf8(ffi::c_str_to_bytes(mem::transmute_copy(&cstr))).unwrap().to_string()
     }
 }
 
