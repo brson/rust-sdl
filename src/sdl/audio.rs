@@ -122,7 +122,7 @@ impl DesiredAudioSpec {
                 padding: 0,
                 size: 0,
                 callback: native_callback as *mut u8,
-                userdata: transmute(box callback),
+                userdata: transmute(Box::new(callback)),
             }
         }
     }
