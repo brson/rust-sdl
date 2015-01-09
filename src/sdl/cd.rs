@@ -61,11 +61,11 @@ pub mod ll {
     }
 }
 
-pub fn get_num_drives() -> int {
-	unsafe { ll::SDL_CDNumDrives() as int }
+pub fn get_num_drives() -> isize {
+	unsafe { ll::SDL_CDNumDrives() as isize }
 }
 
-pub fn get_drive_name(index: int) -> String {
+pub fn get_drive_name(index: isize) -> String {
 	unsafe {
 		let cstr = ll::SDL_CDName(index as c_int);
 
@@ -84,17 +84,17 @@ fn wrap_cd(raw: *mut ll::SDL_CD) -> CD {
 
 #[derive(PartialEq, Eq)]
 pub enum Status {
-	TrayEmpty = ll::CD_TRAYEMPTY as int,
-	Stopped = ll::CD_STOPPED as int,
-	Playing = ll::CD_PLAYING as int,
-	Paused = ll::CD_PAUSED as int,
-	Error = ll::CD_ERROR as int
+	TrayEmpty = ll::CD_TRAYEMPTY as isize,
+	Stopped = ll::CD_STOPPED as isize,
+	Playing = ll::CD_PLAYING as isize,
+	Paused = ll::CD_PAUSED as isize,
+	Error = ll::CD_ERROR as isize
 }
 
 impl Copy for Status {}
 
 impl CD {
-    pub fn open(index: int) -> Result<CD, String> {
+    pub fn open(index: isize) -> Result<CD, String> {
 		unsafe {
 			let raw = ll::SDL_CDOpen(index as c_int);
 
@@ -117,12 +117,12 @@ impl CD {
 		}
 	}
 
-	pub fn play(&self, start: int, len: int) -> bool {
+	pub fn play(&self, start: isize, len: isize) -> bool {
 		unsafe { ll::SDL_CDPlay(self.raw, start as c_int, len as c_int) == 0 }
 	}
 
-	pub fn play_tracks(&self, start_track: int, start_frame: int, ntracks: int,
-		           nframes: int) -> bool {
+	pub fn play_tracks(&self, start_track: isize, start_frame: isize, ntracks: isize,
+		           nframes: isize) -> bool {
 		unsafe {
 			ll::SDL_CDPlayTracks(self.raw, start_track as c_int, start_frame as c_int,
 				                 ntracks as c_int, nframes as c_int) == 0

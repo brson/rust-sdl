@@ -88,25 +88,25 @@ impl Rect {
 
 #[derive(PartialEq, Eq)]
 pub enum InitFlag {
-     Timer = ll::SDL_INIT_TIMER as int,
-     Audio = ll::SDL_INIT_AUDIO as int,
-     Video = ll::SDL_INIT_VIDEO as int,
-     CDRom = ll::SDL_INIT_CDROM as int,
-     Joystick = ll::SDL_INIT_JOYSTICK as int,
-     NoParachute = ll::SDL_INIT_NOPARACHUTE as int,
-     EventThread = ll::SDL_INIT_EVENTTHREAD as int,
-     Everything = ll::SDL_INIT_EVERYTHING as int,
+     Timer = ll::SDL_INIT_TIMER as isize,
+     Audio = ll::SDL_INIT_AUDIO as isize,
+     Video = ll::SDL_INIT_VIDEO as isize,
+     CDRom = ll::SDL_INIT_CDROM as isize,
+     Joystick = ll::SDL_INIT_JOYSTICK as isize,
+     NoParachute = ll::SDL_INIT_NOPARACHUTE as isize,
+     EventThread = ll::SDL_INIT_EVENTTHREAD as isize,
+     Everything = ll::SDL_INIT_EVERYTHING as isize,
 }
 
 impl Copy for InitFlag {}
 
 #[derive(PartialEq, Eq)]
 pub enum Error {
-     NoMem = ll::SDL_ENOMEM as int,
-     Read = ll::SDL_EFREAD as int,
-     Write = ll::SDL_EFWRITE as int,
-     Seek = ll::SDL_EFSEEK as int,
-     Unsupported = ll::SDL_UNSUPPORTED as int
+     NoMem = ll::SDL_ENOMEM as isize,
+     Read = ll::SDL_EFREAD as isize,
+     Write = ll::SDL_EFWRITE as isize,
+     Seek = ll::SDL_EFSEEK as isize,
+     Unsupported = ll::SDL_UNSUPPORTED as isize
 }
 
 impl Copy for Error {}
@@ -180,6 +180,6 @@ pub fn clear_error() {
     unsafe { ll::SDL_ClearError(); }
 }
 
-pub fn get_ticks() -> uint {
-    unsafe { ll::SDL_GetTicks() as uint }
+pub fn get_ticks() -> usize {
+    unsafe { ll::SDL_GetTicks() as usize }
 }

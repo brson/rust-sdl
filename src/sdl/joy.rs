@@ -34,11 +34,11 @@ pub mod ll {
     }
 }
 
-pub fn get_num_joysticks() -> int {
-	unsafe { ll::SDL_NumJoysticks() as int }
+pub fn get_num_joysticks() -> isize {
+	unsafe { ll::SDL_NumJoysticks() as isize }
 }
 
-pub fn get_joystick_name(index: int) -> String {
+pub fn get_joystick_name(index: isize) -> String {
 	unsafe {
 		let cstr = ll::SDL_JoystickName(index as c_int);
 
@@ -46,7 +46,7 @@ pub fn get_joystick_name(index: int) -> String {
 	}
 }
 
-pub fn is_joystick_open(index: int) -> bool {
+pub fn is_joystick_open(index: isize) -> bool {
 	unsafe { ll::SDL_JoystickOpened(index as c_int) == 1 }
 }
 
@@ -64,7 +64,7 @@ fn wrap_joystick(raw: *mut ll::SDL_Joystick) -> Joystick {
 }
 
 impl Joystick {
-	pub fn open(index: int) -> Result<Joystick, String> {
+	pub fn open(index: isize) -> Result<Joystick, String> {
 		unsafe {
 			let raw = ll::SDL_JoystickOpen(index as c_int);
 
@@ -73,39 +73,39 @@ impl Joystick {
 		}
 	}
 
-	pub fn get_index(&self) -> int {
-		unsafe { ll::SDL_JoystickIndex(self.raw) as int }
+	pub fn get_index(&self) -> isize {
+		unsafe { ll::SDL_JoystickIndex(self.raw) as isize }
 	}
 
-	pub fn get_num_axes(&self) -> int {
-		unsafe { ll::SDL_JoystickNumAxes(self.raw) as int }
+	pub fn get_num_axes(&self) -> isize {
+		unsafe { ll::SDL_JoystickNumAxes(self.raw) as isize }
 	}
 
-	pub fn get_num_balls(&self) -> int {
-		unsafe { ll::SDL_JoystickNumBalls(self.raw) as int }
+	pub fn get_num_balls(&self) -> isize {
+		unsafe { ll::SDL_JoystickNumBalls(self.raw) as isize }
 	}
 
-	pub fn get_num_hats(&self) -> int {
-		unsafe { ll::SDL_JoystickNumHats(self.raw) as int }
+	pub fn get_num_hats(&self) -> isize {
+		unsafe { ll::SDL_JoystickNumHats(self.raw) as isize }
 	}
 
-	pub fn get_num_buttons(&self) -> int {
-		unsafe { ll::SDL_JoystickNumButtons(self.raw) as int }
+	pub fn get_num_buttons(&self) -> isize {
+		unsafe { ll::SDL_JoystickNumButtons(self.raw) as isize }
 	}
 
-	pub fn get_axis(&self, axis: int) -> i16 {
+	pub fn get_axis(&self, axis: isize) -> i16 {
 		unsafe { ll::SDL_JoystickGetAxis(self.raw, axis as c_int) as i16 }
 	}
 
-	pub fn get_hat(&self, hat: int) -> u8 {
+	pub fn get_hat(&self, hat: isize) -> u8 {
 		unsafe { ll::SDL_JoystickGetAxis(self.raw, hat as c_int) as u8 }
 	}
 
-	pub fn get_button(&self, button: int) -> u8 {
+	pub fn get_button(&self, button: isize) -> u8 {
 		unsafe { ll::SDL_JoystickGetButton(self.raw, button as c_int) as u8 }
 	}
 
-	pub fn get_ball(&self, ball: int) -> (int, int) {
+	pub fn get_ball(&self, ball: isize) -> (isize, isize) {
 		let mut dx = 0;
 		let mut dy = 0;
 
@@ -113,7 +113,7 @@ impl Joystick {
 			                             &mut dx,
 			                             &mut dy); }
 
-		(dx as int, dy as int)
+		(dx as isize, dy as isize)
 	}
 }
 

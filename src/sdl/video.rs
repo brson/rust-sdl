@@ -232,7 +232,7 @@ pub type PaletteColors<'a> =
 impl Palette {
     pub fn colors<'a>(&'a self) -> PaletteColors<'a> {
         let colors = unsafe { (*self.raw).colors } as *const ll::SDL_Color;
-        let ncolors = unsafe { (*self.raw).ncolors } as uint;
+        let ncolors = unsafe { (*self.raw).ncolors } as usize;
         let colors: &'a [ll::SDL_Color] =
             unsafe { mem::transmute(slice::from_raw_buf(&colors, ncolors)) };
         colors.iter()
@@ -383,7 +383,7 @@ pub enum VideoFlag {
     AnyFormat = 0x10000000,
     HWPalette = 0x20000000,
     DoubleBuf = 0x40000000,
-    Fullscreen = 0x80000000u as int, // 0x80000000 > INT_MAX on i686
+    Fullscreen = 0x80000000us as isize, // 0x80000000 > INT_MAX on i686
     OpenGL = 0x00000002,
     OpenGLBlit = 0x0000000A,
     Resizable = 0x00000010,
@@ -392,7 +392,7 @@ pub enum VideoFlag {
 
 impl Copy for VideoFlag {}
 
-pub fn set_video_mode(w: int, h: int, bpp: int,
+pub fn set_video_mode(w: isize, h: isize, bpp: isize,
                       surface_flags: &[SurfaceFlag],
                       video_flags: &[VideoFlag]) -> Result<Surface, String> {
     let flags = surface_flags.iter().fold(0u32, |flags, &flag| {
@@ -411,9 +411,9 @@ pub fn set_video_mode(w: int, h: int, bpp: int,
     }
 }
 
-pub fn is_video_mode_ok(w: int, h: int, bpp: int,
+pub fn is_video_mode_ok(w: isize, h: isize, bpp: isize,
                         surface_flags: &[SurfaceFlag],
-                        video_flags: &[VideoFlag]) -> Option<int> {
+                        video_flags: &[VideoFlag]) -> Option<isize> {
     let flags = surface_flags.iter().fold(0u32, |flags, &flag| {
         flags | flag as u32
     });
@@ -426,7 +426,7 @@ pub fn is_video_mode_ok(w: int, h: int, bpp: int,
                                       bpp as c_int, flags);
 
         if bpp == 0 { None }
-        else { Some(bpp as int) }
+        else { Some(bpp as isize) }
     }
 }
 
@@ -447,8 +447,8 @@ impl Copy for VideoInfoFlag {}
 
 pub struct VideoInfo {
     pub flags: Vec<VideoInfoFlag>,
-    pub width: int,
-    pub height: int,
+    pub width: isize,
+    pub height: isize,
     pub format: PixelFormat,
 }
 
@@ -473,8 +473,8 @@ pub fn get_video_info() -> VideoInfo {
     let raw = unsafe { ll::SDL_GetVideoInfo() };
     VideoInfo {
         flags:  wrap_video_info_flags(unsafe { (*raw).flags } as u32),
-        width:  unsafe { (*raw).current_w } as int,
-        height: unsafe { (*raw).current_h } as int,
+        width:  unsafe { (*raw).current_w } as isize,
+        height: unsafe { (*raw).current_h } as isize,
         format: wrap_pixel_format(unsafe { (*raw).vfmt }),
     }
 }
@@ -496,7 +496,7 @@ pub fn get_video_surface() -> Result<Surface, String> {
 // TODO: get_video_modes, get_video_driver_name
 
 impl Surface {
-    pub fn new(surface_flags: &[SurfaceFlag], width: int, height: int, bpp: int,
+    pub fn new(surface_flags: &[SurfaceFlag], width: isize, height: isize, bpp: isize,
                rmask: u32, gmask: u32, bmask: u32, amask: u32) -> Result<Surface, String> {
         let flags = surface_flags.iter().fold(0u32, |flags, flag| { flags | *flag as u32 });
 
@@ -591,7 +591,7 @@ impl Surface {
     pub fn with_lock<F: Fn(&mut [u8]) -> bool>(&self, f: F) -> bool {
         unsafe {
             if ll::SDL_LockSurface(self.raw) != 0 { panic!("could not lock surface"); }
-            let len = (*self.raw).pitch as uint * ((*self.raw).h as uint);
+            let len = (*self.raw).pitch as usize * ((*self.raw).h as usize);
             let pixels: &mut [u8] = mem::transmute(((*self.raw).pixels, len));
             let rv = f(pixels);
             ll::SDL_UnlockSurface(self.raw);

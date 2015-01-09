@@ -33,9 +33,9 @@ pub enum GLAttribute {
 
 impl Copy for GLAttribute {}
 
-pub fn set_attribute(attr: GLAttribute, value: int) -> int {
+pub fn set_attribute(attr: GLAttribute, value: isize) -> isize {
     unsafe {
-        ll::SDL_GL_SetAttribute(attr as c_int, value as c_int) as int
+        ll::SDL_GL_SetAttribute(attr as c_int, value as c_int) as isize
     }
 }
 

@@ -46,12 +46,12 @@ pub mod ll {
 }
 
 pub enum AudioFormat {
-    U8 = AUDIO_U8 as int,
-    S8 = AUDIO_S8 as int,
-    U16Lsb = AUDIO_U16LSB as int,
-    S16Lsb = AUDIO_S16LSB as int,
-    U16Msb = AUDIO_U16MSB as int,
-    S16Msb = AUDIO_S16MSB as int
+    U8 = AUDIO_U8 as isize,
+    S8 = AUDIO_S8 as isize,
+    U16Lsb = AUDIO_U16LSB as isize,
+    S16Lsb = AUDIO_S16LSB as isize,
+    U16Msb = AUDIO_U16MSB as isize,
+    S16Msb = AUDIO_S16MSB as isize
 }
 
 impl Copy for AudioFormat {}
@@ -155,7 +155,7 @@ impl ObtainedAudioSpec {
 extern fn native_callback(userdata: *const c_void, stream: *mut u8, len: c_int) {
     unsafe {
         let callback: Box<AudioCallback> = transmute(userdata);
-        let buffer = transmute((stream, len as uint));
+        let buffer = transmute((stream, len as usize));
         (*callback)(buffer);
         forget(callback);   // Don't free the callback!
     }

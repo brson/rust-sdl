@@ -84,7 +84,7 @@ unsafe fn check_if_not_playing(ll_chunk_addr: *mut ll::Mix_Chunk) {
         channels = 0;
     }
 
-    for ch in range(0, (channels as uint)) {
+    for ch in range(0, (channels as usize)) {
         if ll::Mix_GetChunk(ch as i32) == ll_chunk_addr {
             panic!("attempt to free a channel that's playing!")
         }

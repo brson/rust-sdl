@@ -33,9 +33,9 @@ pub mod ll {
 
 #[derive(PartialEq, Eq)]
 pub enum GrabMode {
-	 Query = ll::SDL_GRAB_QUERY as int,
-	 Off = ll::SDL_GRAB_OFF as int,
-	 On = ll::SDL_GRAB_ON as int
+	 Query = ll::SDL_GRAB_QUERY as isize,
+	 Off = ll::SDL_GRAB_OFF as isize,
+	 On = ll::SDL_GRAB_ON as isize
 }
 
 impl Copy for GrabMode {}
