@@ -243,9 +243,9 @@ pub mod ll {
 
 #[derive(PartialEq, Eq)]
 pub enum AppState {
-    MouseFocus = ll::SDL_APPMOUSEFOCUS as int,
-    InputFocus = ll::SDL_APPINPUTFOCUS as int,
-    Active = ll::SDL_APPACTIVE as int
+    MouseFocus = ll::SDL_APPMOUSEFOCUS as isize,
+    InputFocus = ll::SDL_APPINPUTFOCUS as isize,
+    Active = ll::SDL_APPACTIVE as isize
 }
 
 impl Copy for AppState {}
@@ -264,7 +264,7 @@ fn wrap_app_state(bitflags: u8) -> Vec<AppState> {
 #[derive(PartialEq)]
 pub enum RepeatDelay {
     Default,
-    Custom(int)
+    Custom(isize)
 }
 
 impl Copy for RepeatDelay {}
@@ -272,7 +272,7 @@ impl Copy for RepeatDelay {}
 #[derive(PartialEq)]
 pub enum RepeatInterval {
     Default,
-    Custom(int)
+    Custom(isize)
 }
 
 impl Copy for RepeatInterval {}
@@ -517,7 +517,7 @@ pub enum Key {
 impl Copy for Key {}
 
 fn wrap_key(i: ll::SDLKey) -> Option<Key> {
-    FromPrimitive::from_uint(i as uint)
+    FromPrimitive::from_uint(i as usize)
 }
 
 #[derive(PartialEq, Eq)]
@@ -635,13 +635,13 @@ pub enum Event {
      Key(Key, bool, Vec<Mod>, u16), // RFC: do you need the scancode?
      MouseMotion(Vec<MouseState>, u16, u16, i16, i16),
      MouseButton(Mouse, bool, u16, u16),
-     JoyAxis(int, int, i16),
-     JoyBall(int, int, i16, i16),
-     JoyHat(int, int, Vec<HatState>),
-     JoyButton(int, int, bool),
+     JoyAxis(isize, isize, i16),
+     JoyBall(isize, isize, i16, i16),
+     JoyHat(isize, isize, Vec<HatState>),
+     JoyButton(isize, isize, bool),
      Quit,
     // TODO: SysWm
-     Resize(int, int),
+     Resize(isize, isize),
      Expose,
     // TODO: User
 }
@@ -656,7 +656,7 @@ fn wrap_event(raw: ll::SDL_Event) -> Event {
         let ty = if ty.is_null() { return Event::None; }
                  else { *ty };
 
-        let ty : EventType = match FromPrimitive::from_uint(ty as uint) {
+        let ty : EventType = match FromPrimitive::from_uint(ty as usize) {
             Some(ty) => ty,
             None => return Event::None
         };
@@ -709,7 +709,7 @@ fn wrap_event(raw: ll::SDL_Event) -> Event {
                 let jaxis = if jaxis.is_null() { return Event::None; }
                             else { *jaxis };
 
-                Event::JoyAxis(jaxis.which as int, jaxis.axis as int,
+                Event::JoyAxis(jaxis.which as isize, jaxis.axis as isize,
                              jaxis.value)
             }
             EventType::JoyBallMotion => {
@@ -717,7 +717,7 @@ fn wrap_event(raw: ll::SDL_Event) -> Event {
                 let jball = if jball.is_null() { return Event::None; }
                             else { *jball };
 
-                Event::JoyBall(jball.which as int, jball.ball as int,
+                Event::JoyBall(jball.which as isize, jball.ball as isize,
                              jball.xrel, jball.yrel)
             }
             EventType::JoyHatMotion => {
@@ -725,7 +725,7 @@ fn wrap_event(raw: ll::SDL_Event) -> Event {
                 let jhat = if jhat.is_null() { return Event::None; }
                            else { *jhat };
 
-                Event::JoyHat(jhat.which as int, jhat.hat as int,
+                Event::JoyHat(jhat.which as isize, jhat.hat as isize,
                             wrap_hat_state(jhat.value))
             }
             EventType::JoyButtonDown | EventType::JoyButtonUp => {
@@ -733,7 +733,7 @@ fn wrap_event(raw: ll::SDL_Event) -> Event {
                 let jbutton = if jbutton.is_null() { return Event::None; }
                               else { *jbutton };
 
-                Event::JoyButton(jbutton.which as int, jbutton.button as int,
+                Event::JoyButton(jbutton.which as isize, jbutton.button as isize,
                                jbutton.state == 1u8)
             }
             EventType::Quit => Event::Quit,
@@ -742,7 +742,7 @@ fn wrap_event(raw: ll::SDL_Event) -> Event {
                 let resize = if resize.is_null() { return Event::None; }
                              else { *resize };
 
-                Event::Resize(resize.w as int, resize.h as int)
+                Event::Resize(resize.w as isize, resize.h as isize)
             }
             EventType::Expose => Event::Expose,
             _ => Event::None
@@ -821,10 +821,10 @@ pub fn get_event_state(ty: EventType) -> bool {
 pub fn get_key_state() -> Vec<(Key, bool)> {
     let mut num = 0;
     let data = unsafe { ll::SDL_GetKeyState(&mut num) };
-    let mut i = -1i;
+    let mut i = -1is;
 
     let buf = data as *const u8;
-    let buf = unsafe { slice::from_raw_buf(&buf, num as uint) };
+    let buf = unsafe { slice::from_raw_buf(&buf, num as usize) };
     buf.iter().filter_map(|&state| {
         i += 1;
 

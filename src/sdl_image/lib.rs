@@ -40,9 +40,9 @@ pub mod ll {
 
 #[derive(PartialEq, Eq)]
 pub enum InitFlag {
-    JPG = ll::IMG_INIT_JPG as int,
-    PNG = ll::IMG_INIT_PNG as int,
-    TIF = ll::IMG_INIT_TIF as int
+    JPG = ll::IMG_INIT_JPG as isize,
+    PNG = ll::IMG_INIT_PNG as isize,
+    TIF = ll::IMG_INIT_TIF as isize
 }
 
 impl Copy for InitFlag {}

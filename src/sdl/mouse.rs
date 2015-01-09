@@ -62,7 +62,7 @@ fn wrap_cursor(raw: *mut ll::SDL_Cursor, owned: bool) -> Cursor {
 }
 
 impl Cursor {
-	pub fn new(data: &[u8], mask: &[u8], w: int, h: int, hot_x: int, hot_y: int)
+	pub fn new(data: &[u8], mask: &[u8], w: isize, h: isize, hot_x: isize, hot_y: isize)
             -> Result<Cursor, String> {
         let mut data = data.to_vec();
         let mut mask = mask.to_vec();
