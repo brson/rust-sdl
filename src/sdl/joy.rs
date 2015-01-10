@@ -6,12 +6,12 @@ use std::str;
 use get_error;
 
 pub mod ll {
-	#![allow(non_camel_case_types)]
+    #![allow(non_camel_case_types)]
 
-	use libc::{c_void, c_int, uint8_t, int16_t};
-	use libc::types::os::arch::c95::c_schar;
+    use libc::{c_void, c_int, uint8_t, int16_t};
+    use libc::types::os::arch::c95::c_schar;
 
-	pub type SDL_Joystick = c_void;
+    pub type SDL_Joystick = c_void;
 
     extern "C" {
         pub fn SDL_NumJoysticks() -> c_int;
@@ -35,86 +35,86 @@ pub mod ll {
 }
 
 pub fn get_num_joysticks() -> isize {
-	unsafe { ll::SDL_NumJoysticks() as isize }
+    unsafe { ll::SDL_NumJoysticks() as isize }
 }
 
 pub fn get_joystick_name(index: isize) -> String {
-	unsafe {
-		let cstr = ll::SDL_JoystickName(index as c_int);
+    unsafe {
+        let cstr = ll::SDL_JoystickName(index as c_int);
 
-		str::from_utf8(ffi::c_str_to_bytes(mem::transmute_copy(&cstr))).unwrap().to_string()
-	}
+        str::from_utf8(ffi::c_str_to_bytes(mem::transmute_copy(&cstr))).unwrap().to_string()
+    }
 }
 
 pub fn is_joystick_open(index: isize) -> bool {
-	unsafe { ll::SDL_JoystickOpened(index as c_int) == 1 }
+    unsafe { ll::SDL_JoystickOpened(index as c_int) == 1 }
 }
 
 pub fn update_joysticks() {
-	unsafe { ll::SDL_JoystickUpdate(); }
+    unsafe { ll::SDL_JoystickUpdate(); }
 }
 
 #[derive(PartialEq)]
 pub struct Joystick {
-	pub raw: *mut ll::SDL_Joystick
+    pub raw: *mut ll::SDL_Joystick
 }
 
 fn wrap_joystick(raw: *mut ll::SDL_Joystick) -> Joystick {
-	Joystick { raw: raw }
+    Joystick { raw: raw }
 }
 
 impl Joystick {
-	pub fn open(index: isize) -> Result<Joystick, String> {
-		unsafe {
-			let raw = ll::SDL_JoystickOpen(index as c_int);
+    pub fn open(index: isize) -> Result<Joystick, String> {
+        unsafe {
+            let raw = ll::SDL_JoystickOpen(index as c_int);
 
-			if raw.is_null() { Err(get_error()) }
-			else { Ok(wrap_joystick(raw)) }
-		}
-	}
+            if raw.is_null() { Err(get_error()) }
+            else { Ok(wrap_joystick(raw)) }
+        }
+    }
 
-	pub fn get_index(&self) -> isize {
-		unsafe { ll::SDL_JoystickIndex(self.raw) as isize }
-	}
+    pub fn get_index(&self) -> isize {
+        unsafe { ll::SDL_JoystickIndex(self.raw) as isize }
+    }
 
-	pub fn get_num_axes(&self) -> isize {
-		unsafe { ll::SDL_JoystickNumAxes(self.raw) as isize }
-	}
+    pub fn get_num_axes(&self) -> isize {
+        unsafe { ll::SDL_JoystickNumAxes(self.raw) as isize }
+    }
 
-	pub fn get_num_balls(&self) -> isize {
-		unsafe { ll::SDL_JoystickNumBalls(self.raw) as isize }
-	}
+    pub fn get_num_balls(&self) -> isize {
+        unsafe { ll::SDL_JoystickNumBalls(self.raw) as isize }
+    }
 
-	pub fn get_num_hats(&self) -> isize {
-		unsafe { ll::SDL_JoystickNumHats(self.raw) as isize }
-	}
+    pub fn get_num_hats(&self) -> isize {
+        unsafe { ll::SDL_JoystickNumHats(self.raw) as isize }
+    }
 
-	pub fn get_num_buttons(&self) -> isize {
-		unsafe { ll::SDL_JoystickNumButtons(self.raw) as isize }
-	}
+    pub fn get_num_buttons(&self) -> isize {
+        unsafe { ll::SDL_JoystickNumButtons(self.raw) as isize }
+    }
 
-	pub fn get_axis(&self, axis: isize) -> i16 {
-		unsafe { ll::SDL_JoystickGetAxis(self.raw, axis as c_int) as i16 }
-	}
+    pub fn get_axis(&self, axis: isize) -> i16 {
+        unsafe { ll::SDL_JoystickGetAxis(self.raw, axis as c_int) as i16 }
+    }
 
-	pub fn get_hat(&self, hat: isize) -> u8 {
-		unsafe { ll::SDL_JoystickGetAxis(self.raw, hat as c_int) as u8 }
-	}
+    pub fn get_hat(&self, hat: isize) -> u8 {
+        unsafe { ll::SDL_JoystickGetAxis(self.raw, hat as c_int) as u8 }
+    }
 
-	pub fn get_button(&self, button: isize) -> u8 {
-		unsafe { ll::SDL_JoystickGetButton(self.raw, button as c_int) as u8 }
-	}
+    pub fn get_button(&self, button: isize) -> u8 {
+        unsafe { ll::SDL_JoystickGetButton(self.raw, button as c_int) as u8 }
+    }
 
-	pub fn get_ball(&self, ball: isize) -> (isize, isize) {
-		let mut dx = 0;
-		let mut dy = 0;
+    pub fn get_ball(&self, ball: isize) -> (isize, isize) {
+        let mut dx = 0;
+        let mut dy = 0;
 
-		unsafe { ll::SDL_JoystickGetBall(self.raw, ball as c_int,
-			                             &mut dx,
-			                             &mut dy); }
+        unsafe { ll::SDL_JoystickGetBall(self.raw, ball as c_int,
+                                         &mut dx,
+                                         &mut dy); }
 
-		(dx as isize, dy as isize)
-	}
+        (dx as isize, dy as isize)
+    }
 }
 
 impl Drop for Joystick {

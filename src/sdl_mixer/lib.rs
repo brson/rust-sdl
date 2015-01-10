@@ -284,4 +284,3 @@ pub fn halt_channel(channel: c_int) -> c_int {
         ll::Mix_HaltChannel(channel)
     }
 }
-
