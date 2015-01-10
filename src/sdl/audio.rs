@@ -211,4 +211,3 @@ pub fn with_lock<F: Fn() -> bool>(f: F) -> bool {
         result
     }
 }
-

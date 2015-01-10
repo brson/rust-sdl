@@ -6,39 +6,39 @@ use std::ffi;
 use get_error;
 
 pub mod ll {
-	#![allow(non_camel_case_types)]
+    #![allow(non_camel_case_types)]
 
-	use libc::{c_int, uint8_t, uint16_t, uint32_t};
-	use libc::types::os::arch::c95::c_schar;
+    use libc::{c_int, uint8_t, uint16_t, uint32_t};
+    use libc::types::os::arch::c95::c_schar;
 
-	pub type CDstatus = c_int;
+    pub type CDstatus = c_int;
 
-	pub const CD_TRAYEMPTY: CDstatus = 0;
-	pub const CD_STOPPED: CDstatus = 1;
-	pub const CD_PLAYING: CDstatus = 2;
-	pub const CD_PAUSED: CDstatus = 3;
-	pub const CD_ERROR: CDstatus = -1;
+    pub const CD_TRAYEMPTY: CDstatus = 0;
+    pub const CD_STOPPED: CDstatus = 1;
+    pub const CD_PLAYING: CDstatus = 2;
+    pub const CD_PAUSED: CDstatus = 3;
+    pub const CD_ERROR: CDstatus = -1;
 
     #[repr(C)]
-	pub struct SDL_CDtrack {
-	    pub id: uint8_t,
-	    pub _type: uint8_t,
-	    pub unused: uint16_t,
-	    pub length: uint32_t,
-	    pub offset: uint32_t
-	}
+    pub struct SDL_CDtrack {
+        pub id: uint8_t,
+        pub _type: uint8_t,
+        pub unused: uint16_t,
+        pub length: uint32_t,
+        pub offset: uint32_t
+    }
 
     impl Copy for SDL_CDtrack {}
 
     #[repr(C)]
-	pub struct SDL_CD {
-	    pub id: c_int,
-	    pub status: CDstatus,
-	    pub numtracks: c_int,
-	    pub cur_track: c_int,
-	    pub cur_frame: c_int,
-	    pub track: [SDL_CDtrack; 100],
-	}
+    pub struct SDL_CD {
+        pub id: c_int,
+        pub status: CDstatus,
+        pub numtracks: c_int,
+        pub cur_track: c_int,
+        pub cur_frame: c_int,
+        pub track: [SDL_CDtrack; 100],
+    }
 
     impl Copy for SDL_CD {}
 
@@ -62,84 +62,84 @@ pub mod ll {
 }
 
 pub fn get_num_drives() -> isize {
-	unsafe { ll::SDL_CDNumDrives() as isize }
+    unsafe { ll::SDL_CDNumDrives() as isize }
 }
 
 pub fn get_drive_name(index: isize) -> String {
-	unsafe {
-		let cstr = ll::SDL_CDName(index as c_int);
+    unsafe {
+        let cstr = ll::SDL_CDName(index as c_int);
 
-		str::from_utf8(ffi::c_str_to_bytes(mem::transmute_copy(&cstr))).unwrap().to_string()
-	}
+        str::from_utf8(ffi::c_str_to_bytes(mem::transmute_copy(&cstr))).unwrap().to_string()
+    }
 }
 
 #[derive(PartialEq)]
 pub struct CD {
-	pub raw: *mut ll::SDL_CD
+    pub raw: *mut ll::SDL_CD
 }
 
 fn wrap_cd(raw: *mut ll::SDL_CD) -> CD {
-	CD { raw: raw }
+    CD { raw: raw }
 }
 
 #[derive(PartialEq, Eq)]
 pub enum Status {
-	TrayEmpty = ll::CD_TRAYEMPTY as isize,
-	Stopped = ll::CD_STOPPED as isize,
-	Playing = ll::CD_PLAYING as isize,
-	Paused = ll::CD_PAUSED as isize,
-	Error = ll::CD_ERROR as isize
+    TrayEmpty = ll::CD_TRAYEMPTY as isize,
+    Stopped = ll::CD_STOPPED as isize,
+    Playing = ll::CD_PLAYING as isize,
+    Paused = ll::CD_PAUSED as isize,
+    Error = ll::CD_ERROR as isize
 }
 
 impl Copy for Status {}
 
 impl CD {
     pub fn open(index: isize) -> Result<CD, String> {
-		unsafe {
-			let raw = ll::SDL_CDOpen(index as c_int);
+        unsafe {
+            let raw = ll::SDL_CDOpen(index as c_int);
 
-			if raw.is_null() { Err(get_error()) }
-			else { Ok(wrap_cd(raw)) }
-		}
-	}
+            if raw.is_null() { Err(get_error()) }
+            else { Ok(wrap_cd(raw)) }
+        }
+    }
 
-	pub fn get_status(&self) -> Status {
-		unsafe {
-			// FIXME: Rust doesn't like us matching using staticants here for some reason
-			match ll::SDL_CDStatus(self.raw) {
-				0 => Status::TrayEmpty,
-				1 => Status::Stopped,
-				2 => Status::Playing,
-				3 => Status::Paused,
-				-1 => Status::Error,
-				_ => Status::Error
-			}
-		}
-	}
+    pub fn get_status(&self) -> Status {
+        unsafe {
+            // FIXME: Rust doesn't like us matching using staticants here for some reason
+            match ll::SDL_CDStatus(self.raw) {
+                0 => Status::TrayEmpty,
+                1 => Status::Stopped,
+                2 => Status::Playing,
+                3 => Status::Paused,
+                -1 => Status::Error,
+                _ => Status::Error
+            }
+        }
+    }
 
-	pub fn play(&self, start: isize, len: isize) -> bool {
-		unsafe { ll::SDL_CDPlay(self.raw, start as c_int, len as c_int) == 0 }
-	}
+    pub fn play(&self, start: isize, len: isize) -> bool {
+        unsafe { ll::SDL_CDPlay(self.raw, start as c_int, len as c_int) == 0 }
+    }
 
-	pub fn play_tracks(&self, start_track: isize, start_frame: isize, ntracks: isize,
-		           nframes: isize) -> bool {
-		unsafe {
-			ll::SDL_CDPlayTracks(self.raw, start_track as c_int, start_frame as c_int,
-				                 ntracks as c_int, nframes as c_int) == 0
-		}
-	}
+    pub fn play_tracks(&self, start_track: isize, start_frame: isize, ntracks: isize,
+                   nframes: isize) -> bool {
+        unsafe {
+            ll::SDL_CDPlayTracks(self.raw, start_track as c_int, start_frame as c_int,
+                                 ntracks as c_int, nframes as c_int) == 0
+        }
+    }
 
-	pub fn pause(&self) -> bool {
-		unsafe { ll::SDL_CDPause(self.raw) == 0 }
-	}
+    pub fn pause(&self) -> bool {
+        unsafe { ll::SDL_CDPause(self.raw) == 0 }
+    }
 
-	pub fn resume(&self) -> bool {
-		unsafe { ll::SDL_CDResume(self.raw) == 0 }
-	}
+    pub fn resume(&self) -> bool {
+        unsafe { ll::SDL_CDResume(self.raw) == 0 }
+    }
 
-	pub fn stop(&self) -> bool {
-		unsafe { ll::SDL_CDStop(self.raw) == 0 }
-	}
+    pub fn stop(&self) -> bool {
+        unsafe { ll::SDL_CDStop(self.raw) == 0 }
+    }
 }
 
 impl Drop for CD {
