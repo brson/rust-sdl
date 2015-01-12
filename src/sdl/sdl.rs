@@ -162,9 +162,10 @@ pub fn was_inited(flags: &[InitFlag]) -> Vec<InitFlag> {
 
 pub fn get_error() -> String {
     unsafe {
-        let cstr = ll::SDL_GetError();
+        let cstr = ll::SDL_GetError() as *const i8;
+        let slice = ffi::c_str_to_bytes(&cstr);
 
-        str::from_utf8(ffi::c_str_to_bytes(mem::transmute_copy(&cstr))).unwrap().to_string()
+        str::from_utf8(slice).unwrap().to_string()
     }
 }
 
