@@ -8,21 +8,21 @@ use sdl::event::{Event, Key};
 
 #[main]
 pub fn main() {
-    sdl::init([sdl::InitFlag::Video].as_slice());
+    sdl::init(&[sdl::InitFlag::Video]);
     sdl::wm::set_caption("rust-sdl demo - video", "rust-sdl");
 
     let mut rng = std::rand::thread_rng();
     let screen = match sdl::video::set_video_mode(800, 600, 32,
-                                                  [SurfaceFlag::HWSurface].as_slice(),
-                                                  [VideoFlag::DoubleBuf].as_slice()) {
+                                                  &[SurfaceFlag::HWSurface],
+                                                  &[VideoFlag::DoubleBuf]) {
         Ok(screen) => screen,
         Err(err) => panic!("failed to set video mode: {}", err)
     };
 
     // Note: You'll want to put this and the flip call inside the main loop
     // but we don't as to not startle epileptics
-    for i in range(0us, 10) {
-        for j in range(0us, 10) {
+    for i in 0us..10 {
+        for j in 0us..10 {
             screen.fill_rect(Some(sdl::Rect {
                 x: (i as i16) * 800 / 10,
                 y: (j as i16) * 600 / 10,
