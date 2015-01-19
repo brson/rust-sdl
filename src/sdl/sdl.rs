@@ -1,4 +1,3 @@
-use std::mem;
 use std::ffi;
 use std::str;
 use std::ffi::CString;
