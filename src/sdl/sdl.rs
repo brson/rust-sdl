@@ -58,16 +58,14 @@ pub mod ll {
     }
 }
 
-#[derive(PartialEq)]
 #[repr(C)]
+#[derive(PartialEq, Copy)]
 pub struct Rect {
     pub x: i16,
     pub y: i16,
     pub w: u16,
     pub h: u16
 }
-
-impl Copy for Rect {}
 
 #[allow(non_snake_case)]
 pub fn Rect(x: i16, y: i16, w: u16, h: u16) -> Rect {
@@ -85,7 +83,7 @@ impl Rect {
     }
 }
 
-#[derive(PartialEq, Eq)]
+#[derive(PartialEq, Eq, Copy)]
 pub enum InitFlag {
      Timer = ll::SDL_INIT_TIMER as isize,
      Audio = ll::SDL_INIT_AUDIO as isize,
@@ -97,9 +95,7 @@ pub enum InitFlag {
      Everything = ll::SDL_INIT_EVERYTHING as isize,
 }
 
-impl Copy for InitFlag {}
-
-#[derive(PartialEq, Eq)]
+#[derive(PartialEq, Eq, Copy)]
 pub enum Error {
      NoMem = ll::SDL_ENOMEM as isize,
      Read = ll::SDL_EFREAD as isize,
@@ -107,8 +103,6 @@ pub enum Error {
      Seek = ll::SDL_EFSEEK as isize,
      Unsupported = ll::SDL_UNSUPPORTED as isize
 }
-
-impl Copy for Error {}
 
 pub fn init(flags: &[InitFlag]) -> bool {
     unsafe {

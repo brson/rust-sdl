@@ -20,6 +20,7 @@ pub mod ll {
     pub const CD_ERROR: CDstatus = -1;
 
     #[repr(C)]
+    #[derive(Copy)]
     pub struct SDL_CDtrack {
         pub id: uint8_t,
         pub _type: uint8_t,
@@ -28,9 +29,8 @@ pub mod ll {
         pub offset: uint32_t
     }
 
-    impl Copy for SDL_CDtrack {}
-
     #[repr(C)]
+    #[derive(Copy)]
     pub struct SDL_CD {
         pub id: c_int,
         pub status: CDstatus,
@@ -39,8 +39,6 @@ pub mod ll {
         pub cur_frame: c_int,
         pub track: [SDL_CDtrack; 100],
     }
-
-    impl Copy for SDL_CD {}
 
     extern "C" {
         pub fn SDL_CDNumDrives() -> c_int;
@@ -82,7 +80,7 @@ fn wrap_cd(raw: *mut ll::SDL_CD) -> CD {
     CD { raw: raw }
 }
 
-#[derive(PartialEq, Eq)]
+#[derive(PartialEq, Eq, Copy)]
 pub enum Status {
     TrayEmpty = ll::CD_TRAYEMPTY as isize,
     Stopped = ll::CD_STOPPED as isize,
@@ -90,8 +88,6 @@ pub enum Status {
     Paused = ll::CD_PAUSED as isize,
     Error = ll::CD_ERROR as isize
 }
-
-impl Copy for Status {}
 
 impl CD {
     pub fn open(index: isize) -> Result<CD, String> {

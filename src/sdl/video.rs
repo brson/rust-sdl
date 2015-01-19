@@ -22,6 +22,7 @@ pub mod ll {
     pub type SDL_Rect = Rect;
 
     #[repr(C)]
+    #[derive(Copy)]
     pub struct SDL_RWops {
         pub seek: *mut uint8_t,
         pub read: *mut uint8_t,
@@ -31,9 +32,8 @@ pub mod ll {
         _hidden: [c_uchar; 24]
     }
 
-    impl Copy for SDL_RWops {}
-
     #[repr(C)]
+    #[derive(Copy)]
     pub struct SDL_Surface {
         pub flags: uint32_t,
         pub format: *mut SDL_PixelFormat,
@@ -51,9 +51,8 @@ pub mod ll {
         pub refcount: c_int
     }
 
-    impl Copy for SDL_Surface {}
-
     #[repr(C)]
+    #[derive(Copy)]
     pub struct SDL_Color {
         pub r: uint8_t,
         pub g: uint8_t,
@@ -61,18 +60,16 @@ pub mod ll {
         pub unused: uint8_t
     }
 
-    impl Copy for SDL_Color {}
-
     #[repr(C)]
+    #[derive(Copy)]
     pub struct SDL_Palette {
         pub ncolors: c_int,
         pub colors: *mut SDL_Color,
     }
 
-    impl Copy for SDL_Palette {}
-
     #[allow(non_snake_case)]
     #[repr(C)]
+    #[derive(Copy)]
     pub struct SDL_PixelFormat {
         pub palette: *mut SDL_Palette,
         pub BitsPerPixel: uint8_t,
@@ -93,9 +90,8 @@ pub mod ll {
         pub alpha: uint8_t,
     }
 
-    impl Copy for SDL_PixelFormat {}
-
     #[repr(C)]
+    #[derive(Copy)]
     pub struct SDL_VideoInfo {
         pub flags: uint32_t,        // actually a set of packed fields
         pub video_mem: uint32_t,
@@ -103,8 +99,6 @@ pub mod ll {
         pub current_w: c_int,
         pub current_h: c_int,
     }
-
-    impl Copy for SDL_VideoInfo {}
 
     extern "C" {
         pub fn SDL_CreateRGBSurface(flags: uint32_t,
@@ -210,13 +204,11 @@ impl Drop for Surface {
     }
 }
 
-#[derive(PartialEq)]
 #[allow(raw_pointer_derive)]
+#[derive(PartialEq, Copy)]
 pub struct Palette {
     pub raw: *mut ll::SDL_Palette
 }
-
-impl Copy for Palette {}
 
 fn wrap_palette(palette: *mut ll::SDL_Palette) -> Option<Palette> {
     if palette.is_null() {
@@ -239,7 +231,7 @@ impl Palette {
     }
 }
 
-#[derive(PartialEq)]
+#[derive(PartialEq, Copy)]
 pub struct PixelFormat {
     pub palette: Option<Palette>,
     pub bpp: u8,
@@ -258,8 +250,6 @@ pub struct PixelFormat {
     pub color_key: u32,
     pub alpha: u8
 }
-
-impl Copy for PixelFormat {}
 
 fn wrap_pixel_format(raw: *mut ll::SDL_PixelFormat) -> PixelFormat {
     let fmt = & unsafe { *raw };
@@ -308,13 +298,11 @@ fn unwrap_pixel_format(fmt: &PixelFormat) -> ll::SDL_PixelFormat {
     }
 }
 
-#[derive(PartialEq, Eq)]
+#[derive(PartialEq, Eq, Copy)]
 pub enum Color {
     RGB(u8, u8, u8),
     RGBA(u8, u8, u8, u8)
 }
-
-impl Copy for Color {}
 
 impl ::rand::Rand for Color {
     fn rand<R: ::rand::Rng>(rng: &mut R) -> Color {
@@ -366,7 +354,7 @@ impl Color {
     }
 }
 
-#[derive(PartialEq, Eq)]
+#[derive(PartialEq, Eq, Copy)]
 pub enum SurfaceFlag {
     SWSurface = 0x00000000,
     HWSurface = 0x00000001,
@@ -376,9 +364,7 @@ pub enum SurfaceFlag {
     RLEAccel = 0x00004000
 }
 
-impl Copy for SurfaceFlag {}
-
-#[derive(PartialEq, Eq)]
+#[derive(PartialEq, Eq, Copy)]
 pub enum VideoFlag {
     AnyFormat = 0x10000000,
     HWPalette = 0x20000000,
@@ -389,8 +375,6 @@ pub enum VideoFlag {
     Resizable = 0x00000010,
     NoFrame = 0x00000020
 }
-
-impl Copy for VideoFlag {}
 
 pub fn set_video_mode(w: isize, h: isize, bpp: isize,
                       surface_flags: &[SurfaceFlag],
@@ -430,7 +414,7 @@ pub fn is_video_mode_ok(w: isize, h: isize, bpp: isize,
     }
 }
 
-#[derive(PartialEq, Eq)]
+#[derive(PartialEq, Eq, Copy)]
 pub enum VideoInfoFlag {
     HWAvailable    = 0x00000001,
     WMAvailable    = 0x00000002,
@@ -442,8 +426,6 @@ pub enum VideoInfoFlag {
     BlitSWAlpha    = 0x00004000,
     BlitFill       = 0x00008000,
 }
-
-impl Copy for VideoInfoFlag {}
 
 pub struct VideoInfo {
     pub flags: Vec<VideoInfoFlag>,
@@ -479,12 +461,11 @@ pub fn get_video_info() -> VideoInfo {
     }
 }
 
+#[derive(Copy)]
 pub enum PaletteType {
     Logical = 1,
     Physical
 }
-
-impl Copy for PaletteType {}
 
 pub fn get_video_surface() -> Result<Surface, String> {
     let raw = unsafe { ll::SDL_GetVideoSurface() };

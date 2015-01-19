@@ -31,14 +31,12 @@ pub mod ll {
     }
 }
 
-#[derive(PartialEq, Eq)]
+#[derive(PartialEq, Eq, Copy)]
 pub enum GrabMode {
      Query = ll::SDL_GRAB_QUERY as isize,
      Off = ll::SDL_GRAB_OFF as isize,
      On = ll::SDL_GRAB_ON as isize
 }
-
-impl Copy for GrabMode {}
 
 pub fn set_caption(title: &str, icon: &str) {
     unsafe { ll::SDL_WM_SetCaption(CString::from_slice(title.as_bytes()).as_ptr(), CString::from_slice(icon.as_bytes()).as_ptr()); }

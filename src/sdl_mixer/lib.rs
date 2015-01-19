@@ -25,14 +25,13 @@ pub mod ll {
     use libc::c_int;
 
     #[repr(C)]
+    #[derive(Copy)]
     pub struct Mix_Chunk {
         pub allocated: c_int,
         pub abuf: *mut u8,
         pub alen: u32,
         pub volume: u8,
     }
-
-    impl Copy for Mix_Chunk {}
 
     extern "C" {
         pub fn Mix_OpenAudio(frequency: c_int, format: u16, channels: c_int, chunksize: c_int)
@@ -197,13 +196,12 @@ pub fn close() {
     }
 }
 
+#[derive(Copy)]
 pub struct Query {
     pub frequency: c_int,
     pub format: AudioFormat,
     pub channels: Channels,
 }
-
-impl Copy for Query {}
 
 pub fn query() -> Option<Query> {
     unsafe {

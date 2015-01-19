@@ -11,6 +11,7 @@ pub mod ll {
     }
 }
 
+#[derive(Copy)]
 pub enum GLAttribute {
     RedSize = 0,
     GreenSize,
@@ -30,8 +31,6 @@ pub enum GLAttribute {
     AcceleratedVisual,
     SwapControl
 }
-
-impl Copy for GLAttribute {}
 
 pub fn set_attribute(attr: GLAttribute, value: isize) -> isize {
     unsafe {

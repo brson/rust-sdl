@@ -38,14 +38,12 @@ pub mod ll {
     }
 }
 
-#[derive(PartialEq, Eq)]
+#[derive(PartialEq, Eq, Copy)]
 pub enum InitFlag {
     JPG = ll::IMG_INIT_JPG as isize,
     PNG = ll::IMG_INIT_PNG as isize,
     TIF = ll::IMG_INIT_TIF as isize
 }
-
-impl Copy for InitFlag {}
 
 pub fn init(flags: &[InitFlag]) -> Vec<InitFlag> {
     let bitflags = unsafe {

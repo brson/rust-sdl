@@ -16,6 +16,7 @@ pub mod ll {
     pub type WMcursor = c_void;
 
     #[repr(C)]
+    #[derive(Copy)]
     pub struct SDL_Cursor {
          pub area: Rect,
          pub hot_x: int16_t,
@@ -25,8 +26,6 @@ pub mod ll {
          pub save: [*mut uint8_t; 2],
          pub wm_cursor: *mut WMcursor,
     }
-
-    impl Copy for SDL_Cursor {}
 
     extern "C" {
         pub fn SDL_ShowCursor(toggle: c_int) -> c_int;
