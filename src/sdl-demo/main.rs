@@ -5,9 +5,7 @@ use std::rand::Rng;
 use sdl::video::{SurfaceFlag, VideoFlag};
 use sdl::event::{Event, Key};
 
-
-#[main]
-pub fn main() {
+fn main() {
     sdl::init(&[sdl::InitFlag::Video]);
     sdl::wm::set_caption("rust-sdl demo - video", "rust-sdl");
 
