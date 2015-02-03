@@ -26,6 +26,7 @@ pub mod ll {
 
     use libc::c_int;
 
+    #[allow(raw_pointer_derive)] 
     #[repr(C)]
     #[derive(Copy)]
     pub struct Mix_Chunk {
@@ -60,6 +61,7 @@ pub struct Chunk {
     data: ChunkData
 }
 
+#[allow(unused)]
 enum ChunkData {
     Borrowed(*mut ll::Mix_Chunk),
     Allocated(*mut ll::Mix_Chunk),
@@ -85,7 +87,7 @@ unsafe fn check_if_not_playing(ll_chunk_addr: *mut ll::Mix_Chunk) {
         channels = 0;
     }
 
-    for ch in range(0, (channels as usize)) {
+    for ch in 0 .. (channels as usize) {
         if ll::Mix_GetChunk(ch as i32) == ll_chunk_addr {
             panic!("attempt to free a channel that's playing!")
         }
