@@ -1,3 +1,5 @@
+#![feature(rand)]
+
 extern crate sdl;
 
 use std::rand::Rng;
