@@ -226,7 +226,7 @@ impl Palette {
         let colors = unsafe { (*self.raw).colors } as *const ll::SDL_Color;
         let ncolors = unsafe { (*self.raw).ncolors } as usize;
         let colors: &'a [ll::SDL_Color] =
-            unsafe { mem::transmute(slice::from_raw_buf(&colors, ncolors)) };
+            unsafe { mem::transmute(slice::from_raw_parts(&colors, ncolors)) };
         colors.iter()
     }
 }

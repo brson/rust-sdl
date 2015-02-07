@@ -12,3 +12,6 @@ path = "main.rs"
 
 [dependencies.sdl]
 path = "../.."
+
+[dependencies]
+rand = "0.1.2"

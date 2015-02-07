@@ -1,8 +1,9 @@
-#![feature(rand)]
+#![feature(core)]
 
 extern crate sdl;
+extern crate rand;
 
-use std::rand::Rng;
+use rand::Rng;
 
 use sdl::video::{SurfaceFlag, VideoFlag};
 use sdl::event::{Event, Key};
@@ -11,7 +12,7 @@ fn main() {
     sdl::init(&[sdl::InitFlag::Video]);
     sdl::wm::set_caption("rust-sdl demo - video", "rust-sdl");
 
-    let mut rng = std::rand::thread_rng();
+    let mut rng = rand::thread_rng();
     let screen = match sdl::video::set_video_mode(800, 600, 32,
                                                   &[SurfaceFlag::HWSurface],
                                                   &[VideoFlag::DoubleBuf]) {
@@ -21,7 +22,7 @@ fn main() {
 
     // Note: You'll want to put this and the flip call inside the main loop
     // but we don't as to not startle epileptics
-    for i in 0us..10 {
+    for i in 0us .. 10 {
         for j in 0us..10 {
             screen.fill_rect(Some(sdl::Rect {
                 x: (i as i16) * 800 / 10,

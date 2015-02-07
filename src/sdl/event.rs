@@ -791,7 +791,7 @@ pub fn get_key_state() -> Vec<(Key, bool)> {
     let mut i = -1is;
 
     let buf = data as *const u8;
-    let buf = unsafe { slice::from_raw_buf(&buf, num as usize) };
+    let buf = unsafe { slice::from_raw_parts(buf, num as usize) };
     buf.iter().filter_map(|&state| {
         i += 1;
 
