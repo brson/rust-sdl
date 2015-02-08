@@ -10,10 +10,12 @@
 //!       -C link-args="-lSDLmain -lSDL -Wl,-framework,Cocoa"
 
 #![no_main]
+#![feature(core)]
 
 extern crate sdl;
+extern crate rand;
 
-use std::rand::Rng;
+use rand::Rng;
 
 use sdl::video::{SurfaceFlag, VideoFlag};
 use sdl::event::{Event, Key};
@@ -28,7 +30,7 @@ pub fn real_main() {
     sdl::init(&[sdl::InitFlag::Video]);
     sdl::wm::set_caption("rust-sdl demo - video", "rust-sdl");
 
-    let mut rng = std::rand::thread_rng();
+    let mut rng = rand::thread_rng();
     let screen = match sdl::video::set_video_mode(800, 600, 32,
                                                   &[SurfaceFlag::HWSurface],
                                                   &[VideoFlag::DoubleBuf]) {
