@@ -10,7 +10,7 @@ Rust-SDL uses the MIT license.
 
 # Requirements
 
-* *Rust* - we currently compile against the *Master* branch. The releases on http://www.rust-lang.org tend to not work.
+* *Rust* - You can get the Rust compiler from http://www.rust-lang.org
 * *SDL 1.2 development libraries* - install through your favourite package management tool, or via http://www.libsdl.org/
 
 **Optional**
