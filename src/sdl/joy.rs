@@ -1,4 +1,3 @@
-use std::mem;
 use libc::c_int;
 use std::ffi::CStr;
 use std::str;
@@ -38,11 +37,15 @@ pub fn get_num_joysticks() -> isize {
     unsafe { ll::SDL_NumJoysticks() as isize }
 }
 
-pub fn get_joystick_name(index: isize) -> String {
+pub fn get_joystick_name(index: isize) -> Result<String, String> {
     unsafe {
         let cstr = ll::SDL_JoystickName(index as c_int);
 
-        str::from_utf8(CStr::from_ptr(mem::transmute_copy(&cstr)).to_bytes()).unwrap().to_string()
+        if cstr.is_null() {
+            Err(get_error())
+        } else {
+            Ok(str::from_utf8(CStr::from_ptr(cstr).to_bytes()).unwrap().to_string())
+        }
     }
 }
 
