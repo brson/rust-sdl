@@ -47,16 +47,23 @@ pub fn set_caption(title: &str, icon: &str) {
 pub fn get_caption() -> (String, String) {
     let mut title_buf = ptr::null_mut();
     let mut icon_buf = ptr::null_mut();
+    let mut title = String::new();
+    let mut icon = String::new();
 
     unsafe {
-        ll::SDL_WM_GetCaption(&mut title_buf,
-                              &mut icon_buf);
+        ll::SDL_WM_GetCaption(&mut title_buf, &mut icon_buf);
 
-        let title_slice = CStr::from_ptr(mem::transmute_copy(&title_buf)).to_bytes();
-        let icon_slice = CStr::from_ptr(mem::transmute_copy(&icon_buf)).to_bytes();
+        if !title_buf.is_null() {
+            let slice = CStr::from_ptr(mem::transmute_copy(&mut &title_buf)).to_bytes();
+            title = str::from_utf8(slice).unwrap().to_string();
+        }
 
-        (str::from_utf8(title_slice).unwrap().to_string(),
-         str::from_utf8(icon_slice).unwrap().to_string())
+        if !icon_buf.is_null() {
+            let slice = CStr::from_ptr(mem::transmute_copy(&mut &icon_buf)).to_bytes();
+            icon = str::from_utf8(slice).unwrap().to_string();
+        }
+
+        (title, icon)
     }
 }
 
