@@ -10,7 +10,6 @@
 //!       -C link-args="-lSDLmain -lSDL -Wl,-framework,Cocoa"
 
 #![no_main]
-#![feature(core)]
 
 extern crate sdl;
 extern crate rand;

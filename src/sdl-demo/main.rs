@@ -1,5 +1,3 @@
-#![feature(core)]
-
 extern crate sdl;
 extern crate rand;
 
