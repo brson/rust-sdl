@@ -369,7 +369,7 @@ pub enum VideoFlag {
     AnyFormat = 0x10000000,
     HWPalette = 0x20000000,
     DoubleBuf = 0x40000000,
-    Fullscreen = 0x80000000us as isize, // 0x80000000 > INT_MAX on i686
+    Fullscreen = 0x80000000usize as isize, // 0x80000000 > INT_MAX on i686
     OpenGL = 0x00000002,
     OpenGLBlit = 0x0000000A,
     Resizable = 0x00000010,
@@ -494,8 +494,8 @@ impl Surface {
     }
 
     pub fn from_bmp(path: &Path) -> Result<Surface, String> {
-        let cpath = CString::from_slice(path.as_vec());
-        let mode = CString::from_slice("rb".as_bytes());
+        let cpath = CString::new(path.as_vec()).unwrap();
+        let mode = CString::new("rb".as_bytes()).unwrap();
         let raw = unsafe {
             ll::SDL_LoadBMP_RW(ll::SDL_RWFromFile(cpath.as_ptr(), mode.as_ptr()), 1)
         };
@@ -617,8 +617,8 @@ impl Surface {
     }
 
     pub fn save_bmp(&self, path: &Path) -> bool {
-        let cpath = CString::from_slice(path.as_vec());
-        let mode = CString::from_slice("wb".as_bytes());
+        let cpath = CString::new(path.as_vec()).unwrap();
+        let mode = CString::new("wb".as_bytes()).unwrap();
         unsafe {
             ll::SDL_SaveBMP_RW(self.raw, ll::SDL_RWFromFile(cpath.as_ptr(), mode.as_ptr()), 1) == 0
         }

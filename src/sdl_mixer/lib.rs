@@ -131,8 +131,8 @@ impl Chunk {
     }
 
     pub fn from_wav(path: &Path) -> Result<Chunk, String> {
-        let cpath = CString::from_slice(path.as_vec());
-        let mode = CString::from_slice("rb".as_bytes());
+        let cpath = CString::new(path.as_vec()).unwrap();
+        let mode = CString::new("rb".as_bytes()).unwrap();
         let raw = unsafe {
             ll::Mix_LoadWAV_RW(SDL_RWFromFile(cpath.as_ptr(), mode.as_ptr()), 1)
         };

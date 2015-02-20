@@ -1,6 +1,5 @@
-use std::ffi;
 use std::str;
-use std::ffi::CString;
+use std::ffi::{CStr, CString};
 
 // Setup linking for all targets.
 #[cfg(target_os="macos")]
@@ -156,14 +155,14 @@ pub fn was_inited(flags: &[InitFlag]) -> Vec<InitFlag> {
 pub fn get_error() -> String {
     unsafe {
         let cstr = ll::SDL_GetError() as *const i8;
-        let slice = ffi::c_str_to_bytes(&cstr);
+        let slice = CStr::from_ptr(cstr).to_bytes();
 
         str::from_utf8(slice).unwrap().to_string()
     }
 }
 
 pub fn set_error(err: &str) {
-    unsafe { ll::SDL_SetError(CString::from_slice(err.as_bytes()).as_ptr()); }
+    unsafe { ll::SDL_SetError(CString::new(err.as_bytes()).unwrap().as_ptr()); }
 }
 
 pub fn set_error_from_code(err: Error) {

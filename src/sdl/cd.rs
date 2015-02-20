@@ -1,7 +1,7 @@
 use std::mem;
 use libc::c_int;
 use std::str;
-use std::ffi;
+use std::ffi::CStr;
 
 use get_error;
 
@@ -67,7 +67,7 @@ pub fn get_drive_name(index: isize) -> String {
     unsafe {
         let cstr = ll::SDL_CDName(index as c_int);
 
-        str::from_utf8(ffi::c_str_to_bytes(mem::transmute_copy(&cstr))).unwrap().to_string()
+        str::from_utf8(CStr::from_ptr(mem::transmute_copy(&cstr)).to_bytes()).unwrap().to_string()
     }
 }
 

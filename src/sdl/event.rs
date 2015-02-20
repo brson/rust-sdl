@@ -2,7 +2,7 @@ use std::mem;
 use libc::c_int;
 use std::slice;
 use std::num::FromPrimitive;
-use std::ffi;
+use std::ffi::CStr;
 use std::str;
 
 pub mod ll {
@@ -788,7 +788,7 @@ pub fn get_event_state(ty: EventType) -> bool {
 pub fn get_key_state() -> Vec<(Key, bool)> {
     let mut num = 0;
     let data = unsafe { ll::SDL_GetKeyState(&mut num) };
-    let mut i = -1is;
+    let mut i = -1isize;
 
     let buf = data as *const u8;
     let buf = unsafe { slice::from_raw_parts(buf, num as usize) };
@@ -818,7 +818,7 @@ pub fn get_key_name(key: Key) -> String {
     unsafe {
         let cstr = ll::SDL_GetKeyName(key as ll::SDLKey);
 
-        str::from_utf8(ffi::c_str_to_bytes(mem::transmute_copy(&cstr))).unwrap().to_string()
+        str::from_utf8(CStr::from_ptr(mem::transmute_copy(&cstr)).to_bytes()).unwrap().to_string()
     }
 }
 

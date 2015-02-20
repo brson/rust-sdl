@@ -65,7 +65,7 @@ pub fn init(flags: &[InitFlag]) -> Vec<InitFlag> {
 }
 
 pub fn load(file: &Path) -> Result<Surface, String> {
-    let cfile = CString::from_slice(file.as_vec());
+    let cfile = CString::new(file.as_vec()).unwrap();
     unsafe {
         let raw = ll::IMG_Load(cfile.as_ptr());
 
