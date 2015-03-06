@@ -494,7 +494,7 @@ pub enum Key {
 }
 
 fn wrap_key(i: ll::SDLKey) -> Option<Key> {
-    FromPrimitive::from_uint(i as usize)
+    FromPrimitive::from_usize(i as usize)
 }
 
 #[derive(PartialEq, Eq, Copy)]
@@ -625,7 +625,7 @@ fn wrap_event(raw: ll::SDL_Event) -> Event {
         let ty = if ty.is_null() { return Event::None; }
                  else { *ty };
 
-        let ty : EventType = match FromPrimitive::from_uint(ty as usize) {
+        let ty : EventType = match FromPrimitive::from_usize(ty as usize) {
             Some(ty) => ty,
             None => return Event::None
         };
