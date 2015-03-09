@@ -1,4 +1,4 @@
-#![feature(std_misc, old_path, libc)]
+#![feature(old_path, libc)]
 
 extern crate libc;
 extern crate sdl;
