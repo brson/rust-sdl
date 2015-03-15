@@ -1,8 +1,9 @@
-#![feature(old_path, libc)]
+#![feature(libc)]
 
 extern crate libc;
 extern crate sdl;
 
+use std::path::Path;
 use std::ffi::CString;
 use libc::{c_int};
 
@@ -131,7 +132,7 @@ impl Chunk {
     }
 
     pub fn from_wav(path: &Path) -> Result<Chunk, String> {
-        let cpath = CString::new(path.as_vec()).unwrap();
+        let cpath = CString::new(path.to_str().unwrap()).unwrap();
         let mode = CString::new("rb".as_bytes()).unwrap();
         let raw = unsafe {
             ll::Mix_LoadWAV_RW(SDL_RWFromFile(cpath.as_ptr(), mode.as_ptr()), 1)

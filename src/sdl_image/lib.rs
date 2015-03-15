@@ -1,8 +1,9 @@
-#![feature(old_path, libc)]
+#![feature(libc)]
 
 extern crate libc;
 extern crate sdl;
 
+use std::path::Path;
 use std::ffi::CString;
 use libc::c_int;
 
@@ -65,7 +66,7 @@ pub fn init(flags: &[InitFlag]) -> Vec<InitFlag> {
 }
 
 pub fn load(file: &Path) -> Result<Surface, String> {
-    let cfile = CString::new(file.as_vec()).unwrap();
+    let cfile = CString::new(file.to_str().unwrap()).unwrap();
     unsafe {
         let raw = ll::IMG_Load(cfile.as_ptr());
 

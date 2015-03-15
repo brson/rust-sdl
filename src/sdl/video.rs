@@ -4,6 +4,7 @@ use std::ptr;
 use rand::Rng;
 use std::slice;
 use std::ffi::CString;
+use std::path::Path;
 
 use Rect;
 use get_error;
@@ -494,7 +495,7 @@ impl Surface {
     }
 
     pub fn from_bmp(path: &Path) -> Result<Surface, String> {
-        let cpath = CString::new(path.as_vec()).unwrap();
+        let cpath = CString::new(path.to_str().unwrap()).unwrap();
         let mode = CString::new("rb".as_bytes()).unwrap();
         let raw = unsafe {
             ll::SDL_LoadBMP_RW(ll::SDL_RWFromFile(cpath.as_ptr(), mode.as_ptr()), 1)
@@ -617,7 +618,7 @@ impl Surface {
     }
 
     pub fn save_bmp(&self, path: &Path) -> bool {
-        let cpath = CString::new(path.as_vec()).unwrap();
+        let cpath = CString::new(path.to_str().unwrap()).unwrap();
         let mode = CString::new("wb".as_bytes()).unwrap();
         unsafe {
             ll::SDL_SaveBMP_RW(self.raw, ll::SDL_RWFromFile(cpath.as_ptr(), mode.as_ptr()), 1) == 0
