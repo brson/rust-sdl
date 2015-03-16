@@ -9,9 +9,9 @@ pub mod ll {
 
     use Rect;
 
-    pub static SDL_DISABLE: c_int = 0;
-    pub static SDL_ENABLE: c_int = 1;
-    pub static SDL_QUERY: c_int = -1;
+    pub const SDL_DISABLE: c_int = 0;
+    pub const SDL_ENABLE: c_int = 1;
+    pub const SDL_QUERY: c_int = -1;
 
     pub type WMcursor = c_void;
 
@@ -40,6 +40,23 @@ pub mod ll {
         pub fn SDL_GetCursor() -> *mut SDL_Cursor;
         pub fn SDL_FreeCursor(cursor: *mut SDL_Cursor);
         pub fn SDL_WarpMouse(x: uint16_t, y: uint16_t);
+        pub fn SDL_WM_GrabInput(mode: c_int) -> c_int;
+    }
+}
+
+pub fn grab_input(on: bool) {
+    unsafe {
+        ll::SDL_WM_GrabInput(if on { ll::SDL_ENABLE } else { ll::SDL_DISABLE });
+    }
+}
+
+pub fn is_input_grabbed() -> bool {
+    unsafe {
+        match ll::SDL_WM_GrabInput(ll::SDL_QUERY) {
+            ll::SDL_DISABLE => false,
+            ll::SDL_ENABLE => true,
+            _ => panic!("Unexpected value returned from SDL_WM_GrabInput")
+        }
     }
 }
 
