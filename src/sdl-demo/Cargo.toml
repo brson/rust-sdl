@@ -14,4 +14,4 @@ path = "main.rs"
 path = "../.."
 
 [dependencies]
-rand = "0.1.2"
+rand = "0.2"

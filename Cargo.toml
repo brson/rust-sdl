@@ -16,4 +16,4 @@ name = "sdl"
 path = "src/sdl/lib.rs"
 
 [dependencies]
-rand = "0.1.2"
+rand = "0.2"
