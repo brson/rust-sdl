@@ -58,7 +58,7 @@ pub mod ll {
 }
 
 #[repr(C)]
-#[derive(PartialEq, Copy)]
+#[derive(PartialEq, Copy, Clone)]
 pub struct Rect {
     pub x: i16,
     pub y: i16,
@@ -82,7 +82,7 @@ impl Rect {
     }
 }
 
-#[derive(PartialEq, Eq, Copy)]
+#[derive(PartialEq, Eq, Copy, Clone)]
 pub enum InitFlag {
      Timer = ll::SDL_INIT_TIMER as isize,
      Audio = ll::SDL_INIT_AUDIO as isize,
@@ -94,7 +94,7 @@ pub enum InitFlag {
      Everything = ll::SDL_INIT_EVERYTHING as isize,
 }
 
-#[derive(PartialEq, Eq, Copy)]
+#[derive(PartialEq, Eq, Copy, Clone)]
 pub enum Error {
      NoMem = ll::SDL_ENOMEM as isize,
      Read = ll::SDL_EFREAD as isize,

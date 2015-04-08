@@ -11,7 +11,7 @@ pub mod ll {
     }
 }
 
-#[derive(Copy)]
+#[derive(Copy, Clone)]
 pub enum GLAttribute {
     RedSize = 0,
     GreenSize,

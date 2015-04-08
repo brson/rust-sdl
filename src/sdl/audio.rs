@@ -21,7 +21,7 @@ pub mod ll {
     pub const AUDIO_S16: uint16_t = AUDIO_S16LSB;
 
     #[repr(C)]
-    #[derive(Copy)]
+    #[derive(Copy, Clone)]
     pub struct SDL_AudioSpec {
         pub freq: c_int,
         pub format: u16,
@@ -44,7 +44,7 @@ pub mod ll {
     }
 }
 
-#[derive(Copy)]
+#[derive(Copy, Clone)]
 pub enum AudioFormat {
     U8 = AUDIO_U8 as isize,
     S8 = AUDIO_S8 as isize,
@@ -82,7 +82,7 @@ impl AudioFormat {
     }
 }
 
-#[derive(PartialEq, Eq, Copy)]
+#[derive(PartialEq, Eq, Copy, Clone)]
 pub enum Channels {
     Mono,
     Stereo,
@@ -123,7 +123,13 @@ impl DesiredAudioSpec {
     }
 }
 
-#[derive(Copy)]
+impl Clone for DesiredAudioSpec {
+    fn clone(&self) -> DesiredAudioSpec {
+        *self
+    }
+}
+
+#[derive(Copy, Clone)]
 pub struct ObtainedAudioSpec {
     pub freq: c_int,
     pub format: AudioFormat,

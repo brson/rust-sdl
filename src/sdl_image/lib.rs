@@ -41,7 +41,7 @@ pub mod ll {
     }
 }
 
-#[derive(PartialEq, Eq, Copy)]
+#[derive(PartialEq, Eq, Copy, Clone)]
 pub enum InitFlag {
     JPG = ll::IMG_INIT_JPG as isize,
     PNG = ll::IMG_INIT_PNG as isize,

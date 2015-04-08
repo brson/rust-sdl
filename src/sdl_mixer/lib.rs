@@ -29,7 +29,7 @@ pub mod ll {
 
     #[allow(raw_pointer_derive)] 
     #[repr(C)]
-    #[derive(Copy)]
+    #[derive(Copy, Clone)]
     pub struct Mix_Chunk {
         pub allocated: c_int,
         pub abuf: *mut u8,
@@ -201,7 +201,7 @@ pub fn close() {
     }
 }
 
-#[derive(Copy)]
+#[derive(Copy, Clone)]
 pub struct Query {
     pub frequency: c_int,
     pub format: AudioFormat,

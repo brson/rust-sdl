@@ -16,7 +16,7 @@ pub mod ll {
     pub type WMcursor = c_void;
 
     #[repr(C)]
-    #[derive(Copy)]
+    #[derive(Copy, Clone)]
     pub struct SDL_Cursor {
          pub area: Rect,
          pub hot_x: int16_t,

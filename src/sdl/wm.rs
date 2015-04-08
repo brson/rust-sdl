@@ -30,7 +30,7 @@ pub mod ll {
     }
 }
 
-#[derive(PartialEq, Eq, Copy)]
+#[derive(PartialEq, Eq, Copy, Clone)]
 pub enum GrabMode {
      Query = ll::SDL_GRAB_QUERY as isize,
      Off = ll::SDL_GRAB_OFF as isize,
