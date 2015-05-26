@@ -18,3 +18,4 @@ path = "src/sdl/lib.rs"
 [dependencies]
 num = "0.1.24"
 rand = "0.3"
+libc = "0.1"
