@@ -1,5 +1,4 @@
 #![allow(raw_pointer_derive)]
-#![feature(libc)]
 
 extern crate libc;
 extern crate rand;
